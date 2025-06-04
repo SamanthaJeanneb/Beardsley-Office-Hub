@@ -2,7 +2,20 @@
 
 import type React from "react"
 import { useRef, useState, useEffect } from "react"
-import { ZoomIn, ZoomOut, RotateCcw, Printer, DoorClosed, Bath, Coffee, Users, Search, X } from "lucide-react"
+import {
+  ZoomIn,
+  ZoomOut,
+  RotateCcw,
+  Printer,
+  DoorClosed,
+  Bath,
+  Coffee,
+  Users,
+  Search,
+  X,
+  Sofa,
+  StepBackIcon as Stairs,
+} from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -233,17 +246,46 @@ export function EnhancedSeatingChart({
   const getRoomColor = (roomType: string) => {
     switch (roomType) {
       case "conference":
-        return "bg-room-conference border-office-green"
+        return "#DCFCE7" // Light green
       case "kitchen":
-        return "bg-room-kitchen border-office-orange"
+        return "#FED7AA" // Light orange
       case "reception":
-        return "bg-room-reception border-blue-300"
+        return "#E0E7FF" // Light blue
       case "print":
-        return "bg-room-print border-pink-300"
+        return "#FCE7F3" // Light pink
       case "restroom":
-        return "bg-room-restroom border-gray-300"
+        return "#F3F4F6" // Light gray
+      case "office":
+        return "#F1F5F9" // Light slate
+      case "storage":
+        return "#FEF3C7" // Light yellow
+      case "mechanical":
+        return "#E5E7EB" // Gray
       default:
-        return "bg-room-office border-gray-300"
+        return "#F9FAFB" // Very light gray
+    }
+  }
+
+  const getRoomStroke = (roomType: string) => {
+    switch (roomType) {
+      case "conference":
+        return "#16A34A" // Green
+      case "kitchen":
+        return "#EA580C" // Orange
+      case "reception":
+        return "#3B82F6" // Blue
+      case "print":
+        return "#EC4899" // Pink
+      case "restroom":
+        return "#9CA3AF" // Gray
+      case "office":
+        return "#64748B" // Slate
+      case "storage":
+        return "#F59E0B" // Amber
+      case "mechanical":
+        return "#6B7280" // Gray
+      default:
+        return "#E5E7EB" // Light gray
     }
   }
 
@@ -345,96 +387,64 @@ export function EnhancedSeatingChart({
             <svg
               width="100%"
               height="100%"
-              viewBox="0 0 1200 800"
+              viewBox="0 0 1000 600"
               className="h-full w-full"
               preserveAspectRatio="xMidYMid meet"
               style={{ filter: "drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1))" }}
             >
               {/* Floor background */}
-              <rect width="1200" height="800" fill="#FAFAFA" stroke="#E5E7EB" strokeWidth="2" rx="8" />
+              <rect width="1000" height="600" fill="#FAFAFA" stroke="#E5E7EB" strokeWidth="2" rx="8" />
 
-              {/* First Floor - Left Side */}
-              {/* Reception Area */}
-              <rect x="50" y="50" width="200" height="150" fill="#E0E7FF" stroke="#3B82F6" strokeWidth="2" rx="4" />
-              <text x="150" y="130" textAnchor="middle" className="fill-blue-700 text-sm font-medium">
-                Reception
-              </text>
+              {/* Render rooms */}
+              {floorData.rooms?.map((room: any) => (
+                <g key={room.id}>
+                  <rect
+                    x={room.x}
+                    y={room.y}
+                    width={room.width}
+                    height={room.height}
+                    fill={getRoomColor(room.type)}
+                    stroke={getRoomStroke(room.type)}
+                    strokeWidth="2"
+                    rx="4"
+                  />
+                  <text
+                    x={room.x + room.width / 2}
+                    y={room.y + room.height / 2}
+                    textAnchor="middle"
+                    dominantBaseline="central"
+                    className="text-xs font-medium pointer-events-none select-none"
+                    fill={getRoomStroke(room.type)}
+                  >
+                    {room.name}
+                  </text>
+                </g>
+              ))}
 
-              {/* Conference Room 1 */}
-              <rect x="50" y="220" width="180" height="120" fill="#DCFCE7" stroke="#16A34A" strokeWidth="2" rx="4" />
-              <text x="140" y="285" textAnchor="middle" className="fill-green-700 text-sm font-medium">
-                Conference Room
-              </text>
-
-              {/* Kitchen */}
-              <rect x="250" y="50" width="120" height="100" fill="#FED7AA" stroke="#EA580C" strokeWidth="2" rx="4" />
-              <text x="310" y="105" textAnchor="middle" className="fill-orange-700 text-sm font-medium">
-                Kitchen
-              </text>
-
-              {/* Open Office Area 1 */}
-              <rect x="250" y="170" width="300" height="200" fill="#F1F5F9" stroke="#64748B" strokeWidth="2" rx="4" />
-              <text x="400" y="275" textAnchor="middle" className="fill-slate-700 text-sm font-medium">
-                Open Office
-              </text>
-
-              {/* Second Floor - Right Side */}
-              {/* Conference Room 2 */}
-              <rect x="650" y="50" width="200" height="120" fill="#DCFCE7" stroke="#16A34A" strokeWidth="2" rx="4" />
-              <text x="750" y="115" textAnchor="middle" className="fill-green-700 text-sm font-medium">
-                Conference Room
-              </text>
-
-              {/* Print Room */}
-              <rect x="650" y="190" width="100" height="80" fill="#FCE7F3" stroke="#EC4899" strokeWidth="2" rx="4" />
-              <text x="700" y="235" textAnchor="middle" className="fill-pink-700 text-sm font-medium">
-                Print Room
-              </text>
-
-              {/* Kitchen 2 */}
-              <rect x="770" y="190" width="80" height="80" fill="#FED7AA" stroke="#EA580C" strokeWidth="2" rx="4" />
-              <text x="810" y="235" textAnchor="middle" className="fill-orange-700 text-sm font-medium">
-                Kitchen
-              </text>
-
-              {/* Open Office Area 2 */}
-              <rect x="650" y="290" width="350" height="200" fill="#F1F5F9" stroke="#64748B" strokeWidth="2" rx="4" />
-              <text x="825" y="395" textAnchor="middle" className="fill-slate-700 text-sm font-medium">
-                Open Office
-              </text>
-
-              {/* Executive Offices */}
-              <rect x="870" y="50" width="130" height="120" fill="#FEF3C7" stroke="#F59E0B" strokeWidth="2" rx="4" />
-              <text x="935" y="115" textAnchor="middle" className="fill-amber-700 text-sm font-medium">
-                Executive
-              </text>
-
-              {/* Restrooms */}
-              <rect x="580" y="50" width="60" height="80" fill="#F3F4F6" stroke="#9CA3AF" strokeWidth="2" rx="4" />
-              <text x="610" y="95" textAnchor="middle" className="fill-gray-700 text-xs font-medium">
-                Restroom
-              </text>
-
-              {/* Stairs indicators */}
-              <rect x="580" y="150" width="60" height="60" fill="#E5E7EB" stroke="#6B7280" strokeWidth="2" rx="4" />
-              <text x="610" y="185" textAnchor="middle" className="fill-gray-700 text-xs font-medium">
-                Stairs
-              </text>
-
-              <rect x="580" y="520" width="60" height="60" fill="#E5E7EB" stroke="#6B7280" strokeWidth="2" rx="4" />
-              <text x="610" y="555" textAnchor="middle" className="fill-gray-700 text-xs font-medium">
-                Stairs
-              </text>
+              {/* Render doors */}
+              {floorData.doors?.map((door: any, index: number) => (
+                <rect
+                  key={`door-${index}`}
+                  x={door.x}
+                  y={door.y}
+                  width="8"
+                  height="20"
+                  fill="#8B5CF6"
+                  stroke="#7C3AED"
+                  strokeWidth="1"
+                  rx="2"
+                />
+              ))}
 
               {/* Employee seats as SVG elements */}
-              {floorData.seats.map((seat: any) => (
+              {floorData.seats?.map((seat: any) => (
                 <g key={seat.id}>
                   <circle
                     cx={seat.x}
                     cy={seat.y}
-                    r="20"
+                    r="15"
                     className={cn(
-                      "cursor-pointer transition-all duration-200 hover:r-22",
+                      "cursor-pointer transition-all duration-200",
                       seat.employee ? "fill-orange-400 stroke-red-900 stroke-2" : "fill-white stroke-gray-300 stroke-2",
                       highlightedSeat === seat.id && "animate-pulse stroke-green-500 stroke-4",
                     )}
@@ -457,12 +467,13 @@ export function EnhancedSeatingChart({
                       textAnchor="middle"
                       dominantBaseline="central"
                       className="fill-white text-xs font-bold pointer-events-none select-none"
-                      style={{ fontSize: "10px" }}
+                      style={{ fontSize: "8px" }}
                     >
                       {seat.employee.name
                         .split(" ")
                         .map((n: string) => n[0])
-                        .join("")}
+                        .join("")
+                        .substring(0, 3)}
                     </text>
                   )}
                 </g>
@@ -471,18 +482,21 @@ export function EnhancedSeatingChart({
               {/* Office amenities as SVG elements */}
               {floorData.amenities?.map((amenity: any) => {
                 const isPrinter = amenity.type === "printer"
+                const isFurniture = amenity.type === "furniture"
 
                 return (
                   <g key={amenity.id}>
                     <circle
                       cx={amenity.x}
                       cy={amenity.y}
-                      r="16"
+                      r={isFurniture ? "12" : "10"}
                       className={cn(
                         "transition-all duration-200",
                         isPrinter
                           ? "fill-white stroke-gray-300 stroke-2 cursor-pointer hover:stroke-red-900"
-                          : "fill-white stroke-gray-300 stroke-2",
+                          : isFurniture
+                            ? "fill-amber-100 stroke-amber-500 stroke-2"
+                            : "fill-white stroke-gray-300 stroke-2",
                       )}
                       onMouseEnter={isPrinter ? (e) => handlePrinterMouseEnter(amenity, e as any) : undefined}
                       onMouseLeave={isPrinter ? handlePrinterMouseLeave : undefined}
@@ -492,18 +506,22 @@ export function EnhancedSeatingChart({
                       }}
                     />
                     <foreignObject
-                      x={amenity.x - 8}
-                      y={amenity.y - 8}
-                      width="16"
-                      height="16"
+                      x={amenity.x - 6}
+                      y={amenity.y - 6}
+                      width="12"
+                      height="12"
                       className="pointer-events-none"
                     >
                       <div className="flex h-full w-full items-center justify-center">
-                        {amenity.type === "printer" && <Printer className="h-4 w-4 text-red-900" />}
-                        {amenity.type === "restroom" && <Bath className="h-4 w-4 text-blue-600" />}
-                        {amenity.type === "exit" && <DoorClosed className="h-4 w-4 text-red-600" />}
-                        {amenity.type === "kitchen" && <Coffee className="h-4 w-4 text-orange-600" />}
-                        {amenity.type === "conference" && <Users className="h-4 w-4 text-green-600" />}
+                        {amenity.type === "printer" && <Printer className="h-3 w-3 text-red-900" />}
+                        {amenity.type === "restroom" && <Bath className="h-3 w-3 text-blue-600" />}
+                        {amenity.type === "exit" && <DoorClosed className="h-3 w-3 text-red-600" />}
+                        {amenity.type === "kitchen" && <Coffee className="h-3 w-3 text-orange-600" />}
+                        {amenity.type === "conference" && <Users className="h-3 w-3 text-green-600" />}
+                        {amenity.type === "conference" && <Users className="h-3 w-3 text-green-600" />}
+                        {amenity.type === "stairs" && <Stairs className="h-3 w-3 text-gray-600" />}
+                        {amenity.type === "furniture" && <Sofa className="h-3 w-3 text-amber-600" />}
+                        {amenity.type === "door" && <DoorClosed className="h-3 w-3 text-purple-600" />}
                       </div>
                     </foreignObject>
                   </g>
@@ -546,7 +564,7 @@ export function EnhancedSeatingChart({
       {/* Enhanced Legend */}
       <div className="mt-6 rounded-lg border border-office-maroon/20 bg-white p-4 shadow-sm">
         <h4 className="mb-3 text-sm font-semibold text-office-maroon">Legend</h4>
-        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
+        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-8">
           <div className="flex items-center gap-2">
             <div className="h-4 w-4 rounded-full border-2 border-office-maroon bg-gradient-to-br from-office-orange to-office-orange-light"></div>
             <span className="text-xs">Assigned</span>
@@ -578,6 +596,16 @@ export function EnhancedSeatingChart({
               <Coffee className="h-3 w-3 text-office-orange" />
             </div>
             <span className="text-xs">Kitchen</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="flex h-6 w-6 items-center justify-center rounded-full bg-gradient-to-br from-amber-100 to-amber-200 border border-amber-500">
+              <Sofa className="h-3 w-3 text-amber-600" />
+            </div>
+            <span className="text-xs">Furniture</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="h-4 w-2 bg-purple-500 border border-purple-600 rounded-sm"></div>
+            <span className="text-xs">Doors</span>
           </div>
         </div>
       </div>

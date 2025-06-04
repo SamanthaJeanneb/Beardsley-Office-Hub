@@ -99,18 +99,6 @@ export function OfficeInfo({ location }: OfficeInfoProps) {
             </div>
 
             <Separator className="bg-office-maroon/10" />
-
-            <div className="space-y-2">
-              <h4 className="text-sm font-medium text-office-maroon">Amenities</h4>
-              <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
-                {location.amenitiesList?.map((amenity: any) => (
-                  <div key={amenity.name} className="flex items-center gap-2">
-                    {amenity.icon && <amenity.icon className="h-4 w-4 text-office-maroon" />}
-                    <span className="text-sm">{amenity.name}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
           </div>
         </CardContent>
       )}

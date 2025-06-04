@@ -456,7 +456,7 @@ const mockLocations = {
     name: "Auburn Office",
     address: "64 South Street, Auburn, NY 13021",
     image: "/placeholder.svg?height=200&width=400",
-    phone: "315-555-3456",
+    phone: "315-253-7301",
     hours: "Mon-Fri: 8:00 AM - 5:30 PM",
     wifi: "Auburn-Office-Net",
     amenitiesList: [
@@ -464,7 +464,7 @@ const mockLocations = {
       { name: "Restrooms", icon: Bath },
       { name: "Emergency Exits", icon: DoorClosed },
       { name: "Kitchen Areas (2)", icon: Coffee },
-      { name: "Conference Rooms (3)", icon: DoorClosed },
+      { name: "Conference Rooms (6)", icon: DoorClosed },
       { name: "Wi-Fi", icon: Wifi },
     ],
     quickLinks: [
@@ -474,63 +474,47 @@ const mockLocations = {
     ],
     floors: [
       {
-        id: "floor-1",
+        id: "basement",
+        name: "Basement",
+        rooms: [
+          { id: "storage-1", name: "Storage", x: 100, y: 100, width: 200, height: 150, type: "storage" },
+          { id: "mechanical", name: "Mechanical Room", x: 350, y: 100, width: 150, height: 150, type: "mechanical" },
+          { id: "archive", name: "Archive", x: 100, y: 300, width: 400, height: 200, type: "storage" },
+        ],
+        amenities: [
+          { id: "exit-basement", type: "exit", name: "Emergency Exit", x: 550, y: 200 },
+          { id: "stairs-basement", type: "stairs", name: "Stairs to First Floor", x: 300, y: 350 },
+        ],
+        seats: [],
+      },
+      {
+        id: "first-floor",
         name: "First Floor",
         rooms: [
-          { id: "room-1", name: "Reception", x: 50, y: 50, width: 200, height: 150, type: "reception" },
-          { id: "room-2", name: "Conference Room", x: 50, y: 220, width: 180, height: 120, type: "conference" },
-          { id: "room-3", name: "Kitchen", x: 250, y: 50, width: 120, height: 100, type: "kitchen" },
-          { id: "room-4", name: "Open Office", x: 250, y: 170, width: 300, height: 200, type: "office" },
-          { id: "room-5", name: "Conference Room 2", x: 650, y: 50, width: 200, height: 120, type: "conference" },
-          { id: "room-6", name: "Print Room", x: 650, y: 190, width: 100, height: 80, type: "print" },
-          { id: "room-7", name: "Kitchen 2", x: 770, y: 190, width: 80, height: 80, type: "kitchen" },
-          { id: "room-8", name: "Open Office 2", x: 650, y: 290, width: 350, height: 200, type: "office" },
-          { id: "room-9", name: "Executive", x: 870, y: 50, width: 130, height: 120, type: "office" },
-          { id: "room-10", name: "Restroom", x: 580, y: 50, width: 60, height: 80, type: "restroom" },
+          { id: "lobby", name: "Lobby/Reception", x: 100, y: 100, width: 300, height: 150, type: "reception" },
+          { id: "conf-main", name: "Main Conference", x: 450, y: 100, width: 200, height: 150, type: "conference" },
+          { id: "kitchen-main", name: "Kitchen", x: 100, y: 300, width: 150, height: 100, type: "kitchen" },
+          { id: "open-first", name: "Open Office Area", x: 300, y: 300, width: 350, height: 200, type: "office" },
         ],
         amenities: [
           {
-            id: "printer-1",
+            id: "printer-first",
             type: "printer",
-            name: "HP OfficeJet Pro 9015e",
-            ipAddress: "192.168.4.101",
-            queueName: "AUBURN-PRINT-01",
+            name: "HP LaserJet First Floor",
+            ipAddress: "192.168.4.201",
+            queueName: "AUBURN-FIRST-01",
             status: "Online",
-            x: 700,
-            y: 230,
+            x: 500,
+            y: 350,
           },
-          {
-            id: "printer-2",
-            type: "printer",
-            name: "Canon PIXMA TR8620",
-            ipAddress: "192.168.4.102",
-            queueName: "AUBURN-PRINT-02",
-            status: "Low Paper",
-            x: 950,
-            y: 80,
-          },
-          {
-            id: "printer-3",
-            type: "printer",
-            name: "Brother HL-L3270CDW",
-            ipAddress: "192.168.4.103",
-            queueName: "AUBURN-PRINT-03",
-            status: "Online",
-            x: 310,
-            y: 100,
-          },
-          { id: "restroom-1", type: "restroom", name: "Restroom", x: 610, y: 90 },
-          { id: "exit-1", type: "exit", name: "Main Exit", x: 150, y: 80 },
-          { id: "exit-2", type: "exit", name: "Emergency Exit", x: 950, y: 150 },
-          { id: "kitchen-1", type: "kitchen", name: "Main Kitchen", x: 310, y: 100 },
-          { id: "kitchen-2", type: "kitchen", name: "Break Room", x: 810, y: 230 },
-          { id: "conference-1", type: "conference", name: "Conference Room A", x: 140, y: 280 },
-          { id: "conference-2", type: "conference", name: "Conference Room B", x: 750, y: 110 },
+          { id: "restroom-first", type: "restroom", name: "Restroom", x: 270, y: 300 },
+          { id: "exit-main", type: "exit", name: "Main Entrance", x: 200, y: 100 },
+          { id: "stairs-first", type: "stairs", name: "Stairs to Second Floor", x: 300, y: 450 },
         ],
-        seats: employeeData.auburn.map((emp, index) => ({
-          id: `seat-${index + 1}`,
-          x: 280 + (index % 4) * 70,
-          y: 200 + Math.floor(index / 4) * 70,
+        seats: employeeData.auburn.slice(0, 8).map((emp, index) => ({
+          id: `first-seat-${index + 1}`,
+          x: 320 + (index % 4) * 70,
+          y: 320 + Math.floor(index / 4) * 70,
           rotation: 0,
           employee: {
             name: emp.name,
@@ -539,9 +523,320 @@ const mockLocations = {
             phone: emp.phone,
             profileUrl: "#",
             avatar: "/placeholder.svg?height=40&width=40",
-            notes: `Works at the Auburn office.`,
+            notes: `Works on the first floor of the Auburn office.`,
           },
         })),
+      },
+      {
+        id: "second-floor",
+        name: "Second Floor",
+        rooms: [
+          // Left wing
+          { id: "beardsley-office", name: "Beardsley Office", x: 50, y: 50, width: 80, height: 100, type: "office" },
+          { id: "reilly-office", name: "Reilly Office", x: 140, y: 50, width: 80, height: 100, type: "office" },
+          { id: "conf-left-1", name: "Conference Room", x: 50, y: 160, width: 80, height: 80, type: "conference" },
+          { id: "conf-left-2", name: "Conference Room", x: 140, y: 160, width: 80, height: 80, type: "conference" },
+          { id: "kitchen-left", name: "Kitchen", x: 230, y: 80, width: 60, height: 60, type: "kitchen" },
+
+          // Center area
+          { id: "conf-center", name: "Green Conference", x: 300, y: 80, width: 120, height: 100, type: "conference" },
+          { id: "open-center", name: "Open Area", x: 300, y: 200, width: 200, height: 150, type: "office" },
+
+          // Right wing - upper
+          { id: "jlv-office", name: "JLV Office", x: 550, y: 50, width: 60, height: 60, type: "office" },
+          { id: "awd-office", name: "AWD Office", x: 620, y: 50, width: 60, height: 60, type: "office" },
+          { id: "dep-office", name: "DEP Office", x: 690, y: 50, width: 60, height: 60, type: "office" },
+          {
+            id: "conf-arch",
+            name: "Architectural Conference",
+            x: 760,
+            y: 50,
+            width: 120,
+            height: 100,
+            type: "conference",
+          },
+
+          // Right wing - middle
+          { id: "faf-office", name: "FAF Office", x: 550, y: 150, width: 60, height: 60, type: "office" },
+          { id: "tac-office", name: "TAC Office", x: 690, y: 150, width: 60, height: 60, type: "office" },
+          { id: "print-room", name: "Print Room", x: 620, y: 150, width: 60, height: 80, type: "print" },
+
+          // Right wing - lower
+          { id: "jehl-office", name: "JEHL Office", x: 550, y: 250, width: 60, height: 60, type: "office" },
+          { id: "phs-office", name: "PHS Office", x: 620, y: 250, width: 60, height: 60, type: "office" },
+          { id: "kjq-office", name: "KJQ Office", x: 550, y: 320, width: 60, height: 60, type: "office" },
+          { id: "jmp-office", name: "JMP Office", x: 620, y: 320, width: 60, height: 60, type: "office" },
+          { id: "mjp-office", name: "MJP Office", x: 690, y: 250, width: 60, height: 60, type: "office" },
+          { id: "mrm-office", name: "MRM Office", x: 690, y: 320, width: 60, height: 60, type: "office" },
+          { id: "tbm-office", name: "TBM Office", x: 760, y: 320, width: 60, height: 60, type: "office" },
+
+          // Left wing lower
+          { id: "mel-office", name: "MEL Office", x: 50, y: 280, width: 80, height: 80, type: "office" },
+          { id: "mar-office", name: "MAR Office", x: 140, y: 280, width: 80, height: 80, type: "office" },
+          { id: "dgm-office", name: "DGM Office", x: 230, y: 280, width: 80, height: 80, type: "office" },
+        ],
+        amenities: [
+          // Printers
+          {
+            id: "printer-main",
+            type: "printer",
+            name: "HP OfficeJet Pro 9015e",
+            ipAddress: "192.168.4.101",
+            queueName: "AUBURN-PRINT-01",
+            status: "Online",
+            x: 640,
+            y: 180,
+          },
+          {
+            id: "printer-arch",
+            type: "printer",
+            name: "Canon PIXMA TR8620",
+            ipAddress: "192.168.4.102",
+            queueName: "AUBURN-PRINT-02",
+            status: "Low Paper",
+            x: 800,
+            y: 80,
+          },
+
+          // Doors (represented as small rectangles)
+          { id: "door-1", type: "door", name: "Door", x: 130, y: 100 },
+          { id: "door-2", type: "door", name: "Door", x: 220, y: 100 },
+          { id: "door-3", type: "door", name: "Door", x: 290, y: 130 },
+          { id: "door-4", type: "door", name: "Door", x: 420, y: 130 },
+          { id: "door-5", type: "door", name: "Door", x: 540, y: 80 },
+          { id: "door-6", type: "door", name: "Door", x: 540, y: 180 },
+          { id: "door-7", type: "door", name: "Door", x: 540, y: 280 },
+
+          // Restrooms
+          { id: "restroom-1", type: "restroom", name: "Restroom", x: 500, y: 120 },
+
+          // Exits
+          { id: "exit-1", type: "exit", name: "Emergency Exit", x: 50, y: 200 },
+          { id: "exit-2", type: "exit", name: "Emergency Exit", x: 850, y: 200 },
+
+          // Stairs
+          { id: "stairs-1", type: "stairs", name: "Stairs", x: 50, y: 400 },
+          { id: "stairs-2", type: "stairs", name: "Stairs", x: 850, y: 400 },
+
+          // Kitchen amenities
+          { id: "kitchen-1", type: "kitchen", name: "Kitchen", x: 250, y: 100 },
+
+          // Conference room amenities
+          { id: "conference-1", type: "conference", name: "Conference Room", x: 80, y: 180 },
+          { id: "conference-2", type: "conference", name: "Conference Room", x: 170, y: 180 },
+          { id: "conference-3", type: "conference", name: "Green Conference", x: 360, y: 130 },
+          { id: "conference-4", type: "conference", name: "Architectural Conference", x: 820, y: 100 },
+
+          // Furniture (couches/seating areas)
+          { id: "couch-1", type: "furniture", name: "Seating Area", x: 320, y: 220 },
+          { id: "couch-2", type: "furniture", name: "Seating Area", x: 450, y: 220 },
+        ],
+        doors: [
+          // Door connections between rooms
+          { from: "beardsley-office", to: "reilly-office", x: 130, y: 100 },
+          { from: "reilly-office", to: "kitchen-left", x: 220, y: 100 },
+          { from: "kitchen-left", to: "conf-center", x: 290, y: 130 },
+          { from: "conf-center", to: "jlv-office", x: 420, y: 130 },
+          { from: "open-center", to: "faf-office", x: 500, y: 200 },
+        ],
+        seats: [
+          // Based on the floor plan image, placing employees in their designated spots
+          // JSK
+          {
+            id: "jsk-seat",
+            x: 250,
+            y: 120,
+            rotation: 0,
+            employee: employeeData.auburn.find((emp) => emp.name.includes("Joe Kime")),
+          },
+          // JLW, NBS, DJM positions in center conference area
+          {
+            id: "jlw-seat",
+            x: 340,
+            y: 120,
+            rotation: 0,
+            employee: employeeData.auburn.find((emp) => emp.name.includes("Joanne")),
+          },
+          {
+            id: "nbs-seat",
+            x: 380,
+            y: 120,
+            rotation: 0,
+            employee: employeeData.auburn.find((emp) => emp.name.includes("Nathan")),
+          },
+          // JLV, AWD, DEP in upper right offices
+          {
+            id: "jlv-seat",
+            x: 580,
+            y: 80,
+            rotation: 0,
+            employee: employeeData.auburn.find((emp) => emp.name.includes("Jeff Velte")),
+          },
+          {
+            id: "awd-seat",
+            x: 650,
+            y: 80,
+            rotation: 0,
+            employee: employeeData.auburn.find((emp) => emp.name.includes("Andrea DeLany")),
+          },
+          {
+            id: "dep-seat",
+            x: 720,
+            y: 80,
+            rotation: 0,
+            employee: employeeData.auburn.find((emp) => emp.name.includes("Doug Porter")),
+          },
+          // DJM, JMB, JBD in center open area
+          {
+            id: "djm-seat",
+            x: 350,
+            y: 240,
+            rotation: 0,
+            employee: employeeData.auburn.find((emp) => emp.name.includes("Dennis McCarthy")),
+          },
+          {
+            id: "jmb-seat",
+            x: 420,
+            y: 240,
+            rotation: 0,
+            employee: employeeData.auburn.find((emp) => emp.name.includes("Jared Bracken")),
+          },
+          {
+            id: "jbd-seat",
+            x: 470,
+            y: 240,
+            rotation: 0,
+            employee: employeeData.auburn.find((emp) => emp.name.includes("Phillip Beyel")),
+          },
+          // FAF, TAC in middle right
+          {
+            id: "faf-seat",
+            x: 580,
+            y: 180,
+            rotation: 0,
+            employee: employeeData.auburn.find((emp) => emp.name.includes("Felicia Fiacco")),
+          },
+          {
+            id: "tac-seat",
+            x: 720,
+            y: 180,
+            rotation: 0,
+            employee: employeeData.auburn.find((emp) => emp.name.includes("Tracey Carr")),
+          },
+          // JFC, HMK in right area
+          {
+            id: "jfc-seat",
+            x: 750,
+            y: 240,
+            rotation: 0,
+            employee: employeeData.auburn.find((emp) => emp.name.includes("Jason Coe")),
+          },
+          {
+            id: "hmk-seat",
+            x: 790,
+            y: 240,
+            rotation: 0,
+            employee: employeeData.auburn.find((emp) => emp.name.includes("John Hewitt")),
+          },
+          // JEHL, PHS in lower right
+          {
+            id: "jehl-seat",
+            x: 580,
+            y: 280,
+            rotation: 0,
+            employee: employeeData.auburn.find((emp) => emp.name.includes("Joanne Maddox")),
+          },
+          {
+            id: "phs-seat",
+            x: 650,
+            y: 280,
+            rotation: 0,
+            employee: employeeData.auburn.find((emp) => emp.name.includes("Paul Shrimpton")),
+          },
+          // KJQ, JMP in bottom right
+          {
+            id: "kjq-seat",
+            x: 580,
+            y: 350,
+            rotation: 0,
+            employee: employeeData.auburn.find((emp) => emp.name.includes("Kathy Quigley")),
+          },
+          {
+            id: "jmp-seat",
+            x: 650,
+            y: 350,
+            rotation: 0,
+            employee: employeeData.auburn.find((emp) => emp.name.includes("Joshua Marris")),
+          },
+          // MJP, MRM, TBM in far right
+          {
+            id: "mjp-seat",
+            x: 720,
+            y: 280,
+            rotation: 0,
+            employee: employeeData.auburn.find((emp) => emp.name.includes("Michael Picciano")),
+          },
+          {
+            id: "mrm-seat",
+            x: 720,
+            y: 350,
+            rotation: 0,
+            employee: employeeData.auburn.find((emp) => emp.name.includes("Mark Rebich")),
+          },
+          {
+            id: "tbm-seat",
+            x: 790,
+            y: 350,
+            rotation: 0,
+            employee: employeeData.auburn.find((emp) => emp.name.includes("Tim McSweeney")),
+          },
+          // MEL, MAR, DGM in left lower area
+          {
+            id: "mel-seat",
+            x: 90,
+            y: 320,
+            rotation: 0,
+            employee: employeeData.auburn.find((emp) => emp.name.includes("Megan Litzenberger")),
+          },
+          {
+            id: "mar-seat",
+            x: 180,
+            y: 320,
+            rotation: 0,
+            employee: employeeData.auburn.find((emp) => emp.name.includes("Michael Naber")),
+          },
+          {
+            id: "dgm-seat",
+            x: 270,
+            y: 320,
+            rotation: 0,
+            employee: employeeData.auburn.find((emp) => emp.name.includes("Dan Whitman")),
+          },
+          // KMW in left area
+          {
+            id: "kmw-seat",
+            x: 90,
+            y: 220,
+            rotation: 0,
+            employee: employeeData.auburn.find((emp) => emp.name.includes("Kathy Mietz")),
+          },
+          // Additional seats for remaining employees
+          ...employeeData.auburn.slice(20).map((emp, index) => ({
+            id: `additional-seat-${index + 1}`,
+            x: 100 + (index % 3) * 80,
+            y: 450 + Math.floor(index / 3) * 60,
+            rotation: 0,
+            employee: {
+              name: emp.name,
+              title: emp.title,
+              email: emp.email,
+              phone: emp.phone,
+              profileUrl: "#",
+              avatar: "/placeholder.svg?height=40&width=40",
+              notes: `Works on the second floor of the Auburn office.`,
+            },
+          })),
+        ].filter((seat) => seat.employee), // Only include seats with employees
       },
     ],
   },
