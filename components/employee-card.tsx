@@ -79,7 +79,7 @@ export function EmployeeCard({ employee, onClose }: EmployeeCardProps) {
             asChild
           >
             <a href="#" target="_blank" rel="noopener noreferrer">
-              <Calendar className="mr-2 h-3 w-3" />
+              <Calendar className="mr-2 h-3 w-2" />
               <span>Schedule</span>
             </a>
           </Button>
