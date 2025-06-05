@@ -15,6 +15,7 @@ import {
   X,
   Sofa,
   StepBackIcon as Stairs,
+  Settings,
 } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
@@ -30,6 +31,9 @@ interface EnhancedSeatingChartProps {
   currentFloorId: string
   onSelectEmployee: (employee: any) => void
   onFloorChange: (floorId: string) => void
+  isEditMode?: boolean
+  onUpdateSeatPosition?: (seatId: string, x: number, y: number) => void
+  onMoveSeat?: (fromSeatId: string, toSeatId: string) => void
 }
 
 export function EnhancedSeatingChart({
@@ -38,6 +42,9 @@ export function EnhancedSeatingChart({
   currentFloorId,
   onSelectEmployee,
   onFloorChange,
+  isEditMode = false,
+  onUpdateSeatPosition,
+  onMoveSeat,
 }: EnhancedSeatingChartProps) {
   const containerRef = useRef<HTMLDivElement>(null)
   const chartRef = useRef<HTMLDivElement>(null)
@@ -52,6 +59,12 @@ export function EnhancedSeatingChart({
   const [searchQuery, setSearchQuery] = useState("")
   const [searchResult, setSearchResult] = useState<any>(null)
   const [highlightedSeat, setHighlightedSeat] = useState<string | null>(null)
+
+  // Edit mode specific states
+  const [draggedSeat, setDraggedSeat] = useState<any>(null)
+  const [draggedSeatOffset, setDraggedSeatOffset] = useState({ x: 0, y: 0 })
+  const [isDraggingSeat, setIsDraggingSeat] = useState(false)
+  const [dropTarget, setDropTarget] = useState<string | null>(null)
 
   // Reset view to default
   const resetView = () => {
@@ -88,15 +101,15 @@ export function EnhancedSeatingChart({
     }
   }, [])
 
-  // Handle mouse drag for panning
+  // Handle mouse drag for panning (only when not in edit mode or not dragging a seat)
   const handleMouseDown = (e: React.MouseEvent) => {
-    if (e.button !== 0) return
+    if (e.button !== 0 || isEditMode || isDraggingSeat) return
     setIsDragging(true)
     setDragStart({ x: e.clientX - position.x, y: e.clientY - position.y })
   }
 
   const handleMouseMove = (e: React.MouseEvent) => {
-    if (!isDragging) return
+    if (!isDragging || isEditMode) return
     setPosition({
       x: e.clientX - dragStart.x,
       y: e.clientY - dragStart.y,
@@ -109,7 +122,7 @@ export function EnhancedSeatingChart({
 
   // Handle touch events for mobile
   const handleTouchStart = (e: React.TouchEvent) => {
-    if (e.touches.length !== 1) return
+    if (e.touches.length !== 1 || isEditMode) return
     setIsDragging(true)
     setDragStart({
       x: e.touches[0].clientX - position.x,
@@ -118,7 +131,7 @@ export function EnhancedSeatingChart({
   }
 
   const handleTouchMove = (e: React.TouchEvent) => {
-    if (!isDragging || e.touches.length !== 1) return
+    if (!isDragging || e.touches.length !== 1 || isEditMode) return
     setPosition({
       x: e.touches[0].clientX - dragStart.x,
       y: e.touches[0].clientY - position.y,
@@ -129,9 +142,56 @@ export function EnhancedSeatingChart({
     setIsDragging(false)
   }
 
+  // Handle seat drag and drop in edit mode
+  const handleSeatMouseDown = (seat: any, e: React.MouseEvent) => {
+    if (!isEditMode || !seat.employee) return
+
+    e.stopPropagation()
+    setIsDraggingSeat(true)
+    setDraggedSeat(seat)
+
+    const rect = (e.currentTarget as HTMLElement).getBoundingClientRect()
+    const containerRect = containerRef.current?.getBoundingClientRect() || { left: 0, top: 0 }
+
+    setDraggedSeatOffset({
+      x: e.clientX - rect.left,
+      y: e.clientY - rect.top,
+    })
+  }
+
+  const handleSeatDrag = (e: React.MouseEvent) => {
+    if (!isDraggingSeat || !draggedSeat) return
+
+    e.preventDefault()
+
+    // Update dragged seat position
+    const containerRect = containerRef.current?.getBoundingClientRect() || { left: 0, top: 0 }
+    const svgX = (e.clientX - containerRect.left - position.x) / scale - draggedSeatOffset.x
+    const svgY = (e.clientY - containerRect.top - position.y) / scale - draggedSeatOffset.y
+
+    setDraggedSeat({ ...draggedSeat, x: svgX, y: svgY })
+  }
+
+  const handleSeatDrop = (e: React.MouseEvent) => {
+    if (!isDraggingSeat || !draggedSeat) return
+
+    setIsDraggingSeat(false)
+
+    // Check if dropped on another seat
+    if (dropTarget && onMoveSeat) {
+      onMoveSeat(draggedSeat.id, dropTarget)
+    } else if (onUpdateSeatPosition) {
+      // Update seat position
+      onUpdateSeatPosition(draggedSeat.id, draggedSeat.x, draggedSeat.y)
+    }
+
+    setDraggedSeat(null)
+    setDropTarget(null)
+  }
+
   // Handle hover events for employee cards
   const handleSeatMouseEnter = (employee: any, e: React.MouseEvent) => {
-    if (!employee) return
+    if (!employee || isEditMode) return
     setHoveredEmployee(employee)
 
     const rect = (e.currentTarget as HTMLElement).getBoundingClientRect()
@@ -144,11 +204,14 @@ export function EnhancedSeatingChart({
   }
 
   const handleSeatMouseLeave = () => {
-    setHoveredEmployee(null)
+    if (!isEditMode) {
+      setHoveredEmployee(null)
+    }
   }
 
   // Handle hover events for printer tooltips
   const handlePrinterMouseEnter = (printer: any, e: React.MouseEvent) => {
+    if (isEditMode) return
     setHoveredPrinter(printer)
 
     const rect = (e.currentTarget as HTMLElement).getBoundingClientRect()
@@ -161,7 +224,9 @@ export function EnhancedSeatingChart({
   }
 
   const handlePrinterMouseLeave = () => {
-    setHoveredPrinter(null)
+    if (!isEditMode) {
+      setHoveredPrinter(null)
+    }
   }
 
   // Handle search functionality across all floors
@@ -302,6 +367,7 @@ export function EnhancedSeatingChart({
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="pl-8"
+              disabled={isEditMode}
             />
             {searchQuery && (
               <Button
@@ -310,17 +376,24 @@ export function EnhancedSeatingChart({
                 size="sm"
                 className="absolute right-1 top-1/2 h-6 w-6 -translate-y-1/2 p-0"
                 onClick={clearSearch}
+                disabled={isEditMode}
               >
                 <X className="h-3 w-3" />
               </Button>
             )}
           </div>
-          <Button type="submit" variant="default">
+          <Button type="submit" variant="default" disabled={isEditMode}>
             Find
           </Button>
         </form>
 
         <div className="flex gap-2">
+          {isEditMode && (
+            <div className="flex items-center gap-2 px-3 py-1 bg-orange-100 text-orange-800 rounded-md text-sm">
+              <Settings className="h-3 w-3" />
+              Edit Mode Active
+            </div>
+          )}
           <Button
             variant="outline"
             size="icon"
@@ -345,8 +418,19 @@ export function EnhancedSeatingChart({
         </div>
       </div>
 
+      {/* Edit Mode Instructions */}
+      {isEditMode && (
+        <Alert className="mb-4 border-orange-200 bg-orange-50">
+          <Settings className="h-4 w-4 text-orange-600" />
+          <AlertDescription className="text-orange-800">
+            <strong>Edit Mode:</strong> Drag employees to move them to different seats. Click on employees to edit their
+            details in the admin panel.
+          </AlertDescription>
+        </Alert>
+      )}
+
       {/* Search Result Banner */}
-      {searchResult && (
+      {searchResult && !isEditMode && (
         <Alert className="mb-4 border-office-green bg-office-green/5">
           <Search className="h-4 w-4 text-office-green" />
           <AlertDescription className="flex items-center justify-between">
@@ -365,13 +449,13 @@ export function EnhancedSeatingChart({
         ref={containerRef}
         className="h-[700px] overflow-hidden rounded-xl border-2 border-office-maroon/20 bg-gradient-to-br from-gray-50 to-gray-100 shadow-lg"
         onMouseDown={handleMouseDown}
-        onMouseMove={handleMouseMove}
-        onMouseUp={handleMouseUp}
+        onMouseMove={isDraggingSeat ? handleSeatDrag : handleMouseMove}
+        onMouseUp={isDraggingSeat ? handleSeatDrop : handleMouseUp}
         onMouseLeave={handleMouseUp}
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
-        style={{ cursor: isDragging ? "grabbing" : "grab" }}
+        style={{ cursor: isDragging ? "grabbing" : isEditMode ? "default" : "grab" }}
       >
         <div
           ref={chartRef}
@@ -379,7 +463,7 @@ export function EnhancedSeatingChart({
           style={{
             transform: `scale(${scale}) translate(${position.x / scale}px, ${position.y / scale}px)`,
             transformOrigin: "0 0",
-            transition: isDragging ? "none" : "transform 100ms",
+            transition: isDragging || isDraggingSeat ? "none" : "transform 100ms",
           }}
         >
           {/* Floor plan SVG container */}
@@ -437,47 +521,75 @@ export function EnhancedSeatingChart({
               ))}
 
               {/* Employee seats as SVG elements */}
-              {floorData.seats?.map((seat: any) => (
-                <g key={seat.id}>
-                  <circle
-                    cx={seat.x}
-                    cy={seat.y}
-                    r="15"
-                    className={cn(
-                      "cursor-pointer transition-all duration-200",
-                      seat.employee ? "fill-orange-400 stroke-red-900 stroke-2" : "fill-white stroke-gray-300 stroke-2",
-                      highlightedSeat === seat.id && "animate-pulse stroke-green-500 stroke-4",
+              {floorData.seats?.map((seat: any) => {
+                const isDraggedSeat = draggedSeat && draggedSeat.id === seat.id
+                const displaySeat = isDraggedSeat ? draggedSeat : seat
+
+                return (
+                  <g key={seat.id}>
+                    <circle
+                      cx={displaySeat.x}
+                      cy={displaySeat.y}
+                      r="15"
+                      className={cn(
+                        "transition-all duration-200",
+                        seat.employee
+                          ? "fill-orange-400 stroke-red-900 stroke-2"
+                          : "fill-white stroke-gray-300 stroke-2",
+                        highlightedSeat === seat.id && "animate-pulse stroke-green-500 stroke-4",
+                        isEditMode && seat.employee && "cursor-move hover:stroke-blue-500",
+                        isDraggedSeat && "opacity-70",
+                        dropTarget === seat.id && "stroke-green-500 stroke-4",
+                        !isEditMode && seat.employee && "cursor-pointer",
+                      )}
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        if (!isEditMode && seat.employee) {
+                          onSelectEmployee(seat.employee)
+                        } else if (isEditMode && seat.employee) {
+                          onSelectEmployee(seat.employee)
+                        }
+                      }}
+                      onMouseDown={(e) => handleSeatMouseDown(seat, e as any)}
+                      onMouseEnter={(e) => {
+                        if (isDraggingSeat && seat.id !== draggedSeat?.id) {
+                          setDropTarget(seat.id)
+                        } else {
+                          seat.employee && handleSeatMouseEnter(seat.employee, e as any)
+                        }
+                      }}
+                      onMouseLeave={() => {
+                        if (isDraggingSeat) {
+                          setDropTarget(null)
+                        } else {
+                          handleSeatMouseLeave()
+                        }
+                      }}
+                      style={{
+                        filter: seat.employee
+                          ? "drop-shadow(0 4px 8px rgba(124, 45, 18, 0.3))"
+                          : "drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1))",
+                      }}
+                    />
+                    {seat.employee && (
+                      <text
+                        x={displaySeat.x}
+                        y={displaySeat.y}
+                        textAnchor="middle"
+                        dominantBaseline="central"
+                        className="fill-white text-xs font-bold pointer-events-none select-none"
+                        style={{ fontSize: "8px" }}
+                      >
+                        {seat.employee.name
+                          .split(" ")
+                          .map((n: string) => n[0])
+                          .join("")
+                          .substring(0, 3)}
+                      </text>
                     )}
-                    onClick={(e) => {
-                      e.stopPropagation()
-                      seat.employee && onSelectEmployee(seat.employee)
-                    }}
-                    onMouseEnter={(e) => seat.employee && handleSeatMouseEnter(seat.employee, e as any)}
-                    onMouseLeave={handleSeatMouseLeave}
-                    style={{
-                      filter: seat.employee
-                        ? "drop-shadow(0 4px 8px rgba(124, 45, 18, 0.3))"
-                        : "drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1))",
-                    }}
-                  />
-                  {seat.employee && (
-                    <text
-                      x={seat.x}
-                      y={seat.y}
-                      textAnchor="middle"
-                      dominantBaseline="central"
-                      className="fill-white text-xs font-bold pointer-events-none select-none"
-                      style={{ fontSize: "8px" }}
-                    >
-                      {seat.employee.name
-                        .split(" ")
-                        .map((n: string) => n[0])
-                        .join("")
-                        .substring(0, 3)}
-                    </text>
-                  )}
-                </g>
-              ))}
+                  </g>
+                )
+              })}
 
               {/* Office amenities as SVG elements */}
               {floorData.amenities?.map((amenity: any) => {
@@ -500,7 +612,7 @@ export function EnhancedSeatingChart({
                       )}
                       onMouseEnter={isPrinter ? (e) => handlePrinterMouseEnter(amenity, e as any) : undefined}
                       onMouseLeave={isPrinter ? handlePrinterMouseLeave : undefined}
-                      onClick={isPrinter ? () => window.open("#print-queue", "_blank") : undefined}
+                      onClick={isPrinter && !isEditMode ? () => window.open("#print-queue", "_blank") : undefined}
                       style={{
                         filter: "drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1))",
                       }}
@@ -518,7 +630,6 @@ export function EnhancedSeatingChart({
                         {amenity.type === "exit" && <DoorClosed className="h-3 w-3 text-red-600" />}
                         {amenity.type === "kitchen" && <Coffee className="h-3 w-3 text-orange-600" />}
                         {amenity.type === "conference" && <Users className="h-3 w-3 text-green-600" />}
-                        {amenity.type === "conference" && <Users className="h-3 w-3 text-green-600" />}
                         {amenity.type === "stairs" && <Stairs className="h-3 w-3 text-gray-600" />}
                         {amenity.type === "furniture" && <Sofa className="h-3 w-3 text-amber-600" />}
                         {amenity.type === "door" && <DoorClosed className="h-3 w-3 text-purple-600" />}
@@ -531,8 +642,8 @@ export function EnhancedSeatingChart({
           </div>
         </div>
 
-        {/* Hover card for employees */}
-        {hoveredEmployee && (
+        {/* Hover card for employees (only in non-edit mode) */}
+        {hoveredEmployee && !isEditMode && (
           <div
             className="pointer-events-none absolute z-20 rounded-lg border-2 border-office-maroon/20 bg-white/95 p-3 shadow-xl backdrop-blur-sm"
             style={{
@@ -545,8 +656,8 @@ export function EnhancedSeatingChart({
           </div>
         )}
 
-        {/* Tooltip for printers */}
-        {hoveredPrinter && (
+        {/* Tooltip for printers (only in non-edit mode) */}
+        {hoveredPrinter && !isEditMode && (
           <div
             className="pointer-events-none absolute z-20 rounded-lg border-2 border-office-maroon/20 bg-white/95 p-3 shadow-xl backdrop-blur-sm"
             style={{

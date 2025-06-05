@@ -261,6 +261,7 @@ const employeeData = {
   ],
 }
 
+// In-memory storage for location data (in a real app, this would be a database)
 const mockLocations = {
   syracuse: {
     id: "syracuse",
@@ -314,6 +315,7 @@ const mockLocations = {
           y: 200 + Math.floor(index / 5) * 70,
           rotation: 0,
           employee: {
+            id: `emp-${index + 1}`,
             name: emp.name,
             title: emp.title,
             email: emp.email,
@@ -376,6 +378,7 @@ const mockLocations = {
           y: 200 + Math.floor(index / 4) * 80,
           rotation: 0,
           employee: {
+            id: `emp-${index + 1}`,
             name: emp.name,
             title: emp.title,
             email: emp.email,
@@ -439,6 +442,7 @@ const mockLocations = {
           y: 100 + Math.floor(index / 3) * 80,
           rotation: 0,
           employee: {
+            id: `emp-${index + 1}`,
             name: emp.name,
             title: emp.title,
             email: emp.email,
@@ -517,6 +521,7 @@ const mockLocations = {
           y: 320 + Math.floor(index / 4) * 70,
           rotation: 0,
           employee: {
+            id: `emp-first-${index + 1}`,
             name: emp.name,
             title: emp.title,
             email: emp.email,
@@ -647,7 +652,13 @@ const mockLocations = {
             x: 250,
             y: 120,
             rotation: 0,
-            employee: employeeData.auburn.find((emp) => emp.name.includes("Joe Kime")),
+            employee: {
+              id: "emp-jsk",
+              ...employeeData.auburn.find((emp) => emp.name.includes("Joe Kime")),
+              profileUrl: "#",
+              avatar: "/placeholder.svg?height=40&width=40",
+              notes: `Works on the second floor of the Auburn office.`,
+            },
           },
           // JLW, NBS, DJM positions in center conference area
           {
@@ -655,14 +666,26 @@ const mockLocations = {
             x: 340,
             y: 120,
             rotation: 0,
-            employee: employeeData.auburn.find((emp) => emp.name.includes("Joanne")),
+            employee: {
+              id: "emp-jlw",
+              ...employeeData.auburn.find((emp) => emp.name.includes("Joanne")),
+              profileUrl: "#",
+              avatar: "/placeholder.svg?height=40&width=40",
+              notes: `Works on the second floor of the Auburn office.`,
+            },
           },
           {
             id: "nbs-seat",
             x: 380,
             y: 120,
             rotation: 0,
-            employee: employeeData.auburn.find((emp) => emp.name.includes("Nathan")),
+            employee: {
+              id: "emp-nbs",
+              ...employeeData.auburn.find((emp) => emp.name.includes("Nathan")),
+              profileUrl: "#",
+              avatar: "/placeholder.svg?height=40&width=40",
+              notes: `Works on the second floor of the Auburn office.`,
+            },
           },
           // JLV, AWD, DEP in upper right offices
           {
@@ -670,21 +693,39 @@ const mockLocations = {
             x: 580,
             y: 80,
             rotation: 0,
-            employee: employeeData.auburn.find((emp) => emp.name.includes("Jeff Velte")),
+            employee: {
+              id: "emp-jlv",
+              ...employeeData.auburn.find((emp) => emp.name.includes("Jeff Velte")),
+              profileUrl: "#",
+              avatar: "/placeholder.svg?height=40&width=40",
+              notes: `Works on the second floor of the Auburn office.`,
+            },
           },
           {
             id: "awd-seat",
             x: 650,
             y: 80,
             rotation: 0,
-            employee: employeeData.auburn.find((emp) => emp.name.includes("Andrea DeLany")),
+            employee: {
+              id: "emp-awd",
+              ...employeeData.auburn.find((emp) => emp.name.includes("Andrea DeLany")),
+              profileUrl: "#",
+              avatar: "/placeholder.svg?height=40&width=40",
+              notes: `Works on the second floor of the Auburn office.`,
+            },
           },
           {
             id: "dep-seat",
             x: 720,
             y: 80,
             rotation: 0,
-            employee: employeeData.auburn.find((emp) => emp.name.includes("Doug Porter")),
+            employee: {
+              id: "emp-dep",
+              ...employeeData.auburn.find((emp) => emp.name.includes("Doug Porter")),
+              profileUrl: "#",
+              avatar: "/placeholder.svg?height=40&width=40",
+              notes: `Works on the second floor of the Auburn office.`,
+            },
           },
           // DJM, JMB, JBD in center open area
           {
@@ -692,21 +733,39 @@ const mockLocations = {
             x: 350,
             y: 240,
             rotation: 0,
-            employee: employeeData.auburn.find((emp) => emp.name.includes("Dennis McCarthy")),
+            employee: {
+              id: "emp-djm",
+              ...employeeData.auburn.find((emp) => emp.name.includes("Dennis McCarthy")),
+              profileUrl: "#",
+              avatar: "/placeholder.svg?height=40&width=40",
+              notes: `Works on the second floor of the Auburn office.`,
+            },
           },
           {
             id: "jmb-seat",
             x: 420,
             y: 240,
             rotation: 0,
-            employee: employeeData.auburn.find((emp) => emp.name.includes("Jared Bracken")),
+            employee: {
+              id: "emp-jmb",
+              ...employeeData.auburn.find((emp) => emp.name.includes("Jared Bracken")),
+              profileUrl: "#",
+              avatar: "/placeholder.svg?height=40&width=40",
+              notes: `Works on the second floor of the Auburn office.`,
+            },
           },
           {
             id: "jbd-seat",
             x: 470,
             y: 240,
             rotation: 0,
-            employee: employeeData.auburn.find((emp) => emp.name.includes("Phillip Beyel")),
+            employee: {
+              id: "emp-jbd",
+              ...employeeData.auburn.find((emp) => emp.name.includes("Phillip Beyel")),
+              profileUrl: "#",
+              avatar: "/placeholder.svg?height=40&width=40",
+              notes: `Works on the second floor of the Auburn office.`,
+            },
           },
           // FAF, TAC in middle right
           {
@@ -714,14 +773,26 @@ const mockLocations = {
             x: 580,
             y: 180,
             rotation: 0,
-            employee: employeeData.auburn.find((emp) => emp.name.includes("Felicia Fiacco")),
+            employee: {
+              id: "emp-faf",
+              ...employeeData.auburn.find((emp) => emp.name.includes("Felicia Fiacco")),
+              profileUrl: "#",
+              avatar: "/placeholder.svg?height=40&width=40",
+              notes: `Works on the second floor of the Auburn office.`,
+            },
           },
           {
             id: "tac-seat",
             x: 720,
             y: 180,
             rotation: 0,
-            employee: employeeData.auburn.find((emp) => emp.name.includes("Tracey Carr")),
+            employee: {
+              id: "emp-tac",
+              ...employeeData.auburn.find((emp) => emp.name.includes("Tracey Carr")),
+              profileUrl: "#",
+              avatar: "/placeholder.svg?height=40&width=40",
+              notes: `Works on the second floor of the Auburn office.`,
+            },
           },
           // JFC, HMK in right area
           {
@@ -729,14 +800,26 @@ const mockLocations = {
             x: 750,
             y: 240,
             rotation: 0,
-            employee: employeeData.auburn.find((emp) => emp.name.includes("Jason Coe")),
+            employee: {
+              id: "emp-jfc",
+              ...employeeData.auburn.find((emp) => emp.name.includes("Jason Coe")),
+              profileUrl: "#",
+              avatar: "/placeholder.svg?height=40&width=40",
+              notes: `Works on the second floor of the Auburn office.`,
+            },
           },
           {
             id: "hmk-seat",
             x: 790,
             y: 240,
             rotation: 0,
-            employee: employeeData.auburn.find((emp) => emp.name.includes("John Hewitt")),
+            employee: {
+              id: "emp-hmk",
+              ...employeeData.auburn.find((emp) => emp.name.includes("John Hewitt")),
+              profileUrl: "#",
+              avatar: "/placeholder.svg?height=40&width=40",
+              notes: `Works on the second floor of the Auburn office.`,
+            },
           },
           // JEHL, PHS in lower right
           {
@@ -744,14 +827,26 @@ const mockLocations = {
             x: 580,
             y: 280,
             rotation: 0,
-            employee: employeeData.auburn.find((emp) => emp.name.includes("Joanne Maddox")),
+            employee: {
+              id: "emp-jehl",
+              ...employeeData.auburn.find((emp) => emp.name.includes("Joanne Maddox")),
+              profileUrl: "#",
+              avatar: "/placeholder.svg?height=40&width=40",
+              notes: `Works on the second floor of the Auburn office.`,
+            },
           },
           {
             id: "phs-seat",
             x: 650,
             y: 280,
             rotation: 0,
-            employee: employeeData.auburn.find((emp) => emp.name.includes("Paul Shrimpton")),
+            employee: {
+              id: "emp-phs",
+              ...employeeData.auburn.find((emp) => emp.name.includes("Paul Shrimpton")),
+              profileUrl: "#",
+              avatar: "/placeholder.svg?height=40&width=40",
+              notes: `Works on the second floor of the Auburn office.`,
+            },
           },
           // KJQ, JMP in bottom right
           {
@@ -759,14 +854,26 @@ const mockLocations = {
             x: 580,
             y: 350,
             rotation: 0,
-            employee: employeeData.auburn.find((emp) => emp.name.includes("Kathy Quigley")),
+            employee: {
+              id: "emp-kjq",
+              ...employeeData.auburn.find((emp) => emp.name.includes("Kathy Quigley")),
+              profileUrl: "#",
+              avatar: "/placeholder.svg?height=40&width=40",
+              notes: `Works on the second floor of the Auburn office.`,
+            },
           },
           {
             id: "jmp-seat",
             x: 650,
             y: 350,
             rotation: 0,
-            employee: employeeData.auburn.find((emp) => emp.name.includes("Joshua Marris")),
+            employee: {
+              id: "emp-jmp",
+              ...employeeData.auburn.find((emp) => emp.name.includes("Joshua Marris")),
+              profileUrl: "#",
+              avatar: "/placeholder.svg?height=40&width=40",
+              notes: `Works on the second floor of the Auburn office.`,
+            },
           },
           // MJP, MRM, TBM in far right
           {
@@ -774,21 +881,39 @@ const mockLocations = {
             x: 720,
             y: 280,
             rotation: 0,
-            employee: employeeData.auburn.find((emp) => emp.name.includes("Michael Picciano")),
+            employee: {
+              id: "emp-mjp",
+              ...employeeData.auburn.find((emp) => emp.name.includes("Michael Picciano")),
+              profileUrl: "#",
+              avatar: "/placeholder.svg?height=40&width=40",
+              notes: `Works on the second floor of the Auburn office.`,
+            },
           },
           {
             id: "mrm-seat",
             x: 720,
             y: 350,
             rotation: 0,
-            employee: employeeData.auburn.find((emp) => emp.name.includes("Mark Rebich")),
+            employee: {
+              id: "emp-mrm",
+              ...employeeData.auburn.find((emp) => emp.name.includes("Mark Rebich")),
+              profileUrl: "#",
+              avatar: "/placeholder.svg?height=40&width=40",
+              notes: `Works on the second floor of the Auburn office.`,
+            },
           },
           {
             id: "tbm-seat",
             x: 790,
             y: 350,
             rotation: 0,
-            employee: employeeData.auburn.find((emp) => emp.name.includes("Tim McSweeney")),
+            employee: {
+              id: "emp-tbm",
+              ...employeeData.auburn.find((emp) => emp.name.includes("Tim McSweeney")),
+              profileUrl: "#",
+              avatar: "/placeholder.svg?height=40&width=40",
+              notes: `Works on the second floor of the Auburn office.`,
+            },
           },
           // MEL, MAR, DGM in left lower area
           {
@@ -796,21 +921,39 @@ const mockLocations = {
             x: 90,
             y: 320,
             rotation: 0,
-            employee: employeeData.auburn.find((emp) => emp.name.includes("Megan Litzenberger")),
+            employee: {
+              id: "emp-mel",
+              ...employeeData.auburn.find((emp) => emp.name.includes("Megan Litzenberger")),
+              profileUrl: "#",
+              avatar: "/placeholder.svg?height=40&width=40",
+              notes: `Works on the second floor of the Auburn office.`,
+            },
           },
           {
             id: "mar-seat",
             x: 180,
             y: 320,
             rotation: 0,
-            employee: employeeData.auburn.find((emp) => emp.name.includes("Michael Naber")),
+            employee: {
+              id: "emp-mar",
+              ...employeeData.auburn.find((emp) => emp.name.includes("Michael Naber")),
+              profileUrl: "#",
+              avatar: "/placeholder.svg?height=40&width=40",
+              notes: `Works on the second floor of the Auburn office.`,
+            },
           },
           {
             id: "dgm-seat",
             x: 270,
             y: 320,
             rotation: 0,
-            employee: employeeData.auburn.find((emp) => emp.name.includes("Dan Whitman")),
+            employee: {
+              id: "emp-dgm",
+              ...employeeData.auburn.find((emp) => emp.name.includes("Dan Whitman")),
+              profileUrl: "#",
+              avatar: "/placeholder.svg?height=40&width=40",
+              notes: `Works on the second floor of the Auburn office.`,
+            },
           },
           // KMW in left area
           {
@@ -818,7 +961,13 @@ const mockLocations = {
             x: 90,
             y: 220,
             rotation: 0,
-            employee: employeeData.auburn.find((emp) => emp.name.includes("Kathy Mietz")),
+            employee: {
+              id: "emp-kmw",
+              ...employeeData.auburn.find((emp) => emp.name.includes("Kathy Mietz")),
+              profileUrl: "#",
+              avatar: "/placeholder.svg?height=40&width=40",
+              notes: `Works on the second floor of the Auburn office.`,
+            },
           },
           // Additional seats for remaining employees
           ...employeeData.auburn.slice(20).map((emp, index) => ({
@@ -827,6 +976,7 @@ const mockLocations = {
             y: 450 + Math.floor(index / 3) * 60,
             rotation: 0,
             employee: {
+              id: `emp-additional-${index + 1}`,
               name: emp.name,
               title: emp.title,
               email: emp.email,
@@ -844,4 +994,16 @@ const mockLocations = {
 
 export function getLocationData(locationId: string) {
   return mockLocations[locationId as keyof typeof mockLocations] || null
+}
+
+export function getAllLocations() {
+  return Object.values(mockLocations)
+}
+
+export function updateLocationData(locationId: string, updatedData: any) {
+  if (mockLocations[locationId as keyof typeof mockLocations]) {
+    mockLocations[locationId as keyof typeof mockLocations] = updatedData
+    return true
+  }
+  return false
 }
