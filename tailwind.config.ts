@@ -57,27 +57,27 @@ const config: Config = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        // Updated Beardsley brand colors - toned down
+        // Updated Beardsley brand colors - red, green, orange only
         office: {
-          maroon: "#8B1538", // Lighter maroon
-          "maroon-light": "#A0476F", // Much lighter
-          "maroon-dark": "#6B1028", // Darker but not as harsh
-          orange: "#F59E0B", // Warmer orange
-          "orange-light": "#FCD34D", // Light amber
-          "orange-muted": "#FEF3C7", // Very light amber
-          green: "#10B981", // Emerald green
-          "green-light": "#34D399", // Light emerald
-          "green-muted": "#D1FAE5", // Very light emerald
-          blue: "#3B82F6", // Primary blue
-          "blue-light": "#60A5FA", // Light blue
-          "blue-muted": "#DBEAFE", // Very light blue
+          maroon: "#8B1538", // Primary red/maroon
+          "maroon-light": "#A0476F", // Light maroon
+          "maroon-dark": "#6B1028", // Dark maroon
+          orange: "#F59E0B", // Primary orange
+          "orange-light": "#FCD34D", // Light orange
+          "orange-muted": "#FEF3C7", // Very light orange
+          green: "#10B981", // Primary green
+          "green-light": "#34D399", // Light green
+          "green-muted": "#D1FAE5", // Very light green
+          red: "#DC2626", // Bright red for alerts/errors
+          "red-light": "#F87171", // Light red
+          "red-muted": "#FEE2E2", // Very light red
         },
-        // Room type colors updated with balanced palette
+        // Room type colors updated with red/green/orange palette
         room: {
-          conference: "#D1FAE5", // Light emerald
+          conference: "#D1FAE5", // Light green
           kitchen: "#FED7AA", // Light orange
-          office: "#F8FAFC", // Light slate
-          reception: "#DBEAFE", // Light blue
+          office: "#F8FAFC", // Light gray (neutral)
+          reception: "#FEE2E2", // Light red
           print: "#FCE7F3", // Light pink
           restroom: "#F3F4F6", // Very light gray
         },

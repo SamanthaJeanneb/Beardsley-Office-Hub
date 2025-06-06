@@ -28,7 +28,7 @@ export default function RootLayout({
             <header className="border-b border-slate-200 bg-white shadow-sm">
               <div className="container flex h-16 items-center px-4">
                 <Link href="/" className="flex items-center gap-2 font-semibold text-slate-800">
-                  <Building className="h-5 w-5 text-blue-600" />
+                  <Building className="h-5 w-5 text-office-maroon" />
                   <span className="font-interface">Office Seating Charts</span>
                 </Link>
                 <nav className="ml-auto flex gap-4">

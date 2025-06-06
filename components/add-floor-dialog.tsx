@@ -57,7 +57,11 @@ export function AddFloorDialog({ locationId, onFloorAdded }: AddFloorDialogProps
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline" size="sm" className="border-blue-200 text-blue-700 hover:bg-blue-50 h-10 px-4">
+        <Button
+          variant="outline"
+          size="sm"
+          className="border-office-green text-office-green hover:bg-office-green hover:text-white h-10 px-4"
+        >
           <Plus className="mr-2 h-4 w-4" />
           Add Floor
         </Button>
@@ -99,7 +103,7 @@ export function AddFloorDialog({ locationId, onFloorAdded }: AddFloorDialogProps
             <Button
               type="submit"
               disabled={isLoading || !floorName.trim()}
-              className="flex-1 bg-blue-600 hover:bg-blue-700"
+              className="flex-1 bg-office-green hover:bg-office-green-light"
             >
               {isLoading ? "Adding..." : "Add Floor"}
             </Button>

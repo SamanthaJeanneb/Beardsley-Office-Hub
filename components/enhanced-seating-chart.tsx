@@ -590,11 +590,11 @@ export function EnhancedSeatingChart({
   const getRoomColor = (roomType: string) => {
     switch (roomType) {
       case "conference":
-        return "#DCFCE7"
+        return "#D1FAE5"
       case "kitchen":
         return "#FED7AA"
       case "reception":
-        return "#E0E7FF"
+        return "#FEE2E2"
       case "print":
         return "#FCE7F3"
       case "restroom":
@@ -613,11 +613,11 @@ export function EnhancedSeatingChart({
   const getRoomStroke = (roomType: string) => {
     switch (roomType) {
       case "conference":
-        return "#16A34A"
+        return "#10B981"
       case "kitchen":
         return "#EA580C"
       case "reception":
-        return "#3B82F6"
+        return "#DC2626"
       case "print":
         return "#EC4899"
       case "restroom":
@@ -961,8 +961,8 @@ export function EnhancedSeatingChart({
                       strokeWidth={selectedRoom?.id === room.id ? "4" : "2"}
                       rx="4"
                       className={cn(
-                        isEditMode && "cursor-move hover:stroke-blue-500",
-                        selectedRoom?.id === room.id && "stroke-blue-500",
+                        isEditMode && "cursor-move hover:stroke-office-maroon",
+                        selectedRoom?.id === room.id && "stroke-office-maroon",
                       )}
                       onMouseDown={(e) => handleRoomMouseDown(room, e as any)}
                       onClick={(e) => {
@@ -989,7 +989,7 @@ export function EnhancedSeatingChart({
                           cx={displayRoom.x + displayRoom.width}
                           cy={displayRoom.y + displayRoom.height}
                           r="6"
-                          fill="#3B82F6"
+                          fill="#DC2626"
                           stroke="#FFFFFF"
                           strokeWidth="2"
                           className="cursor-se-resize"
@@ -1002,7 +1002,7 @@ export function EnhancedSeatingChart({
                           cx={displayRoom.x}
                           cy={displayRoom.y}
                           r="6"
-                          fill="#3B82F6"
+                          fill="#DC2626"
                           stroke="#FFFFFF"
                           strokeWidth="2"
                           className="cursor-nw-resize"
@@ -1015,7 +1015,7 @@ export function EnhancedSeatingChart({
                           cx={displayRoom.x + displayRoom.width}
                           cy={displayRoom.y}
                           r="6"
-                          fill="#3B82F6"
+                          fill="#DC2626"
                           stroke="#FFFFFF"
                           strokeWidth="2"
                           className="cursor-ne-resize"
@@ -1028,7 +1028,7 @@ export function EnhancedSeatingChart({
                           cx={displayRoom.x}
                           cy={displayRoom.y + displayRoom.height}
                           r="6"
-                          fill="#3B82F6"
+                          fill="#DC2626"
                           stroke="#FFFFFF"
                           strokeWidth="2"
                           className="cursor-sw-resize"
@@ -1092,7 +1092,7 @@ export function EnhancedSeatingChart({
                           ? "fill-orange-400 stroke-red-900 stroke-2"
                           : "fill-white stroke-gray-300 stroke-2",
                         highlightedSeat === seat.id && "animate-pulse stroke-green-500 stroke-4",
-                        isEditMode && seat.employee && "cursor-move hover:stroke-blue-500",
+                        isEditMode && seat.employee && "cursor-move hover:stroke-office-maroon",
                         isDraggedSeat && "opacity-70",
                         dropTarget === seat.id && "stroke-green-500 stroke-4",
                         !isEditMode && seat.employee && "cursor-pointer",
@@ -1166,8 +1166,8 @@ export function EnhancedSeatingChart({
                           : isFurniture
                             ? "fill-amber-100 stroke-amber-500 stroke-2"
                             : "fill-white stroke-gray-300 stroke-2",
-                        isEditMode && "cursor-move hover:stroke-blue-500",
-                        selectedAmenity?.id === amenity.id && "stroke-blue-500 stroke-4",
+                        isEditMode && "cursor-move hover:stroke-office-maroon",
+                        selectedAmenity?.id === amenity.id && "stroke-office-maroon stroke-4",
                         isDraggedAmenity && "opacity-70",
                       )}
                       onMouseEnter={
@@ -1196,10 +1196,10 @@ export function EnhancedSeatingChart({
                     >
                       <div className="flex h-full w-full items-center justify-center">
                         {amenity.type === "printer" && <Printer className="h-3 w-3 text-red-900" />}
-                        {amenity.type === "restroom" && <Bath className="h-3 w-3 text-blue-600" />}
+                        {amenity.type === "restroom" && <Bath className="h-3 w-3 text-office-green" />}
                         {amenity.type === "exit" && <DoorClosed className="h-3 w-3 text-red-600" />}
                         {amenity.type === "kitchen" && <Coffee className="h-3 w-3 text-orange-600" />}
-                        {amenity.type === "conference" && <Users className="h-3 w-3 text-green-600" />}
+                        {amenity.type === "conference" && <Users className="h-3 w-3 text-office-green" />}
                         {amenity.type === "stairs" && <Stairs className="h-3 w-3 text-gray-600" />}
                         {amenity.type === "furniture" && <Sofa className="h-3 w-3 text-amber-600" />}
                         {amenity.type === "door" && <DoorClosed className="h-3 w-3 text-purple-600" />}
@@ -1262,7 +1262,7 @@ export function EnhancedSeatingChart({
           </div>
           <div className="flex items-center gap-2">
             <div className="flex h-6 w-6 items-center justify-center rounded-full bg-gradient-to-br from-white to-gray-100 border border-gray-300">
-              <Bath className="h-3 w-3 text-blue-600" />
+              <Bath className="h-3 w-3 text-office-green" />
             </div>
             <span className="text-xs">Restroom</span>
           </div>
