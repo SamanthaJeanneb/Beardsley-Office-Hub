@@ -13,6 +13,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Separator } from "@/components/ui/separator"
 import { Badge } from "@/components/ui/badge"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
+import { PhotoUpload } from "@/components/photo-upload"
+import { getPhotoUrl } from "@/lib/employee-data"
 
 interface EnhancedEditModePanelProps {
   location: any
@@ -55,6 +57,7 @@ export function EnhancedEditModePanel({
     email: "",
     phone: "",
     notes: "",
+    photo: null as string | null,
   })
   const [showAddEmployee, setShowAddEmployee] = useState(false)
   const [selectedTargetOffice, setSelectedTargetOffice] = useState("")
@@ -76,12 +79,15 @@ export function EnhancedEditModePanel({
 
   const handleAddNewEmployee = () => {
     if (newEmployee.name && newEmployee.email) {
+      const nameParts = newEmployee.name.split(" ")
+      const photoUrl = newEmployee.photo || getPhotoUrl(newEmployee.name)
+
       onAddEmployee(
         {
           ...newEmployee,
           id: `emp-${Date.now()}`,
           profileUrl: "#",
-          avatar: "/placeholder.svg?height=40&width=40",
+          avatar: photoUrl,
         },
         currentFloorId,
       )
@@ -91,6 +97,7 @@ export function EnhancedEditModePanel({
         email: "",
         phone: "",
         notes: "",
+        photo: null,
       })
       setShowAddEmployee(false)
     }
@@ -115,6 +122,15 @@ export function EnhancedEditModePanel({
     if (!selectedTargetOffice) return []
     const targetOffice = allLocations.find((loc) => loc.id === selectedTargetOffice)
     return targetOffice?.floors || []
+  }
+
+  // Get first and last name for photo upload
+  const getNameParts = (fullName: string) => {
+    const parts = fullName.split(" ")
+    return {
+      firstName: parts[0] || "",
+      lastName: parts[parts.length - 1] || "",
+    }
   }
 
   if (!isEditMode) {
@@ -175,11 +191,11 @@ export function EnhancedEditModePanel({
                   Add New Employee to {location.floors.find((f: any) => f.id === currentFloorId)?.name}
                 </Button>
               </DialogTrigger>
-              <DialogContent>
+              <DialogContent className="max-w-md max-h-[90vh] overflow-y-auto">
                 <DialogHeader>
                   <DialogTitle>Add New Employee</DialogTitle>
                 </DialogHeader>
-                <div className="space-y-3">
+                <div className="space-y-4">
                   <div>
                     <Label htmlFor="new-name">Name *</Label>
                     <Input
@@ -188,6 +204,7 @@ export function EnhancedEditModePanel({
                       onChange={(e) => setNewEmployee({ ...newEmployee, name: e.target.value })}
                     />
                   </div>
+
                   <div>
                     <Label htmlFor="new-title">Title</Label>
                     <Input
@@ -196,6 +213,7 @@ export function EnhancedEditModePanel({
                       onChange={(e) => setNewEmployee({ ...newEmployee, title: e.target.value })}
                     />
                   </div>
+
                   <div>
                     <Label htmlFor="new-email">Email *</Label>
                     <Input
@@ -205,6 +223,7 @@ export function EnhancedEditModePanel({
                       onChange={(e) => setNewEmployee({ ...newEmployee, email: e.target.value })}
                     />
                   </div>
+
                   <div>
                     <Label htmlFor="new-phone">Phone</Label>
                     <Input
@@ -213,6 +232,17 @@ export function EnhancedEditModePanel({
                       onChange={(e) => setNewEmployee({ ...newEmployee, phone: e.target.value })}
                     />
                   </div>
+
+                  {/* Photo Upload */}
+                  {newEmployee.name && (
+                    <PhotoUpload
+                      firstName={getNameParts(newEmployee.name).firstName}
+                      lastName={getNameParts(newEmployee.name).lastName}
+                      onPhotoChange={(photoUrl) => setNewEmployee({ ...newEmployee, photo: photoUrl })}
+                      currentPhoto={newEmployee.photo}
+                    />
+                  )}
+
                   <div>
                     <Label htmlFor="new-notes">Notes</Label>
                     <Textarea
@@ -221,6 +251,7 @@ export function EnhancedEditModePanel({
                       onChange={(e) => setNewEmployee({ ...newEmployee, notes: e.target.value })}
                     />
                   </div>
+
                   <div className="flex gap-2">
                     <Button onClick={handleAddNewEmployee} className="flex-1">
                       Add Employee
@@ -239,7 +270,9 @@ export function EnhancedEditModePanel({
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
                   <h4 className="font-medium text-office-maroon">Edit Employee</h4>
-                  <Badge variant="outline">{selectedEmployee.name}</Badge>
+                  <Badge variant="outline" className="max-w-[150px] truncate">
+                    {selectedEmployee.name}
+                  </Badge>
                 </div>
 
                 {editingEmployee ? (
@@ -277,6 +310,17 @@ export function EnhancedEditModePanel({
                         onChange={(e) => setEditingEmployee({ ...editingEmployee, phone: e.target.value })}
                       />
                     </div>
+
+                    {/* Photo Upload for editing */}
+                    {editingEmployee.name && (
+                      <PhotoUpload
+                        firstName={getNameParts(editingEmployee.name).firstName}
+                        lastName={getNameParts(editingEmployee.name).lastName}
+                        onPhotoChange={(photoUrl) => setEditingEmployee({ ...editingEmployee, avatar: photoUrl })}
+                        currentPhoto={editingEmployee.avatar}
+                      />
+                    )}
+
                     <div>
                       <Label htmlFor="emp-notes">Notes</Label>
                       <Textarea

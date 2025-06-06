@@ -24,6 +24,7 @@ import { cn } from "@/lib/utils"
 import { EmployeeHoverCard } from "@/components/employee-hover-card"
 import { PrinterTooltip } from "@/components/printer-tooltip"
 import { Alert, AlertDescription } from "@/components/ui/alert"
+import { getPrinterDriverUrl } from "@/lib/employee-data"
 
 interface EnhancedSeatingChartProps {
   floorData: any
@@ -226,6 +227,16 @@ export function EnhancedSeatingChart({
   const handlePrinterMouseLeave = () => {
     if (!isEditMode) {
       setHoveredPrinter(null)
+    }
+  }
+
+  // Handle printer click to open driver download
+  const handlePrinterClick = (printer: any) => {
+    if (!isEditMode) {
+      const driverUrl = getPrinterDriverUrl(printer.name)
+      if (driverUrl !== "#") {
+        window.open(driverUrl, "_blank")
+      }
     }
   }
 
@@ -612,7 +623,7 @@ export function EnhancedSeatingChart({
                       )}
                       onMouseEnter={isPrinter ? (e) => handlePrinterMouseEnter(amenity, e as any) : undefined}
                       onMouseLeave={isPrinter ? handlePrinterMouseLeave : undefined}
-                      onClick={isPrinter && !isEditMode ? () => window.open("#print-queue", "_blank") : undefined}
+                      onClick={isPrinter && !isEditMode ? () => handlePrinterClick(amenity) : undefined}
                       style={{
                         filter: "drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1))",
                       }}
@@ -688,7 +699,7 @@ export function EnhancedSeatingChart({
             <div className="flex h-6 w-6 items-center justify-center rounded-full bg-gradient-to-br from-white to-gray-100 border border-gray-300">
               <Printer className="h-3 w-3 text-office-maroon" />
             </div>
-            <span className="text-xs">Printer</span>
+            <span className="text-xs">Printer (Click for drivers)</span>
           </div>
           <div className="flex items-center gap-2">
             <div className="flex h-6 w-6 items-center justify-center rounded-full bg-gradient-to-br from-white to-gray-100 border border-gray-300">

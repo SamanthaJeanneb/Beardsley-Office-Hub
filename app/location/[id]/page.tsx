@@ -238,9 +238,53 @@ export default function LocationPage({ params }: { params: { id: string } }) {
 
       saveChanges(updatedLocation)
       setSelectedEmployee(null)
-    } else {
-      // Moving to different office (existing functionality)
-      console.log(`Moving employee ${employeeId} to office ${targetOffice}`)
+    } else if (targetOffice !== location.id) {
+      // Moving to different office - complete transfer
+      const updatedLocation = { ...location }
+      let employeeToMove = null
+
+      // Find and remove employee from current office
+      updatedLocation.floors = updatedLocation.floors.map((floor: any) => ({
+        ...floor,
+        seats: floor.seats.map((seat: any) => {
+          if (seat.employee?.id === employeeId) {
+            employeeToMove = seat.employee
+            return { ...seat, employee: null }
+          }
+          return seat
+        }),
+      }))
+
+      // Save current office changes
+      saveChanges(updatedLocation)
+
+      // Add employee to target office
+      if (employeeToMove) {
+        const targetLocationData = getLocationData(targetOffice)
+        if (targetLocationData) {
+          const targetFloorToUse = targetFloor || targetLocationData.floors[0]?.id
+
+          targetLocationData.floors = targetLocationData.floors.map((floor: any) => {
+            if (floor.id === targetFloorToUse) {
+              const emptySeat = floor.seats.find((seat: any) => !seat.employee)
+              if (emptySeat) {
+                return {
+                  ...floor,
+                  seats: floor.seats.map((seat: any) =>
+                    seat.id === emptySeat.id ? { ...seat, employee: employeeToMove } : seat,
+                  ),
+                }
+              }
+            }
+            return floor
+          })
+
+          // Save target office changes
+          saveLocationData(targetOffice, targetLocationData)
+        }
+      }
+
+      setSelectedEmployee(null)
     }
   }
 
