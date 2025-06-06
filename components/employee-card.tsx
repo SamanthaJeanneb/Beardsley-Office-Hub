@@ -36,51 +36,61 @@ export function EmployeeCard({ employee, onClose }: EmployeeCardProps) {
               .join("")}
           </AvatarFallback>
         </Avatar>
-        <div>
-          <h3 className="font-semibold text-office-maroon">{employee.name}</h3>
-          <p className="text-sm text-muted-foreground">{employee.title}</p>
+        <div className="flex-1 min-w-0">
+          <h3 className="font-semibold text-office-maroon truncate">{employee.name}</h3>
+          <p className="text-sm text-muted-foreground truncate">{employee.title}</p>
         </div>
       </div>
 
       <Separator className="bg-office-maroon/10" />
 
       <div className="space-y-3">
-        <div className="flex items-center gap-2">
-          <Mail className="h-4 w-4 text-office-maroon" />
-          <a href={`mailto:${employee.email}`} className="text-sm hover:text-office-maroon hover:underline">
+        <div className="flex items-center gap-2 min-w-0">
+          <Mail className="h-4 w-4 text-office-maroon flex-shrink-0" />
+          <a
+            href={`mailto:${employee.email}`}
+            className="text-sm hover:text-office-maroon hover:underline truncate"
+            title={employee.email}
+          >
             {employee.email}
           </a>
         </div>
 
         {employee.phone && (
-          <div className="flex items-center gap-2">
-            <Phone className="h-4 w-4 text-office-maroon" />
-            <a href={`tel:${employee.phone}`} className="text-sm hover:text-office-maroon hover:underline">
+          <div className="flex items-center gap-2 min-w-0">
+            <Phone className="h-4 w-4 text-office-maroon flex-shrink-0" />
+            <a
+              href={`tel:${employee.phone}`}
+              className="text-sm hover:text-office-maroon hover:underline truncate"
+              title={employee.phone}
+            >
               {employee.phone}
             </a>
           </div>
         )}
 
-        <div className="flex gap-2">
+        <div className="grid grid-cols-1 gap-2">
           <Button
             variant="outline"
-            className="flex-1 border-office-maroon/20 bg-white hover:bg-office-maroon hover:text-white"
+            size="sm"
+            className="w-full border-office-maroon/20 bg-white hover:bg-office-maroon hover:text-white text-xs"
             asChild
           >
             <a href={employee.profileUrl} target="_blank" rel="noopener noreferrer">
-              <span>VantagePoint</span>
-              <ExternalLink className="ml-2 h-3 w-3" />
+              <ExternalLink className="mr-1 h-3 w-3 flex-shrink-0" />
+              <span className="truncate">VantagePoint</span>
             </a>
           </Button>
 
           <Button
             variant="outline"
-            className="flex-1 border-office-maroon/20 bg-white hover:bg-office-green hover:text-white"
+            size="sm"
+            className="w-full border-office-maroon/20 bg-white hover:bg-office-green hover:text-white text-xs"
             asChild
           >
             <a href="#" target="_blank" rel="noopener noreferrer">
-              <Calendar className="mr-2 h-3 w-2" />
-              <span>Schedule</span>
+              <Calendar className="mr-1 h-3 w-3 flex-shrink-0" />
+              <span className="truncate">Schedule</span>
             </a>
           </Button>
         </div>
@@ -91,7 +101,7 @@ export function EmployeeCard({ employee, onClose }: EmployeeCardProps) {
           <Separator className="bg-office-maroon/10" />
           <div>
             <h4 className="mb-2 text-sm font-medium text-office-maroon">Notes</h4>
-            <p className="text-sm text-muted-foreground">{employee.notes}</p>
+            <p className="text-sm text-muted-foreground break-words">{employee.notes}</p>
           </div>
         </>
       )}

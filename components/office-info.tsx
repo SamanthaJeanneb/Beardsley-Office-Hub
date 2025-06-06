@@ -1,7 +1,20 @@
 "use client"
 
 import { useState } from "react"
-import { Building, Phone, Clock, Wifi, ChevronDown, ChevronUp, Calendar, Users } from "lucide-react"
+import {
+  Building,
+  Phone,
+  Clock,
+  Wifi,
+  ChevronDown,
+  ChevronUp,
+  Calendar,
+  Users,
+  Printer,
+  Bath,
+  DoorClosed,
+  Coffee,
+} from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -10,6 +23,16 @@ import { Badge } from "@/components/ui/badge"
 
 interface OfficeInfoProps {
   location: any
+}
+
+const getAmenityIcon = (name: string) => {
+  if (name.toLowerCase().includes("printer")) return Printer
+  if (name.toLowerCase().includes("restroom")) return Bath
+  if (name.toLowerCase().includes("exit")) return DoorClosed
+  if (name.toLowerCase().includes("kitchen") || name.toLowerCase().includes("café")) return Coffee
+  if (name.toLowerCase().includes("conference")) return Users
+  if (name.toLowerCase().includes("wi-fi")) return Wifi
+  return Building // default icon
 }
 
 export function OfficeInfo({ location }: OfficeInfoProps) {
@@ -64,10 +87,19 @@ export function OfficeInfo({ location }: OfficeInfoProps) {
             <div className="space-y-2">
               <h4 className="text-sm font-medium text-office-maroon">Quick Links</h4>
               <div className="flex flex-wrap gap-2">
-                <Badge variant="outline" className="flex items-center gap-1 border-office-maroon/20 bg-white">
-                  <Wifi className="h-3 w-3 text-office-maroon" />
-                  <span>Wi-Fi: {location.wifi || "Office-Guest"}</span>
-                </Badge>
+                {location.amenitiesList?.map((amenity: any) => {
+                  const IconComponent = getAmenityIcon(amenity.name)
+                  return (
+                    <Badge
+                      key={amenity.name}
+                      variant="outline"
+                      className="flex items-center gap-1 border-office-maroon/20 bg-white"
+                    >
+                      <IconComponent className="h-3 w-3 text-office-maroon" />
+                      <span>{amenity.name}</span>
+                    </Badge>
+                  )
+                })}
 
                 <Badge variant="outline" className="flex items-center gap-1 border-office-maroon/20 bg-white">
                   <Calendar className="h-3 w-3 text-office-green" />
@@ -90,7 +122,6 @@ export function OfficeInfo({ location }: OfficeInfoProps) {
                     className="cursor-pointer border-office-maroon/20 bg-white hover:bg-gray-50"
                   >
                     <a href={link.url} className="flex items-center gap-1">
-                      {link.icon && <link.icon className="h-3 w-3 text-office-maroon" />}
                       <span>{link.name}</span>
                     </a>
                   </Badge>

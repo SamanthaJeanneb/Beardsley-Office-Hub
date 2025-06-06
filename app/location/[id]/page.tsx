@@ -2,21 +2,23 @@
 
 import { useEffect, useState } from "react"
 import Link from "next/link"
-import { ChevronLeft, Printer, Bath, DoorClosed, Coffee, Wifi } from "lucide-react"
+import { ChevronLeft, Printer, Bath, DoorClosed, Coffee, Wifi, Shield } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Badge } from "@/components/ui/badge"
 import { EnhancedSeatingChart } from "@/components/enhanced-seating-chart"
 import { EmployeeCard } from "@/components/employee-card"
 import { OfficeInfo } from "@/components/office-info"
-import { EditModePanel } from "@/components/edit-mode-panel"
-import { getLocationData, updateLocationData, getAllLocations } from "@/lib/data"
+import { EnhancedEditModePanel } from "@/components/enhanced-edit-mode-panel"
+import { AdminAccessDialog } from "@/components/admin-access-dialog"
+import { getLocationData, getAllLocations, saveLocationData } from "@/lib/data"
 
 export default function LocationPage({ params }: { params: { id: string } }) {
   const [location, setLocation] = useState<any>(null)
   const [selectedFloor, setSelectedFloor] = useState<string>("")
   const [selectedEmployee, setSelectedEmployee] = useState<any>(null)
-  const [isEditMode, setIsEditMode] = useState(false)
+  const [isAdminMode, setIsAdminMode] = useState(false)
   const [allLocations, setAllLocations] = useState<any[]>([])
 
   useEffect(() => {
@@ -106,6 +108,27 @@ export default function LocationPage({ params }: { params: { id: string } }) {
     setSelectedFloor(floorId)
   }
 
+  const handleAdminAccess = (isAdmin: boolean) => {
+    setIsAdminMode(isAdmin)
+    if (!isAdmin) {
+      // Clear selected employee when exiting admin mode
+      setSelectedEmployee(null)
+    }
+  }
+
+  const saveChanges = async (updatedLocation: any) => {
+    // Save to local state
+    setLocation(updatedLocation)
+
+    // Save to persistent storage (simulated JSON file save)
+    try {
+      await saveLocationData(params.id, updatedLocation)
+      console.log("Changes saved successfully")
+    } catch (error) {
+      console.error("Failed to save changes:", error)
+    }
+  }
+
   const handleUpdateSeatPosition = (seatId: string, x: number, y: number) => {
     if (!location) return
 
@@ -120,8 +143,7 @@ export default function LocationPage({ params }: { params: { id: string } }) {
       return floor
     })
 
-    setLocation(updatedLocation)
-    updateLocationData(params.id, updatedLocation)
+    saveChanges(updatedLocation)
   }
 
   const handleMoveSeat = (fromSeatId: string, toSeatId: string) => {
@@ -151,8 +173,7 @@ export default function LocationPage({ params }: { params: { id: string } }) {
       return floor
     })
 
-    setLocation(updatedLocation)
-    updateLocationData(params.id, updatedLocation)
+    saveChanges(updatedLocation)
   }
 
   const handleUpdateEmployee = (updatedEmployee: any) => {
@@ -166,19 +187,61 @@ export default function LocationPage({ params }: { params: { id: string } }) {
       ),
     }))
 
-    setLocation(updatedLocation)
-    updateLocationData(params.id, updatedLocation)
+    saveChanges(updatedLocation)
     setSelectedEmployee(updatedEmployee)
   }
 
   const handleUpdateLocation = (updatedLocation: any) => {
-    setLocation(updatedLocation)
-    updateLocationData(params.id, updatedLocation)
+    saveChanges(updatedLocation)
   }
 
-  const handleMoveEmployee = (employeeId: string, targetOffice: string) => {
-    // Implementation for moving employee to different office
-    console.log(`Moving employee ${employeeId} to office ${targetOffice}`)
+  const handleMoveEmployee = (employeeId: string, targetOffice: string, targetFloor?: string) => {
+    if (targetOffice === location.id && targetFloor) {
+      // Moving within same office to different floor
+      const updatedLocation = { ...location }
+      let employeeToMove = null
+
+      // Find and remove employee from current floor
+      updatedLocation.floors = updatedLocation.floors.map((floor: any) => {
+        if (floor.id === selectedFloor) {
+          return {
+            ...floor,
+            seats: floor.seats.map((seat: any) => {
+              if (seat.employee?.id === employeeId) {
+                employeeToMove = seat.employee
+                return { ...seat, employee: null }
+              }
+              return seat
+            }),
+          }
+        }
+        return floor
+      })
+
+      // Add employee to target floor
+      if (employeeToMove && targetFloor) {
+        updatedLocation.floors = updatedLocation.floors.map((floor: any) => {
+          if (floor.id === targetFloor) {
+            const emptySeat = floor.seats.find((seat: any) => !seat.employee)
+            if (emptySeat) {
+              return {
+                ...floor,
+                seats: floor.seats.map((seat: any) =>
+                  seat.id === emptySeat.id ? { ...seat, employee: employeeToMove } : seat,
+                ),
+              }
+            }
+          }
+          return floor
+        })
+      }
+
+      saveChanges(updatedLocation)
+      setSelectedEmployee(null)
+    } else {
+      // Moving to different office (existing functionality)
+      console.log(`Moving employee ${employeeId} to office ${targetOffice}`)
+    }
   }
 
   const handleDeleteEmployee = (employeeId: string) => {
@@ -190,20 +253,19 @@ export default function LocationPage({ params }: { params: { id: string } }) {
       seats: floor.seats.map((seat: any) => (seat.employee?.id === employeeId ? { ...seat, employee: null } : seat)),
     }))
 
-    setLocation(updatedLocation)
-    updateLocationData(params.id, updatedLocation)
+    saveChanges(updatedLocation)
     setSelectedEmployee(null)
   }
 
-  const handleAddEmployee = (newEmployee: any) => {
-    // Find first empty seat and assign employee
+  const handleAddEmployee = (newEmployee: any, floorId?: string) => {
     if (!location) return
 
+    const targetFloorId = floorId || selectedFloor
     const updatedLocation = { ...location }
     let assigned = false
 
     updatedLocation.floors = updatedLocation.floors.map((floor: any) => {
-      if (!assigned) {
+      if (floor.id === targetFloorId && !assigned) {
         const emptySeat = floor.seats.find((seat: any) => !seat.employee)
         if (emptySeat) {
           assigned = true
@@ -219,8 +281,9 @@ export default function LocationPage({ params }: { params: { id: string } }) {
     })
 
     if (assigned) {
-      setLocation(updatedLocation)
-      updateLocationData(params.id, updatedLocation)
+      saveChanges(updatedLocation)
+    } else {
+      alert(`No empty seats available on ${location.floors.find((f: any) => f.id === targetFloorId)?.name}`)
     }
   }
 
@@ -266,8 +329,17 @@ export default function LocationPage({ params }: { params: { id: string } }) {
               <span className="sr-only">Back to locations</span>
             </Link>
           </Button>
-          <div>
-            <h1 className="text-2xl font-bold text-office-maroon md:text-3xl">{location.name}</h1>
+          <div className="flex-1">
+            <div className="flex items-center gap-2">
+              <h1 className="text-2xl font-bold text-office-maroon md:text-3xl">{location.name}</h1>
+              {isAdminMode && (
+                <Badge variant="secondary" className="bg-orange-100 text-orange-800 border-orange-200">
+                  <Shield className="mr-1 h-3 w-3" />
+                  Admin Mode
+                </Badge>
+              )}
+              <AdminAccessDialog onAdminAccess={handleAdminAccess} isAdminMode={isAdminMode} />
+            </div>
             <p className="text-muted-foreground">{location.address}</p>
           </div>
         </div>
@@ -295,7 +367,7 @@ export default function LocationPage({ params }: { params: { id: string } }) {
                       currentFloorId={selectedFloor}
                       onSelectEmployee={(employee) => setSelectedEmployee(employee)}
                       onFloorChange={handleFloorChange}
-                      isEditMode={isEditMode}
+                      isEditMode={isAdminMode}
                       onUpdateSeatPosition={handleUpdateSeatPosition}
                       onMoveSeat={handleMoveSeat}
                     />
@@ -308,8 +380,8 @@ export default function LocationPage({ params }: { params: { id: string } }) {
           <div className="space-y-6">
             <OfficeInfo location={location} />
 
-            {isEditMode ? (
-              <EditModePanel
+            {isAdminMode ? (
+              <EnhancedEditModePanel
                 location={location}
                 selectedEmployee={selectedEmployee}
                 onUpdateEmployee={handleUpdateEmployee}
@@ -321,36 +393,19 @@ export default function LocationPage({ params }: { params: { id: string } }) {
                 onMovePrinter={handleMovePrinter}
                 onDeletePrinter={handleDeletePrinter}
                 allLocations={allLocations}
-                isEditMode={isEditMode}
-                onToggleEditMode={() => setIsEditMode(!isEditMode)}
+                isEditMode={isAdminMode}
+                onToggleEditMode={() => setIsAdminMode(!isAdminMode)}
+                currentFloorId={selectedFloor}
               />
             ) : (
-              <div className="space-y-6">
-                <EditModePanel
-                  location={location}
-                  selectedEmployee={selectedEmployee}
-                  onUpdateEmployee={handleUpdateEmployee}
-                  onUpdateLocation={handleUpdateLocation}
-                  onMoveEmployee={handleMoveEmployee}
-                  onDeleteEmployee={handleDeleteEmployee}
-                  onAddEmployee={handleAddEmployee}
-                  onUpdatePrinter={handleUpdatePrinter}
-                  onMovePrinter={handleMovePrinter}
-                  onDeletePrinter={handleDeletePrinter}
-                  allLocations={allLocations}
-                  isEditMode={isEditMode}
-                  onToggleEditMode={() => setIsEditMode(!isEditMode)}
-                />
-
-                <div className="h-fit rounded-lg border border-office-maroon/20 bg-white p-4 shadow-sm lg:sticky lg:top-4">
-                  {selectedEmployee ? (
-                    <EmployeeCard employee={selectedEmployee} onClose={() => setSelectedEmployee(null)} />
-                  ) : (
-                    <div className="flex h-[300px] flex-col items-center justify-center text-center text-muted-foreground">
-                      <p>Select a seat to view employee details</p>
-                    </div>
-                  )}
-                </div>
+              <div className="h-fit rounded-lg border border-office-maroon/20 bg-white p-4 shadow-sm lg:sticky lg:top-4">
+                {selectedEmployee ? (
+                  <EmployeeCard employee={selectedEmployee} onClose={() => setSelectedEmployee(null)} />
+                ) : (
+                  <div className="flex h-[300px] flex-col items-center justify-center text-center text-muted-foreground">
+                    <p>Select a seat to view employee details</p>
+                  </div>
+                )}
               </div>
             )}
           </div>

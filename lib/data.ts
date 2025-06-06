@@ -1,6 +1,7 @@
 // Mock data for the application with real employee data
 // In a real application, this would come from an API or database
-import { Printer, Bath, DoorClosed, Coffee, Wifi } from "lucide-react"
+// Remove these icon imports at the top
+// import { Printer, Bath, DoorClosed, Coffee, Wifi } from 'lucide-react'
 
 // Real employee data organized by location based on the CSV file
 const employeeData = {
@@ -261,8 +262,8 @@ const employeeData = {
   ],
 }
 
-// In-memory storage for location data (in a real app, this would be a database)
-const mockLocations = {
+// Default location data (fallback when no saved data exists)
+const defaultLocations = {
   syracuse: {
     id: "syracuse",
     name: "Syracuse Office",
@@ -272,15 +273,15 @@ const mockLocations = {
     hours: "Mon-Fri: 8:00 AM - 5:00 PM",
     wifi: "Syracuse-Office-Net",
     amenitiesList: [
-      { name: "Printers (4)", icon: Printer },
-      { name: "Restrooms", icon: Bath },
-      { name: "Emergency Exits", icon: DoorClosed },
-      { name: "Kitchen/Café", icon: Coffee },
-      { name: "Conference Rooms (6)", icon: DoorClosed },
-      { name: "Wi-Fi", icon: Wifi },
+      { name: "Printers (4)" },
+      { name: "Restrooms" },
+      { name: "Emergency Exits" },
+      { name: "Kitchen/Café" },
+      { name: "Conference Rooms (6)" },
+      { name: "Wi-Fi" },
     ],
     quickLinks: [
-      { name: "IT Support", url: "#", icon: Wifi },
+      { name: "IT Support", url: "#" },
       { name: "Book Room", url: "#" },
       { name: "Report Issue", url: "#" },
     ],
@@ -337,15 +338,15 @@ const mockLocations = {
     hours: "Mon-Fri: 8:30 AM - 5:30 PM",
     wifi: "Albany-Office-Net",
     amenitiesList: [
-      { name: "Printers (2)", icon: Printer },
-      { name: "Restrooms", icon: Bath },
-      { name: "Emergency Exits", icon: DoorClosed },
-      { name: "Kitchen", icon: Coffee },
-      { name: "Conference Rooms (3)", icon: DoorClosed },
-      { name: "Wi-Fi", icon: Wifi },
+      { name: "Printers (2)" },
+      { name: "Restrooms" },
+      { name: "Emergency Exits" },
+      { name: "Kitchen" },
+      { name: "Conference Rooms (3)" },
+      { name: "Wi-Fi" },
     ],
     quickLinks: [
-      { name: "IT Support", url: "#", icon: Wifi },
+      { name: "IT Support", url: "#" },
       { name: "Book Room", url: "#" },
       { name: "Report Issue", url: "#" },
     ],
@@ -400,15 +401,15 @@ const mockLocations = {
     hours: "Mon-Fri: 8:00 AM - 5:00 PM",
     wifi: "Malone-Office-Net",
     amenitiesList: [
-      { name: "Printers (1)", icon: Printer },
-      { name: "Restrooms", icon: Bath },
-      { name: "Emergency Exits", icon: DoorClosed },
-      { name: "Kitchen", icon: Coffee },
-      { name: "Conference Rooms (2)", icon: DoorClosed },
-      { name: "Wi-Fi", icon: Wifi },
+      { name: "Printers (1)" },
+      { name: "Restrooms" },
+      { name: "Emergency Exits" },
+      { name: "Kitchen" },
+      { name: "Conference Rooms (2)" },
+      { name: "Wi-Fi" },
     ],
     quickLinks: [
-      { name: "IT Support", url: "#", icon: Wifi },
+      { name: "IT Support", url: "#" },
       { name: "Book Room", url: "#" },
       { name: "Report Issue", url: "#" },
     ],
@@ -464,15 +465,15 @@ const mockLocations = {
     hours: "Mon-Fri: 8:00 AM - 5:30 PM",
     wifi: "Auburn-Office-Net",
     amenitiesList: [
-      { name: "Printers (3)", icon: Printer },
-      { name: "Restrooms", icon: Bath },
-      { name: "Emergency Exits", icon: DoorClosed },
-      { name: "Kitchen Areas (2)", icon: Coffee },
-      { name: "Conference Rooms (6)", icon: DoorClosed },
-      { name: "Wi-Fi", icon: Wifi },
+      { name: "Printers (3)" },
+      { name: "Restrooms" },
+      { name: "Emergency Exits" },
+      { name: "Kitchen Areas (2)" },
+      { name: "Conference Rooms (6)" },
+      { name: "Wi-Fi" },
     ],
     quickLinks: [
-      { name: "IT Support", url: "#", icon: Wifi },
+      { name: "IT Support", url: "#" },
       { name: "Book Room", url: "#" },
       { name: "Report Issue", url: "#" },
     ],
@@ -992,18 +993,117 @@ const mockLocations = {
   },
 }
 
+// Storage key for localStorage
+const STORAGE_KEY = "office-seating-charts-data"
+
+// Load data from localStorage or return default
+function loadFromStorage(): any {
+  if (typeof window === "undefined") return defaultLocations
+
+  try {
+    const stored = localStorage.getItem(STORAGE_KEY)
+    if (stored) {
+      const parsed = JSON.parse(stored)
+      // Merge with defaults to ensure all locations exist
+      return { ...defaultLocations, ...parsed }
+    }
+  } catch (error) {
+    console.error("Error loading from localStorage:", error)
+  }
+
+  return defaultLocations
+}
+
+// Save data to localStorage
+function saveToStorage(data: any): void {
+  if (typeof window === "undefined") return
+
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(data))
+    console.log("✅ Data saved to localStorage successfully")
+  } catch (error) {
+    console.error("❌ Error saving to localStorage:", error)
+  }
+}
+
+// Initialize storage with current data
+let currentData = loadFromStorage()
+
 export function getLocationData(locationId: string) {
-  return mockLocations[locationId as keyof typeof mockLocations] || null
+  // Always load fresh data from storage
+  currentData = loadFromStorage()
+  return currentData[locationId as keyof typeof currentData] || null
 }
 
 export function getAllLocations() {
-  return Object.values(mockLocations)
+  // Always load fresh data from storage
+  currentData = loadFromStorage()
+  return Object.values(currentData)
 }
 
 export function updateLocationData(locationId: string, updatedData: any) {
-  if (mockLocations[locationId as keyof typeof mockLocations]) {
-    mockLocations[locationId as keyof typeof mockLocations] = updatedData
+  // Load current data from storage
+  currentData = loadFromStorage()
+
+  if (currentData[locationId as keyof typeof currentData]) {
+    currentData[locationId as keyof typeof currentData] = updatedData
+    saveToStorage(currentData)
     return true
   }
   return false
+}
+
+// Save location data with persistence
+export async function saveLocationData(locationId: string, updatedData: any): Promise<void> {
+  return new Promise((resolve, reject) => {
+    try {
+      // Load current data from storage
+      currentData = loadFromStorage()
+
+      // Update the specific location
+      if (currentData[locationId as keyof typeof currentData]) {
+        currentData[locationId as keyof typeof currentData] = updatedData
+
+        // Save to localStorage
+        saveToStorage(currentData)
+
+        console.log(`✅ Location data for ${locationId} saved successfully`)
+        resolve()
+      } else {
+        reject(new Error(`❌ Failed to save location data for ${locationId}: Location not found`))
+      }
+    } catch (error) {
+      console.error("❌ Error in saveLocationData:", error)
+      reject(error)
+    }
+  })
+}
+
+// Reset to default data (useful for testing)
+export function resetToDefaults(): void {
+  if (typeof window !== "undefined") {
+    localStorage.removeItem(STORAGE_KEY)
+    currentData = defaultLocations
+    console.log("🔄 Data reset to defaults")
+  }
+}
+
+// Export data for backup
+export function exportData(): string {
+  currentData = loadFromStorage()
+  return JSON.stringify(currentData, null, 2)
+}
+
+// Import data from backup
+export function importData(jsonData: string): boolean {
+  try {
+    const parsed = JSON.parse(jsonData)
+    saveToStorage(parsed)
+    currentData = parsed
+    console.log("📥 Data imported successfully")
+    return true
+  } catch (error) {
+    console.error("❌ Error importing data:", error)
+    return false
+  }
 }
