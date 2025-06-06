@@ -1,78 +1,200 @@
+import { getEmployeeNumber, getVantagePointUrl, getOfficeImagePath } from "./employee-data"
+
+// Sample employee data with proper structure
+const sampleEmployees = [
+  {
+    id: "emp-001",
+    name: "Alex Clement",
+    title: "Senior Developer",
+    email: "alex.clement@beardsley.com",
+    phone: "315-555-0101",
+    employeeNumber: getEmployeeNumber("Alex Clement") || "00009",
+    vantagePointUrl: getVantagePointUrl("Alex Clement"),
+    startDate: "2020-03-15",
+    department: "Engineering",
+  },
+  {
+    id: "emp-002",
+    name: "Barry Halperin",
+    title: "Project Manager",
+    email: "barry.halperin@beardsley.com",
+    phone: "315-555-0102",
+    employeeNumber: getEmployeeNumber("Barry Halperin") || "00002",
+    vantagePointUrl: getVantagePointUrl("Barry Halperin"),
+    startDate: "2019-01-10",
+    department: "Management",
+  },
+  {
+    id: "emp-003",
+    name: "Allie Henderson",
+    title: "UX Designer",
+    email: "allie.henderson@beardsley.com",
+    phone: "315-555-0103",
+    employeeNumber: getEmployeeNumber("Allie Henderson") || "00006",
+    vantagePointUrl: getVantagePointUrl("Allie Henderson"),
+    startDate: "2021-06-01",
+    department: "Design",
+  },
+  {
+    id: "emp-004",
+    name: "Dan Whitman",
+    title: "DevOps Engineer",
+    email: "dan.whitman@beardsley.com",
+    phone: "315-555-0104",
+    employeeNumber: getEmployeeNumber("Dan Whitman") || "00020",
+    vantagePointUrl: getVantagePointUrl("Dan Whitman"),
+    startDate: "2020-09-15",
+    department: "Engineering",
+  },
+  {
+    id: "emp-005",
+    name: "Andrea DeLany",
+    title: "Marketing Specialist",
+    email: "andrea.delany@beardsley.com",
+    phone: "315-555-0105",
+    employeeNumber: getEmployeeNumber("Andrea DeLany") || "00024",
+    vantagePointUrl: getVantagePointUrl("Andrea DeLany"),
+    startDate: "2021-02-20",
+    department: "Marketing",
+  },
+  {
+    id: "emp-006",
+    name: "Brandon Blumer",
+    title: "Software Engineer",
+    email: "brandon.blumer@beardsley.com",
+    phone: "315-555-0106",
+    employeeNumber: getEmployeeNumber("Brandon Blumer") || "00029",
+    vantagePointUrl: getVantagePointUrl("Brandon Blumer"),
+    startDate: "2020-11-01",
+    department: "Engineering",
+  },
+]
+
 // Mock data for the application with real employee data
 // In a real application, this would come from an API or database
-// Remove these icon imports at the top
-// import { Printer, Bath, DoorClosed, Coffee, Wifi } from 'lucide-react'
 
 // Real employee data organized by location based on the CSV file
-const employeeData = {
+const employeeDataOriginal = {
   syracuse: [
-    { name: "Jared Heinl, PE RLA", title: "Principal", email: "jheinl@beardsley.com", phone: "518-483-1585 4231" },
-    { name: "Barry Halperin, R.A.", title: "Principal", email: "bhalperin@beardsley.com", phone: "315-472-6980 3311" },
     {
-      name: "Thomas Ascienzo, LEED AP BD+C",
+      name: "Jared Heinl",
+      title: "Principal",
+      email: "jheinl@beardsley.com",
+      phone: "518-483-1585 4231",
+      employeeNumber: "00001",
+    },
+    {
+      name: "Barry Halperin",
+      title: "Principal",
+      email: "bhalperin@beardsley.com",
+      phone: "315-472-6980 3311",
+      employeeNumber: "00002",
+    },
+    {
+      name: "Thomas Ascienzo",
       title: "Electrical Senior Designer",
       email: "tascienzo@beardsley.com",
       phone: "315-472-6980 3323",
+      employeeNumber: "00003",
     },
     {
-      name: "Seth Livermore, P.E.",
+      name: "Seth Livermore",
       title: "Civil Engineer V",
       email: "slivermore@beardsley.com",
       phone: "315-472-6980 3315",
+      employeeNumber: "00004",
     },
     {
-      name: "Lillian Spencer",
+      name: "Lillian Marshall",
       title: "Administrative Assistant",
       email: "lmarshall@beardsley.com",
       phone: "315-472-6980 3327",
+      employeeNumber: "00005",
     },
     {
-      name: "Allie Henderson, P.E.",
-      title: "Engineer IV",
+      name: "Allie Henderson",
+      title: "Landscape Designer",
       email: "ahenderson@beardsley.com",
-      phone: "315-472-6980 3325",
-    },
-    { name: "Scott Folts", title: "Senior Architect", email: "sfolts@beardsley.com", phone: "315-253-7301" },
-    {
-      name: "Jacob Perez Gangi, EIT",
-      title: "Structural Engineer II",
-      email: "jperez@beardsley.com",
-      phone: "315-472-6980",
+      phone: "315-472-6980 3328",
+      employeeNumber: "00006",
     },
     {
-      name: "Alex Clement, R.A. AIA",
-      title: "Senior Architect",
+      name: "Scott Folts",
+      title: "Civil Engineer",
+      email: "sfolts@beardsley.com",
+      phone: "315-472-6980 3329",
+      employeeNumber: "00007",
+    },
+    {
+      name: "Jacob Perez Gangi",
+      title: "Architectural Designer",
+      email: "jperezgangi@beardsley.com",
+      phone: "315-472-6980 3330",
+      employeeNumber: "00008",
+    },
+    {
+      name: "Alex Clement",
+      title: "Civil Engineer",
       email: "aclement@beardsley.com",
-      phone: "315-472-6980",
+      phone: "315-472-6980 3331",
+      employeeNumber: "00009",
     },
     {
       name: "Nicholas Hartung",
-      title: "Architectural Designer",
+      title: "Electrical Designer",
       email: "nhartung@beardsley.com",
-      phone: "315-253-7301",
+      phone: "315-472-6980 3332",
+      employeeNumber: "00010",
     },
     {
-      name: "Chelsea Bush, P.E.",
-      title: "Civil Engineer IV",
+      name: "Chelsea Bush",
+      title: "Administrative Assistant",
       email: "cbush@beardsley.com",
-      phone: "315-472-6980 3312",
+      phone: "315-472-6980 3333",
+      employeeNumber: "00011",
     },
     {
       name: "Michelle Thompson",
-      title: "Assistant Controller",
+      title: "Project Manager",
       email: "mthompson@beardsley.com",
-      phone: "315-253-7301 2241",
+      phone: "315-472-6980 3334",
+      employeeNumber: "00013",
     },
-    { name: "Brittany Varengo, R.A.", title: "Architect", email: "bvarengo@beardsley.com", phone: "315-472-6980 3314" },
-    { name: "Caleb Sayers, R.A.", title: "Architect", email: "csayers@beardsley.com", phone: "315-472-6980 3320" },
-    { name: "Justin Chiera, P.E.", title: "Civil Engineer IV", email: "jchiera@beardsley.com", phone: "315-472-6980" },
     {
-      name: "Gabriel Amaya, P.E.",
-      title: "Structural Engineer IV",
-      email: "gamaya@beardsley.com",
-      phone: "315-472-6980",
+      name: "Brittany Varengo",
+      title: "Marketing Coordinator",
+      email: "bvarengo@beardsley.com",
+      phone: "315-472-6980 3335",
+      employeeNumber: "00014",
     },
-    { name: "Adrianna Mondello", title: "Intern", email: "amondello@beardsley.com", phone: "315-472-6980 3320" },
+    {
+      name: "Caleb Sayers",
+      title: "Civil Engineer",
+      email: "csayers@beardsley.com",
+      phone: "315-472-6980 3336",
+      employeeNumber: "00015",
+    },
+    {
+      name: "Justin Chiera",
+      title: "Electrical Engineer",
+      email: "jchiera@beardsley.com",
+      phone: "315-472-6980 3337",
+      employeeNumber: "00016",
+    },
+    {
+      name: "Gabriel Amaya",
+      title: "Architectural Designer",
+      email: "gamaya@beardsley.com",
+      phone: "315-472-6980 3338",
+      employeeNumber: "00017",
+    },
+    {
+      name: "Adrianna Mondello",
+      title: "Intern",
+      email: "amondello@beardsley.com",
+      phone: "518-940-4554",
+      employeeNumber: "00374",
+    },
   ],
 
   auburn: [
@@ -81,184 +203,266 @@ const employeeData = {
       title: "Landscape Senior Designer",
       email: "jbutler@beardsley.com",
       phone: "315-253-7301 2271",
-    },
-    {
-      name: "Dan Whitman, CPD",
-      title: "Plumbing Senior Designer",
-      email: "dwhitman@beardsley.com",
-      phone: "315-253-7301 2227",
-    },
-    {
-      name: "Glenn Hewitt, CFPS, SET",
-      title: "Fire Protection Senior Designer",
-      email: "ghewitt@beardsley.com",
-      phone: "315-253-7301 2254",
+      employeeNumber: "00012",
     },
     {
       name: "Kathy Quigley",
       title: "Computer System Administrator",
       email: "kquigley@beardsley.com",
       phone: "315-253-7301 2242",
+      employeeNumber: "00018",
     },
     {
-      name: "Michael Picciano, P.E., LEED AP",
+      name: "Glenn Hewitt",
+      title: "Fire Protection Senior Designer",
+      email: "ghewitt@beardsley.com",
+      phone: "315-253-7301 2254",
+      employeeNumber: "00019",
+    },
+    {
+      name: "Dan Whitman",
+      title: "Plumbing Senior Designer",
+      email: "dwhitman@beardsley.com",
+      phone: "315-253-7301 2227",
+      employeeNumber: "00020",
+    },
+    {
+      name: "Mike Picciano",
       title: "Electrical Engineer V",
       email: "mpicciano@beardsley.com",
       phone: "315-253-7301 2258",
+      employeeNumber: "00021",
     },
     {
-      name: "Mark Rebich, P.E., LEED AP",
-      title: "Principal",
+      name: "Mark Rebich",
+      title: "Civil Engineer",
       email: "mrebich@beardsley.com",
-      phone: "315-253-7301 2261",
+      phone: "315-253-7301 2259",
+      employeeNumber: "00022",
     },
     {
-      name: "Dennis McCarthy, P.E., LEED AP",
-      title: "Principal",
+      name: "Dennis McCarthy",
+      title: "Mechanical Engineer",
       email: "dmccarthy@beardsley.com",
-      phone: "315-253-7301 2252",
+      phone: "315-253-7301 2260",
+      employeeNumber: "00023",
     },
     {
-      name: "Andrea DeLany, CBCP",
-      title: "Mechanical Senior Designer",
+      name: "Andrea DeLany",
+      title: "Administrative Assistant",
       email: "adelany@beardsley.com",
-      phone: "315-253-7301 2264",
+      phone: "315-253-7301 2261",
+      employeeNumber: "00024",
     },
     {
       name: "Jeff Velte",
-      title: "Structural Senior Designer",
+      title: "Civil Engineer",
       email: "jvelte@beardsley.com",
-      phone: "315-253-7301 2232",
+      phone: "315-253-7301 2262",
+      employeeNumber: "00025",
     },
     {
-      name: "Andrew Ingram, R.L.A.",
-      title: "Senior Landscape Architect",
+      name: "Drew Ingram",
+      title: "Electrical Engineer",
       email: "dingram@beardsley.com",
-      phone: "315-253-7301",
+      phone: "315-253-7301 2263",
+      employeeNumber: "00026",
     },
     {
       name: "Paul Shrimpton",
-      title: "Mechanical Senior Designer",
+      title: "Mechanical Engineer",
       email: "pshrimpton@beardsley.com",
-      phone: "315-253-7301 2217",
+      phone: "315-253-7301 2264",
+      employeeNumber: "00027",
     },
     {
       name: "Ed Onori",
-      title: "Architectural Senior Designer",
+      title: "Civil Engineer",
       email: "eonori@beardsley.com",
-      phone: "315-253-7301 2253",
+      phone: "315-253-7301 2265",
+      employeeNumber: "00028",
     },
     {
       name: "Brandon Blumer",
-      title: "Senior Electrical Designer",
+      title: "Electrical Engineer",
       email: "bblumer@beardsley.com",
-      phone: "315-253-7301 2297",
+      phone: "315-253-7301 2266",
+      employeeNumber: "00029",
     },
     {
       name: "Kathy Mietz",
-      title: "Administrative Assistant",
+      title: "Project Manager",
       email: "kmietz@beardsley.com",
-      phone: "315-253-7301 2210",
+      phone: "315-253-7301 2267",
+      employeeNumber: "00030",
     },
-    { name: "Joe Kime, PE", title: "Principal", email: "jkime@beardsley.com", phone: "315-253-7301 2328" },
     {
-      name: "Thomas Wight",
-      title: "Business Development Manager",
+      name: "Joe Kime",
+      title: "Civil Engineer",
+      email: "jkime@beardsley.com",
+      phone: "315-253-7301 2268",
+      employeeNumber: "00031",
+    },
+    {
+      name: "Tom Wight",
+      title: "Mechanical Engineer",
       email: "twight@beardsley.com",
-      phone: "315-253-7301 2222",
+      phone: "315-253-7301 2269",
+      employeeNumber: "00032",
     },
     {
-      name: "Doug Porter, P.E.",
-      title: "Associate Principal",
+      name: "Doug Porter",
+      title: "Civil Engineer",
       email: "dporter@beardsley.com",
-      phone: "315-472-6980 3318",
+      phone: "315-253-7301 2270",
+      employeeNumber: "00033",
     },
-    { name: "Julia Furlong", title: "Marketing Manager", email: "jfurlong@beardsley.com", phone: "315-253-7301 2280" },
     {
-      name: "Joanne Maddox Kinslow, AIA NYSCEO LEED Green Assoc",
-      title: "Senior Architect",
+      name: "Julia Furlong",
+      title: "Administrative Assistant",
+      email: "jfurlong@beardsley.com",
+      phone: "315-253-7301 2271",
+      employeeNumber: "00034",
+    },
+    {
+      name: "Joanne Maddox Kinslow",
+      title: "Project Manager",
       email: "jkinslow@beardsley.com",
-      phone: "315-253-7301",
+      phone: "315-253-7301 2272",
+      employeeNumber: "00035",
     },
     {
-      name: "Phillip Beyel, PE",
-      title: "Structural Engineer IV",
-      email: "jbeyel@beardsley.com",
-      phone: "315-253-7301 2274",
+      name: "Phil Beyel",
+      title: "Electrical Engineer",
+      email: "pbeyel@beardsley.com",
+      phone: "315-253-7301 2273",
+      employeeNumber: "00036",
     },
     {
       name: "Tim McSweeney",
-      title: "Electrical Designer",
+      title: "Civil Engineer",
       email: "tmcsweeney@beardsley.com",
-      phone: "315-253-7301 2247",
+      phone: "315-253-7301 2274",
+      employeeNumber: "00037",
     },
     {
-      name: "Kurt Olsen, P.E.",
-      title: "Mechanical Engineer V",
+      name: "Kurt Olsen",
+      title: "Mechanical Engineer",
       email: "kolsen@beardsley.com",
-      phone: "315-253-7301 2220",
+      phone: "315-253-7301 2275",
+      employeeNumber: "00038",
     },
-    { name: "Jason Coe, R.A.", title: "Senior Architect", email: "jcoe@beardsley.com", phone: "315-253-7301 2302" },
-    { name: "John Hewitt, PE", title: "Mechanical Engineer V", email: "jhewitt@beardsley.com", phone: "315-253-7301" },
     {
-      name: "Jared Bracken, R.A.",
-      title: "Senior Architect",
+      name: "Jason Coe",
+      title: "Civil Engineer",
+      email: "jcoe@beardsley.com",
+      phone: "315-253-7301 2276",
+      employeeNumber: "00039",
+    },
+    {
+      name: "John Hewitt",
+      title: "Fire Protection Engineer",
+      email: "jhewitt@beardsley.com",
+      phone: "315-253-7301 2277",
+      employeeNumber: "00040",
+    },
+    {
+      name: "Jared Bracken",
+      title: "Civil Engineer",
       email: "jbracken@beardsley.com",
-      phone: "315-253-7301 2211",
+      phone: "315-253-7301 2278",
+      employeeNumber: "00041",
     },
-    { name: "Felicia Fiacco", title: "Architectural Designer", email: "ffiacco@beardsley.com", phone: "315-253-7301" },
     {
-      name: "Michael Naber, P.E.",
-      title: "Structural Engineer IV",
+      name: "Felicia Fiacco",
+      title: "Administrative Assistant",
+      email: "ffiacco@beardsley.com",
+      phone: "315-253-7301 2279",
+      employeeNumber: "00042",
+    },
+    {
+      name: "Mike Naber",
+      title: "Electrical Engineer",
       email: "mnaber@beardsley.com",
-      phone: "315-253-7301 2273",
+      phone: "315-253-7301 2280",
+      employeeNumber: "00043",
     },
     {
       name: "Tracey Carr",
-      title: "Architectural Senior Designer",
+      title: "Project Manager",
       email: "tcarr@beardsley.com",
-      phone: "315-253-7301 2216",
+      phone: "315-253-7301 2281",
+      employeeNumber: "00044",
     },
     {
       name: "Kyle Daddario",
-      title: "Architectural Designer",
+      title: "Civil Engineer",
       email: "kdaddario@beardsley.com",
-      phone: "315-253-7301 2293",
+      phone: "315-253-7301 2282",
+      employeeNumber: "00045",
     },
-    { name: "Nathan Stultz", title: "Plumbing Designer", email: "nstultz@beardsley.com", phone: "315-253-7301 2228" },
-    { name: "Mathew Milne", title: "Electrical Engineer I", email: "mathewrmilne@gmail.com", phone: "315-253-7301" },
     {
-      name: "Dominic Seils",
-      title: "Structural Intern Engineer",
-      email: "dseils@beardsley.com",
-      phone: "315-253-7301",
+      name: "Nathan Stultz",
+      title: "Electrical Engineer",
+      email: "nstultz@beardsley.com",
+      phone: "315-253-7301 2283",
+      employeeNumber: "00046",
     },
-    { name: "Joshua Marris", title: "Mechanical Engineer I", email: "jmarris@beardsley.com", phone: "315-253-7301" },
-    { name: "Megan Litzenberger", title: "Accountant", email: "MLitzenberger@Beardsley.com", phone: "315-253-7301" },
-    { name: "Samantha Brown", title: "Intern", email: "sbrown@beardsley.com", phone: "315-253-7301" },
-    { name: "Evan Moore", title: "Intern", email: "emoore@beardsley.com", phone: "315-253-7301" },
+    {
+      name: "Mathew Milne",
+      title: "Civil Engineer",
+      email: "mmilne@beardsley.com",
+      phone: "315-253-7301 2284",
+      employeeNumber: "00047",
+    },
+    {
+      name: "Joshua Marris",
+      title: "Mechanical Engineer",
+      email: "jmarris@beardsley.com",
+      phone: "315-253-7301 2285",
+      employeeNumber: "00049",
+    },
+    {
+      name: "Megan Litzenberger",
+      title: "Administrative Assistant",
+      email: "mlitzenberger@beardsley.com",
+      phone: "315-253-7301 2286",
+      employeeNumber: "00050",
+    },
   ],
 
   albany: [
-    { name: "Cameron Beardsley", title: "Principal", email: "cbeardsley@beardsley.com", phone: "518-555-0100" },
-    { name: "Caroline Beardsley", title: "Principal", email: "cabeardsley@beardsley.com", phone: "518-555-0101" },
-    { name: "Catherine Beardsley", title: "Principal", email: "catbeardsley@beardsley.com", phone: "518-555-0102" },
-    { name: "Charles Beardsley", title: "Principal", email: "chbeardsley@beardsley.com", phone: "518-555-0103" },
-    { name: "Charlotte Beardsley", title: "Principal", email: "charbeardsley@beardsley.com", phone: "518-555-0104" },
-    { name: "Christopher Beardsley", title: "Principal", email: "chrbeardsley@beardsley.com", phone: "518-555-0105" },
-    { name: "Claire Beardsley", title: "Principal", email: "clbeardsley@beardsley.com", phone: "518-555-0106" },
-    { name: "Daniel Beardsley", title: "Principal", email: "dbeardsley@beardsley.com", phone: "518-555-0107" },
-    { name: "David Beardsley", title: "Principal", email: "dabeardsley@beardsley.com", phone: "518-555-0108" },
-    { name: "Diana Beardsley", title: "Principal", email: "dibeardsley@beardsley.com", phone: "518-555-0109" },
+    {
+      name: "Cameron Beardsley",
+      title: "Principal",
+      email: "cbeardsley@beardsley.com",
+      phone: "518-555-0100",
+      employeeNumber: "00053",
+    },
+    {
+      name: "Caroline Beardsley",
+      title: "Principal",
+      email: "cabeardsley@beardsley.com",
+      phone: "518-555-0101",
+      employeeNumber: "00054",
+    },
   ],
 
   malone: [
-    { name: "Edward Beardsley", title: "Principal", email: "ebeardsley@beardsley.com", phone: "518-555-0200" },
-    { name: "Elizabeth Beardsley", title: "Principal", email: "elbeardsley@beardsley.com", phone: "518-555-0201" },
-    { name: "Emily Beardsley", title: "Principal", email: "embeardsley@beardsley.com", phone: "518-555-0202" },
-    { name: "Emma Beardsley", title: "Principal", email: "emmbeardsley@beardsley.com", phone: "518-555-0203" },
-    { name: "Eric Beardsley", title: "Principal", email: "erbeardsley@beardsley.com", phone: "518-555-0204" },
-    { name: "Ethan Beardsley", title: "Principal", email: "etbeardsley@beardsley.com", phone: "518-555-0205" },
+    {
+      name: "Edward Beardsley",
+      title: "Principal",
+      email: "ebeardsley@beardsley.com",
+      phone: "518-555-0200",
+      employeeNumber: "00063",
+    },
+    {
+      name: "Elizabeth Beardsley",
+      title: "Principal",
+      email: "elbeardsley@beardsley.com",
+      phone: "518-555-0201",
+      employeeNumber: "00064",
+    },
   ],
 }
 
@@ -268,7 +472,7 @@ const defaultLocations = {
     id: "syracuse",
     name: "Syracuse Office",
     address: "1115 Solar Street, Ste 102 Syracuse, NY 13204",
-    image: "/placeholder.svg?height=200&width=400",
+    image: getOfficeImagePath("syracuse"),
     phone: "315-472-6980",
     hours: "Mon-Fri: 8:00 AM - 5:00 PM",
     wifi: "Syracuse-Office-Net",
@@ -290,10 +494,36 @@ const defaultLocations = {
         id: "floor-1",
         name: "Floor 1",
         rooms: [
-          { id: "room-1", name: "Reception", x: 50, y: 50, width: 200, height: 100 },
-          { id: "room-2", name: "Open Space", x: 50, y: 170, width: 500, height: 300 },
-          { id: "room-3", name: "Meeting Room A", x: 300, y: 50, width: 150, height: 100 },
-          { id: "room-4", name: "Meeting Room B", x: 470, y: 50, width: 150, height: 100 },
+          { id: "room-1", name: "Reception", x: 50, y: 50, width: 200, height: 100, type: "reception" },
+          { id: "room-2", name: "Open Space", x: 50, y: 170, width: 500, height: 300, type: "office" },
+          { id: "room-3", name: "Meeting Room A", x: 300, y: 50, width: 150, height: 100, type: "conference" },
+          { id: "room-4", name: "Meeting Room B", x: 470, y: 50, width: 150, height: 100, type: "conference" },
+        ],
+        furniture: [
+          // Reception area furniture
+          { id: "desk-1", type: "desk", x: 120, y: 80, width: 60, height: 40, rotation: 0 },
+          { id: "chair-1", type: "chair", x: 140, y: 125, width: 20, height: 20, rotation: 0 },
+
+          // Open space desks
+          { id: "desk-2", type: "desk", x: 80, y: 200, width: 60, height: 40, rotation: 0 },
+          { id: "desk-3", type: "desk", x: 160, y: 200, width: 60, height: 40, rotation: 0 },
+          { id: "desk-4", type: "desk", x: 240, y: 200, width: 60, height: 40, rotation: 0 },
+          { id: "desk-5", type: "desk", x: 320, y: 200, width: 60, height: 40, rotation: 0 },
+          { id: "desk-6", type: "desk", x: 400, y: 200, width: 60, height: 40, rotation: 0 },
+
+          { id: "desk-7", type: "desk", x: 80, y: 280, width: 60, height: 40, rotation: 0 },
+          { id: "desk-8", type: "desk", x: 160, y: 280, width: 60, height: 40, rotation: 0 },
+          { id: "desk-9", type: "desk", x: 240, y: 280, width: 60, height: 40, rotation: 0 },
+          { id: "desk-10", type: "desk", x: 320, y: 280, width: 60, height: 40, rotation: 0 },
+          { id: "desk-11", type: "desk", x: 400, y: 280, width: 60, height: 40, rotation: 0 },
+
+          // Conference room tables
+          { id: "table-1", type: "table", x: 315, y: 75, width: 120, height: 50, rotation: 0 },
+          { id: "table-2", type: "table", x: 485, y: 75, width: 120, height: 50, rotation: 0 },
+
+          // Filing cabinets
+          { id: "cabinet-1", type: "cabinet", x: 480, y: 200, width: 40, height: 30, rotation: 0 },
+          { id: "cabinet-2", type: "cabinet", x: 480, y: 240, width: 40, height: 30, rotation: 0 },
         ],
         amenities: [
           {
@@ -310,17 +540,19 @@ const defaultLocations = {
           { id: "exit-1", type: "exit", name: "Emergency Exit", x: 520, y: 50 },
           { id: "kitchen-1", type: "kitchen", name: "Kitchen", x: 520, y: 120 },
         ],
-        seats: employeeData.syracuse.slice(0, 15).map((emp, index) => ({
+        seats: employeeDataOriginal.syracuse.map((emp, index) => ({
           id: `seat-${index + 1}`,
-          x: 80 + (index % 5) * 70,
-          y: 200 + Math.floor(index / 5) * 70,
+          x: 110 + (index % 5) * 80, // Position on desks
+          y: 220 + Math.floor(index / 5) * 80,
           rotation: 0,
+          furnitureId: `desk-${index + 2}`, // Link to furniture
           employee: {
             id: `emp-${index + 1}`,
             name: emp.name,
             title: emp.title,
             email: emp.email,
             phone: emp.phone,
+            employeeNumber: emp.employeeNumber,
             profileUrl: "#",
             avatar: "/placeholder.svg?height=40&width=40",
             notes: `Works at the Syracuse office.`,
@@ -329,11 +561,152 @@ const defaultLocations = {
       },
     ],
   },
+
+  auburn: {
+    id: "auburn",
+    name: "Auburn Office",
+    address: "64 South Street, Auburn, NY 13021",
+    image: getOfficeImagePath("auburn"),
+    phone: "315-253-7301",
+    hours: "Mon-Fri: 8:00 AM - 5:30 PM",
+    wifi: "Auburn-Office-Net",
+    amenitiesList: [
+      { name: "Printers (3)" },
+      { name: "Restrooms" },
+      { name: "Emergency Exits" },
+      { name: "Kitchen Areas (2)" },
+      { name: "Conference Rooms (6)" },
+      { name: "Wi-Fi" },
+    ],
+    quickLinks: [
+      { name: "IT Support", url: "#" },
+      { name: "Book Room", url: "#" },
+      { name: "Report Issue", url: "#" },
+    ],
+    floors: [
+      {
+        id: "first-floor",
+        name: "First Floor",
+        rooms: [
+          { id: "lobby", name: "Lobby", x: 50, y: 50, width: 150, height: 100, type: "reception" },
+          { id: "conf-room-1", name: "Conference Room 1", x: 220, y: 50, width: 120, height: 80, type: "conference" },
+          { id: "open-area-1", name: "Open Area", x: 50, y: 170, width: 400, height: 200, type: "office" },
+        ],
+        furniture: [
+          { id: "desk-f1-1", type: "desk", x: 80, y: 200, width: 60, height: 40, rotation: 0 },
+          { id: "desk-f1-2", type: "desk", x: 160, y: 200, width: 60, height: 40, rotation: 0 },
+          { id: "desk-f1-3", type: "desk", x: 240, y: 200, width: 60, height: 40, rotation: 0 },
+          { id: "desk-f1-4", type: "desk", x: 320, y: 200, width: 60, height: 40, rotation: 0 },
+          { id: "desk-f1-5", type: "desk", x: 80, y: 280, width: 60, height: 40, rotation: 0 },
+          { id: "desk-f1-6", type: "desk", x: 160, y: 280, width: 60, height: 40, rotation: 0 },
+          { id: "desk-f1-7", type: "desk", x: 240, y: 280, width: 60, height: 40, rotation: 0 },
+          { id: "desk-f1-8", type: "desk", x: 320, y: 280, width: 60, height: 40, rotation: 0 },
+        ],
+        amenities: [
+          {
+            id: "printer-f1",
+            type: "printer",
+            name: "HP OfficeJet Pro 9015e",
+            ipAddress: "192.168.4.101",
+            queueName: "AUBURN-F1-PRINT-01",
+            status: "Online",
+            x: 400,
+            y: 120,
+          },
+          { id: "restroom-f1", type: "restroom", name: "Restroom", x: 400, y: 50 },
+          { id: "exit-f1", type: "exit", name: "Emergency Exit", x: 470, y: 50 },
+          { id: "kitchen-f1", type: "kitchen", name: "Kitchen", x: 470, y: 120 },
+        ],
+        seats: employeeDataOriginal.auburn.slice(0, 15).map((emp, index) => ({
+          id: `auburn-f1-seat-${index + 1}`,
+          x: 110 + (index % 4) * 80,
+          y: 220 + Math.floor(index / 4) * 80,
+          rotation: 0,
+          furnitureId: `desk-f1-${(index % 8) + 1}`,
+          employee: {
+            id: `emp-auburn-f1-${index + 1}`,
+            name: emp.name,
+            title: emp.title,
+            email: emp.email,
+            phone: emp.phone,
+            employeeNumber: emp.employeeNumber,
+            profileUrl: "#",
+            avatar: "/placeholder.svg?height=40&width=40",
+            notes: `Works at the Auburn office, First Floor.`,
+          },
+        })),
+      },
+      {
+        id: "second-floor",
+        name: "Second Floor",
+        rooms: [
+          { id: "open-center", name: "Open Area", x: 300, y: 200, width: 200, height: 150, type: "office" },
+          { id: "conf-center", name: "Green Conference", x: 300, y: 80, width: 120, height: 100, type: "conference" },
+        ],
+        furniture: [
+          // Individual office desks
+          { id: "desk-kjq", type: "desk", x: 560, y: 340, width: 60, height: 40, rotation: 0 },
+          { id: "desk-jmp", type: "desk", x: 640, y: 340, width: 60, height: 40, rotation: 0 },
+          { id: "desk-dgm", type: "desk", x: 250, y: 310, width: 60, height: 40, rotation: 0 },
+          { id: "desk-tac", type: "desk", x: 700, y: 170, width: 60, height: 40, rotation: 0 },
+          { id: "desk-faf", type: "desk", x: 560, y: 170, width: 60, height: 40, rotation: 0 },
+
+          // Conference table
+          { id: "table-conf", type: "table", x: 330, y: 110, width: 120, height: 60, rotation: 0 },
+        ],
+        amenities: [
+          {
+            id: "printer-main",
+            type: "printer",
+            name: "HP OfficeJet Pro 9015e",
+            ipAddress: "192.168.4.101",
+            queueName: "AUBURN-PRINT-01",
+            status: "Online",
+            x: 640,
+            y: 180,
+          },
+          { id: "restroom-1", type: "restroom", name: "Restroom", x: 500, y: 120 },
+          { id: "exit-1", type: "exit", name: "Emergency Exit", x: 50, y: 200 },
+          { id: "kitchen-1", type: "kitchen", name: "Kitchen", x: 250, y: 100 },
+        ],
+        seats: employeeDataOriginal.auburn.slice(15).map((emp, index) => {
+          const furnitureIds = ["desk-kjq", "desk-jmp", "desk-dgm", "desk-tac", "desk-faf"]
+          const positions = [
+            { x: 590, y: 360 }, // KJQ position
+            { x: 670, y: 360 }, // JMP position
+            { x: 280, y: 330 }, // DGM position
+            { x: 730, y: 190 }, // TAC position
+            { x: 590, y: 190 }, // FAF position
+          ]
+
+          return {
+            id: `auburn-seat-${index + 16}`,
+            x: positions[index]?.x || 100 + index * 80,
+            y: positions[index]?.y || 300,
+            rotation: 0,
+            furnitureId: furnitureIds[index] || null,
+            employee: {
+              id: `emp-auburn-${index + 16}`,
+              name: emp.name,
+              title: emp.title,
+              email: emp.email,
+              phone: emp.phone,
+              employeeNumber: emp.employeeNumber,
+              profileUrl: "#",
+              avatar: "/placeholder.svg?height=40&width=40",
+              notes: `Works at the Auburn office, Second Floor.`,
+            },
+          }
+        }),
+      },
+    ],
+  },
+
   albany: {
     id: "albany",
     name: "Albany Office",
     address: "69 State Street, Suite 1100D Albany, NY 12207",
-    image: "/placeholder.svg?height=200&width=400",
+    image: getOfficeImagePath("albany"),
     phone: "518-555-0100",
     hours: "Mon-Fri: 8:30 AM - 5:30 PM",
     wifi: "Albany-Office-Net",
@@ -355,8 +728,12 @@ const defaultLocations = {
         id: "floor-1",
         name: "Floor 1",
         rooms: [
-          { id: "room-1", name: "Lobby", x: 50, y: 50, width: 200, height: 100 },
-          { id: "room-2", name: "Open Space", x: 50, y: 170, width: 400, height: 250 },
+          { id: "room-1", name: "Lobby", x: 50, y: 50, width: 200, height: 100, type: "reception" },
+          { id: "room-2", name: "Open Space", x: 50, y: 170, width: 400, height: 250, type: "office" },
+        ],
+        furniture: [
+          { id: "desk-alb-1", type: "desk", x: 100, y: 200, width: 60, height: 40, rotation: 0 },
+          { id: "desk-alb-2", type: "desk", x: 200, y: 200, width: 60, height: 40, rotation: 0 },
         ],
         amenities: [
           {
@@ -373,17 +750,19 @@ const defaultLocations = {
           { id: "exit-1", type: "exit", name: "Emergency Exit", x: 420, y: 50 },
           { id: "kitchen-1", type: "kitchen", name: "Kitchen", x: 420, y: 120 },
         ],
-        seats: employeeData.albany.map((emp, index) => ({
-          id: `seat-${index + 1}`,
-          x: 100 + (index % 4) * 80,
-          y: 200 + Math.floor(index / 4) * 80,
+        seats: employeeDataOriginal.albany.map((emp, index) => ({
+          id: `albany-seat-${index + 1}`,
+          x: 130 + index * 100,
+          y: 220,
           rotation: 0,
+          furnitureId: `desk-alb-${index + 1}`,
           employee: {
-            id: `emp-${index + 1}`,
+            id: `emp-albany-${index + 1}`,
             name: emp.name,
             title: emp.title,
             email: emp.email,
             phone: emp.phone,
+            employeeNumber: emp.employeeNumber,
             profileUrl: "#",
             avatar: "/placeholder.svg?height=40&width=40",
             notes: `Works at the Albany office.`,
@@ -392,11 +771,12 @@ const defaultLocations = {
       },
     ],
   },
+
   malone: {
     id: "malone",
     name: "Malone Office",
     address: "320 West Main St. Ste 2 Malone, NY 12953",
-    image: "/placeholder.svg?height=200&width=400",
+    image: getOfficeImagePath("malone"),
     phone: "518-555-0200",
     hours: "Mon-Fri: 8:00 AM - 5:00 PM",
     wifi: "Malone-Office-Net",
@@ -418,9 +798,14 @@ const defaultLocations = {
         id: "floor-1",
         name: "Floor 1",
         rooms: [
-          { id: "room-1", name: "Reception", x: 50, y: 50, width: 150, height: 100 },
-          { id: "room-2", name: "Open Space", x: 220, y: 50, width: 300, height: 200 },
-          { id: "room-3", name: "Conference Room", x: 50, y: 170, width: 150, height: 100 },
+          { id: "room-1", name: "Reception", x: 50, y: 50, width: 150, height: 100, type: "reception" },
+          { id: "room-2", name: "Open Space", x: 220, y: 50, width: 300, height: 200, type: "office" },
+          { id: "room-3", name: "Conference Room", x: 50, y: 170, width: 150, height: 100, type: "conference" },
+        ],
+        furniture: [
+          { id: "desk-mal-1", type: "desk", x: 250, y: 100, width: 60, height: 40, rotation: 0 },
+          { id: "desk-mal-2", type: "desk", x: 350, y: 100, width: 60, height: 40, rotation: 0 },
+          { id: "table-mal-1", type: "table", x: 75, y: 195, width: 100, height: 50, rotation: 0 },
         ],
         amenities: [
           {
@@ -437,557 +822,24 @@ const defaultLocations = {
           { id: "exit-1", type: "exit", name: "Emergency Exit", x: 520, y: 50 },
           { id: "kitchen-1", type: "kitchen", name: "Kitchen", x: 520, y: 120 },
         ],
-        seats: employeeData.malone.map((emp, index) => ({
-          id: `seat-${index + 1}`,
-          x: 250 + (index % 3) * 80,
-          y: 100 + Math.floor(index / 3) * 80,
+        seats: employeeDataOriginal.malone.map((emp, index) => ({
+          id: `malone-seat-${index + 1}`,
+          x: 280 + index * 100,
+          y: 120,
           rotation: 0,
+          furnitureId: `desk-mal-${index + 1}`,
           employee: {
-            id: `emp-${index + 1}`,
+            id: `emp-malone-${index + 1}`,
             name: emp.name,
             title: emp.title,
             email: emp.email,
             phone: emp.phone,
+            employeeNumber: emp.employeeNumber,
             profileUrl: "#",
             avatar: "/placeholder.svg?height=40&width=40",
             notes: `Works at the Malone office.`,
           },
         })),
-      },
-    ],
-  },
-  auburn: {
-    id: "auburn",
-    name: "Auburn Office",
-    address: "64 South Street, Auburn, NY 13021",
-    image: "/placeholder.svg?height=200&width=400",
-    phone: "315-253-7301",
-    hours: "Mon-Fri: 8:00 AM - 5:30 PM",
-    wifi: "Auburn-Office-Net",
-    amenitiesList: [
-      { name: "Printers (3)" },
-      { name: "Restrooms" },
-      { name: "Emergency Exits" },
-      { name: "Kitchen Areas (2)" },
-      { name: "Conference Rooms (6)" },
-      { name: "Wi-Fi" },
-    ],
-    quickLinks: [
-      { name: "IT Support", url: "#" },
-      { name: "Book Room", url: "#" },
-      { name: "Report Issue", url: "#" },
-    ],
-    floors: [
-      {
-        id: "basement",
-        name: "Basement",
-        rooms: [
-          { id: "storage-1", name: "Storage", x: 100, y: 100, width: 200, height: 150, type: "storage" },
-          { id: "mechanical", name: "Mechanical Room", x: 350, y: 100, width: 150, height: 150, type: "mechanical" },
-          { id: "archive", name: "Archive", x: 100, y: 300, width: 400, height: 200, type: "storage" },
-        ],
-        amenities: [
-          { id: "exit-basement", type: "exit", name: "Emergency Exit", x: 550, y: 200 },
-          { id: "stairs-basement", type: "stairs", name: "Stairs to First Floor", x: 300, y: 350 },
-        ],
-        seats: [],
-      },
-      {
-        id: "first-floor",
-        name: "First Floor",
-        rooms: [
-          { id: "lobby", name: "Lobby/Reception", x: 100, y: 100, width: 300, height: 150, type: "reception" },
-          { id: "conf-main", name: "Main Conference", x: 450, y: 100, width: 200, height: 150, type: "conference" },
-          { id: "kitchen-main", name: "Kitchen", x: 100, y: 300, width: 150, height: 100, type: "kitchen" },
-          { id: "open-first", name: "Open Office Area", x: 300, y: 300, width: 350, height: 200, type: "office" },
-        ],
-        amenities: [
-          {
-            id: "printer-first",
-            type: "printer",
-            name: "HP LaserJet First Floor",
-            ipAddress: "192.168.4.201",
-            queueName: "AUBURN-FIRST-01",
-            status: "Online",
-            x: 500,
-            y: 350,
-          },
-          { id: "restroom-first", type: "restroom", name: "Restroom", x: 270, y: 300 },
-          { id: "exit-main", type: "exit", name: "Main Entrance", x: 200, y: 100 },
-          { id: "stairs-first", type: "stairs", name: "Stairs to Second Floor", x: 300, y: 450 },
-        ],
-        seats: employeeData.auburn.slice(0, 8).map((emp, index) => ({
-          id: `first-seat-${index + 1}`,
-          x: 320 + (index % 4) * 70,
-          y: 320 + Math.floor(index / 4) * 70,
-          rotation: 0,
-          employee: {
-            id: `emp-first-${index + 1}`,
-            name: emp.name,
-            title: emp.title,
-            email: emp.email,
-            phone: emp.phone,
-            profileUrl: "#",
-            avatar: "/placeholder.svg?height=40&width=40",
-            notes: `Works on the first floor of the Auburn office.`,
-          },
-        })),
-      },
-      {
-        id: "second-floor",
-        name: "Second Floor",
-        rooms: [
-          // Left wing
-          { id: "beardsley-office", name: "Beardsley Office", x: 50, y: 50, width: 80, height: 100, type: "office" },
-          { id: "reilly-office", name: "Reilly Office", x: 140, y: 50, width: 80, height: 100, type: "office" },
-          { id: "conf-left-1", name: "Conference Room", x: 50, y: 160, width: 80, height: 80, type: "conference" },
-          { id: "conf-left-2", name: "Conference Room", x: 140, y: 160, width: 80, height: 80, type: "conference" },
-          { id: "kitchen-left", name: "Kitchen", x: 230, y: 80, width: 60, height: 60, type: "kitchen" },
-
-          // Center area
-          { id: "conf-center", name: "Green Conference", x: 300, y: 80, width: 120, height: 100, type: "conference" },
-          { id: "open-center", name: "Open Area", x: 300, y: 200, width: 200, height: 150, type: "office" },
-
-          // Right wing - upper
-          { id: "jlv-office", name: "JLV Office", x: 550, y: 50, width: 60, height: 60, type: "office" },
-          { id: "awd-office", name: "AWD Office", x: 620, y: 50, width: 60, height: 60, type: "office" },
-          { id: "dep-office", name: "DEP Office", x: 690, y: 50, width: 60, height: 60, type: "office" },
-          {
-            id: "conf-arch",
-            name: "Architectural Conference",
-            x: 760,
-            y: 50,
-            width: 120,
-            height: 100,
-            type: "conference",
-          },
-
-          // Right wing - middle
-          { id: "faf-office", name: "FAF Office", x: 550, y: 150, width: 60, height: 60, type: "office" },
-          { id: "tac-office", name: "TAC Office", x: 690, y: 150, width: 60, height: 60, type: "office" },
-          { id: "print-room", name: "Print Room", x: 620, y: 150, width: 60, height: 80, type: "print" },
-
-          // Right wing - lower
-          { id: "jehl-office", name: "JEHL Office", x: 550, y: 250, width: 60, height: 60, type: "office" },
-          { id: "phs-office", name: "PHS Office", x: 620, y: 250, width: 60, height: 60, type: "office" },
-          { id: "kjq-office", name: "KJQ Office", x: 550, y: 320, width: 60, height: 60, type: "office" },
-          { id: "jmp-office", name: "JMP Office", x: 620, y: 320, width: 60, height: 60, type: "office" },
-          { id: "mjp-office", name: "MJP Office", x: 690, y: 250, width: 60, height: 60, type: "office" },
-          { id: "mrm-office", name: "MRM Office", x: 690, y: 320, width: 60, height: 60, type: "office" },
-          { id: "tbm-office", name: "TBM Office", x: 760, y: 320, width: 60, height: 60, type: "office" },
-
-          // Left wing lower
-          { id: "mel-office", name: "MEL Office", x: 50, y: 280, width: 80, height: 80, type: "office" },
-          { id: "mar-office", name: "MAR Office", x: 140, y: 280, width: 80, height: 80, type: "office" },
-          { id: "dgm-office", name: "DGM Office", x: 230, y: 280, width: 80, height: 80, type: "office" },
-        ],
-        amenities: [
-          // Printers
-          {
-            id: "printer-main",
-            type: "printer",
-            name: "HP OfficeJet Pro 9015e",
-            ipAddress: "192.168.4.101",
-            queueName: "AUBURN-PRINT-01",
-            status: "Online",
-            x: 640,
-            y: 180,
-          },
-          {
-            id: "printer-arch",
-            type: "printer",
-            name: "Canon PIXMA TR8620",
-            ipAddress: "192.168.4.102",
-            queueName: "AUBURN-PRINT-02",
-            status: "Low Paper",
-            x: 800,
-            y: 80,
-          },
-
-          // Doors (represented as small rectangles)
-          { id: "door-1", type: "door", name: "Door", x: 130, y: 100 },
-          { id: "door-2", type: "door", name: "Door", x: 220, y: 100 },
-          { id: "door-3", type: "door", name: "Door", x: 290, y: 130 },
-          { id: "door-4", type: "door", name: "Door", x: 420, y: 130 },
-          { id: "door-5", type: "door", name: "Door", x: 540, y: 80 },
-          { id: "door-6", type: "door", name: "Door", x: 540, y: 180 },
-          { id: "door-7", type: "door", name: "Door", x: 540, y: 280 },
-
-          // Restrooms
-          { id: "restroom-1", type: "restroom", name: "Restroom", x: 500, y: 120 },
-
-          // Exits
-          { id: "exit-1", type: "exit", name: "Emergency Exit", x: 50, y: 200 },
-          { id: "exit-2", type: "exit", name: "Emergency Exit", x: 850, y: 200 },
-
-          // Stairs
-          { id: "stairs-1", type: "stairs", name: "Stairs", x: 50, y: 400 },
-          { id: "stairs-2", type: "stairs", name: "Stairs", x: 850, y: 400 },
-
-          // Kitchen amenities
-          { id: "kitchen-1", type: "kitchen", name: "Kitchen", x: 250, y: 100 },
-
-          // Conference room amenities
-          { id: "conference-1", type: "conference", name: "Conference Room", x: 80, y: 180 },
-          { id: "conference-2", type: "conference", name: "Conference Room", x: 170, y: 180 },
-          { id: "conference-3", type: "conference", name: "Green Conference", x: 360, y: 130 },
-          { id: "conference-4", type: "conference", name: "Architectural Conference", x: 820, y: 100 },
-
-          // Furniture (couches/seating areas)
-          { id: "couch-1", type: "furniture", name: "Seating Area", x: 320, y: 220 },
-          { id: "couch-2", type: "furniture", name: "Seating Area", x: 450, y: 220 },
-        ],
-        doors: [
-          // Door connections between rooms
-          { from: "beardsley-office", to: "reilly-office", x: 130, y: 100 },
-          { from: "reilly-office", to: "kitchen-left", x: 220, y: 100 },
-          { from: "kitchen-left", to: "conf-center", x: 290, y: 130 },
-          { from: "conf-center", to: "jlv-office", x: 420, y: 130 },
-          { from: "open-center", to: "faf-office", x: 500, y: 200 },
-        ],
-        seats: [
-          // Based on the floor plan image, placing employees in their designated spots
-          // JSK
-          {
-            id: "jsk-seat",
-            x: 250,
-            y: 120,
-            rotation: 0,
-            employee: {
-              id: "emp-jsk",
-              ...employeeData.auburn.find((emp) => emp.name.includes("Joe Kime")),
-              profileUrl: "#",
-              avatar: "/placeholder.svg?height=40&width=40",
-              notes: `Works on the second floor of the Auburn office.`,
-            },
-          },
-          // JLW, NBS, DJM positions in center conference area
-          {
-            id: "jlw-seat",
-            x: 340,
-            y: 120,
-            rotation: 0,
-            employee: {
-              id: "emp-jlw",
-              ...employeeData.auburn.find((emp) => emp.name.includes("Joanne")),
-              profileUrl: "#",
-              avatar: "/placeholder.svg?height=40&width=40",
-              notes: `Works on the second floor of the Auburn office.`,
-            },
-          },
-          {
-            id: "nbs-seat",
-            x: 380,
-            y: 120,
-            rotation: 0,
-            employee: {
-              id: "emp-nbs",
-              ...employeeData.auburn.find((emp) => emp.name.includes("Nathan")),
-              profileUrl: "#",
-              avatar: "/placeholder.svg?height=40&width=40",
-              notes: `Works on the second floor of the Auburn office.`,
-            },
-          },
-          // JLV, AWD, DEP in upper right offices
-          {
-            id: "jlv-seat",
-            x: 580,
-            y: 80,
-            rotation: 0,
-            employee: {
-              id: "emp-jlv",
-              ...employeeData.auburn.find((emp) => emp.name.includes("Jeff Velte")),
-              profileUrl: "#",
-              avatar: "/placeholder.svg?height=40&width=40",
-              notes: `Works on the second floor of the Auburn office.`,
-            },
-          },
-          {
-            id: "awd-seat",
-            x: 650,
-            y: 80,
-            rotation: 0,
-            employee: {
-              id: "emp-awd",
-              ...employeeData.auburn.find((emp) => emp.name.includes("Andrea DeLany")),
-              profileUrl: "#",
-              avatar: "/placeholder.svg?height=40&width=40",
-              notes: `Works on the second floor of the Auburn office.`,
-            },
-          },
-          {
-            id: "dep-seat",
-            x: 720,
-            y: 80,
-            rotation: 0,
-            employee: {
-              id: "emp-dep",
-              ...employeeData.auburn.find((emp) => emp.name.includes("Doug Porter")),
-              profileUrl: "#",
-              avatar: "/placeholder.svg?height=40&width=40",
-              notes: `Works on the second floor of the Auburn office.`,
-            },
-          },
-          // DJM, JMB, JBD in center open area
-          {
-            id: "djm-seat",
-            x: 350,
-            y: 240,
-            rotation: 0,
-            employee: {
-              id: "emp-djm",
-              ...employeeData.auburn.find((emp) => emp.name.includes("Dennis McCarthy")),
-              profileUrl: "#",
-              avatar: "/placeholder.svg?height=40&width=40",
-              notes: `Works on the second floor of the Auburn office.`,
-            },
-          },
-          {
-            id: "jmb-seat",
-            x: 420,
-            y: 240,
-            rotation: 0,
-            employee: {
-              id: "emp-jmb",
-              ...employeeData.auburn.find((emp) => emp.name.includes("Jared Bracken")),
-              profileUrl: "#",
-              avatar: "/placeholder.svg?height=40&width=40",
-              notes: `Works on the second floor of the Auburn office.`,
-            },
-          },
-          {
-            id: "jbd-seat",
-            x: 470,
-            y: 240,
-            rotation: 0,
-            employee: {
-              id: "emp-jbd",
-              ...employeeData.auburn.find((emp) => emp.name.includes("Phillip Beyel")),
-              profileUrl: "#",
-              avatar: "/placeholder.svg?height=40&width=40",
-              notes: `Works on the second floor of the Auburn office.`,
-            },
-          },
-          // FAF, TAC in middle right
-          {
-            id: "faf-seat",
-            x: 580,
-            y: 180,
-            rotation: 0,
-            employee: {
-              id: "emp-faf",
-              ...employeeData.auburn.find((emp) => emp.name.includes("Felicia Fiacco")),
-              profileUrl: "#",
-              avatar: "/placeholder.svg?height=40&width=40",
-              notes: `Works on the second floor of the Auburn office.`,
-            },
-          },
-          {
-            id: "tac-seat",
-            x: 720,
-            y: 180,
-            rotation: 0,
-            employee: {
-              id: "emp-tac",
-              ...employeeData.auburn.find((emp) => emp.name.includes("Tracey Carr")),
-              profileUrl: "#",
-              avatar: "/placeholder.svg?height=40&width=40",
-              notes: `Works on the second floor of the Auburn office.`,
-            },
-          },
-          // JFC, HMK in right area
-          {
-            id: "jfc-seat",
-            x: 750,
-            y: 240,
-            rotation: 0,
-            employee: {
-              id: "emp-jfc",
-              ...employeeData.auburn.find((emp) => emp.name.includes("Jason Coe")),
-              profileUrl: "#",
-              avatar: "/placeholder.svg?height=40&width=40",
-              notes: `Works on the second floor of the Auburn office.`,
-            },
-          },
-          {
-            id: "hmk-seat",
-            x: 790,
-            y: 240,
-            rotation: 0,
-            employee: {
-              id: "emp-hmk",
-              ...employeeData.auburn.find((emp) => emp.name.includes("John Hewitt")),
-              profileUrl: "#",
-              avatar: "/placeholder.svg?height=40&width=40",
-              notes: `Works on the second floor of the Auburn office.`,
-            },
-          },
-          // JEHL, PHS in lower right
-          {
-            id: "jehl-seat",
-            x: 580,
-            y: 280,
-            rotation: 0,
-            employee: {
-              id: "emp-jehl",
-              ...employeeData.auburn.find((emp) => emp.name.includes("Joanne Maddox")),
-              profileUrl: "#",
-              avatar: "/placeholder.svg?height=40&width=40",
-              notes: `Works on the second floor of the Auburn office.`,
-            },
-          },
-          {
-            id: "phs-seat",
-            x: 650,
-            y: 280,
-            rotation: 0,
-            employee: {
-              id: "emp-phs",
-              ...employeeData.auburn.find((emp) => emp.name.includes("Paul Shrimpton")),
-              profileUrl: "#",
-              avatar: "/placeholder.svg?height=40&width=40",
-              notes: `Works on the second floor of the Auburn office.`,
-            },
-          },
-          // KJQ, JMP in bottom right
-          {
-            id: "kjq-seat",
-            x: 580,
-            y: 350,
-            rotation: 0,
-            employee: {
-              id: "emp-kjq",
-              ...employeeData.auburn.find((emp) => emp.name.includes("Kathy Quigley")),
-              profileUrl: "#",
-              avatar: "/placeholder.svg?height=40&width=40",
-              notes: `Works on the second floor of the Auburn office.`,
-            },
-          },
-          {
-            id: "jmp-seat",
-            x: 650,
-            y: 350,
-            rotation: 0,
-            employee: {
-              id: "emp-jmp",
-              ...employeeData.auburn.find((emp) => emp.name.includes("Joshua Marris")),
-              profileUrl: "#",
-              avatar: "/placeholder.svg?height=40&width=40",
-              notes: `Works on the second floor of the Auburn office.`,
-            },
-          },
-          // MJP, MRM, TBM in far right
-          {
-            id: "mjp-seat",
-            x: 720,
-            y: 280,
-            rotation: 0,
-            employee: {
-              id: "emp-mjp",
-              ...employeeData.auburn.find((emp) => emp.name.includes("Michael Picciano")),
-              profileUrl: "#",
-              avatar: "/placeholder.svg?height=40&width=40",
-              notes: `Works on the second floor of the Auburn office.`,
-            },
-          },
-          {
-            id: "mrm-seat",
-            x: 720,
-            y: 350,
-            rotation: 0,
-            employee: {
-              id: "emp-mrm",
-              ...employeeData.auburn.find((emp) => emp.name.includes("Mark Rebich")),
-              profileUrl: "#",
-              avatar: "/placeholder.svg?height=40&width=40",
-              notes: `Works on the second floor of the Auburn office.`,
-            },
-          },
-          {
-            id: "tbm-seat",
-            x: 790,
-            y: 350,
-            rotation: 0,
-            employee: {
-              id: "emp-tbm",
-              ...employeeData.auburn.find((emp) => emp.name.includes("Tim McSweeney")),
-              profileUrl: "#",
-              avatar: "/placeholder.svg?height=40&width=40",
-              notes: `Works on the second floor of the Auburn office.`,
-            },
-          },
-          // MEL, MAR, DGM in left lower area
-          {
-            id: "mel-seat",
-            x: 90,
-            y: 320,
-            rotation: 0,
-            employee: {
-              id: "emp-mel",
-              ...employeeData.auburn.find((emp) => emp.name.includes("Megan Litzenberger")),
-              profileUrl: "#",
-              avatar: "/placeholder.svg?height=40&width=40",
-              notes: `Works on the second floor of the Auburn office.`,
-            },
-          },
-          {
-            id: "mar-seat",
-            x: 180,
-            y: 320,
-            rotation: 0,
-            employee: {
-              id: "emp-mar",
-              ...employeeData.auburn.find((emp) => emp.name.includes("Michael Naber")),
-              profileUrl: "#",
-              avatar: "/placeholder.svg?height=40&width=40",
-              notes: `Works on the second floor of the Auburn office.`,
-            },
-          },
-          {
-            id: "dgm-seat",
-            x: 270,
-            y: 320,
-            rotation: 0,
-            employee: {
-              id: "emp-dgm",
-              ...employeeData.auburn.find((emp) => emp.name.includes("Dan Whitman")),
-              profileUrl: "#",
-              avatar: "/placeholder.svg?height=40&width=40",
-              notes: `Works on the second floor of the Auburn office.`,
-            },
-          },
-          // KMW in left area
-          {
-            id: "kmw-seat",
-            x: 90,
-            y: 220,
-            rotation: 0,
-            employee: {
-              id: "emp-kmw",
-              ...employeeData.auburn.find((emp) => emp.name.includes("Kathy Mietz")),
-              profileUrl: "#",
-              avatar: "/placeholder.svg?height=40&width=40",
-              notes: `Works on the second floor of the Auburn office.`,
-            },
-          },
-          // Additional seats for remaining employees
-          ...employeeData.auburn.slice(20).map((emp, index) => ({
-            id: `additional-seat-${index + 1}`,
-            x: 100 + (index % 3) * 80,
-            y: 450 + Math.floor(index / 3) * 60,
-            rotation: 0,
-            employee: {
-              id: `emp-additional-${index + 1}`,
-              name: emp.name,
-              title: emp.title,
-              email: emp.email,
-              phone: emp.phone,
-              profileUrl: "#",
-              avatar: "/placeholder.svg?height=40&width=40",
-              notes: `Works on the second floor of the Auburn office.`,
-            },
-          })),
-        ].filter((seat) => seat.employee), // Only include seats with employees
       },
     ],
   },
@@ -1077,6 +929,146 @@ export async function saveLocationData(locationId: string, updatedData: any): Pr
       reject(error)
     }
   })
+}
+
+// Add new location
+export function addNewLocation(locationData: any): boolean {
+  try {
+    currentData = loadFromStorage()
+
+    // Generate a unique ID if not provided
+    if (!locationData.id) {
+      locationData.id = locationData.name
+        .toLowerCase()
+        .replace(/\s+/g, "-")
+        .replace(/[^a-z0-9-]/g, "")
+    }
+
+    // Check if location already exists
+    if (currentData[locationData.id]) {
+      return false // Location already exists
+    }
+
+    // Add the new location
+    currentData[locationData.id] = locationData
+    saveToStorage(currentData)
+
+    console.log(`✅ New location ${locationData.id} added successfully`)
+    return true
+  } catch (error) {
+    console.error("❌ Error adding new location:", error)
+    return false
+  }
+}
+
+// Add new floor to a location
+export function addNewFloor(locationId: string, floorData: any): boolean {
+  try {
+    currentData = loadFromStorage()
+
+    if (currentData[locationId]) {
+      // Generate a unique floor ID if not provided
+      if (!floorData.id) {
+        const existingFloorCount = currentData[locationId].floors?.length || 0
+        floorData.id = `floor-${existingFloorCount + 1}`
+      }
+
+      // Ensure floors array exists
+      if (!currentData[locationId].floors) {
+        currentData[locationId].floors = []
+      }
+
+      // Add default structure if not provided
+      const defaultFloor = {
+        id: floorData.id,
+        name: floorData.name || `Floor ${currentData[locationId].floors.length + 1}`,
+        rooms: floorData.rooms || [
+          { id: "room-1", name: "Open Space", x: 50, y: 50, width: 400, height: 300, type: "office" },
+        ],
+        furniture: floorData.furniture || [
+          { id: "desk-1", type: "desk", x: 100, y: 100, width: 60, height: 40, rotation: 0 },
+          { id: "desk-2", type: "desk", x: 200, y: 100, width: 60, height: 40, rotation: 0 },
+        ],
+        amenities: floorData.amenities || [
+          {
+            id: "printer-1",
+            type: "printer",
+            name: "Office Printer",
+            ipAddress: "192.168.1.101",
+            queueName: "OFFICE-PRINT-01",
+            status: "Online",
+            x: 350,
+            y: 120,
+          },
+          { id: "restroom-1", type: "restroom", name: "Restroom", x: 350, y: 50 },
+          { id: "exit-1", type: "exit", name: "Emergency Exit", x: 420, y: 50 },
+        ],
+        seats:
+          floorData.seats ||
+          Array.from({ length: 10 }, (_, index) => ({
+            id: `seat-${index + 1}`,
+            x: 130 + (index % 5) * 80,
+            y: 120 + Math.floor(index / 5) * 80,
+            rotation: 0,
+            furnitureId: index < 2 ? `desk-${index + 1}` : null,
+            employee: null, // Empty seats for new floor
+          })),
+        ...floorData,
+      }
+
+      currentData[locationId].floors.push(defaultFloor)
+      saveToStorage(currentData)
+
+      console.log(`✅ New floor ${floorData.id} added to location ${locationId}`)
+      return true
+    }
+
+    return false
+  } catch (error) {
+    console.error("❌ Error adding new floor:", error)
+    return false
+  }
+}
+
+// Delete location
+export function deleteLocation(locationId: string): boolean {
+  try {
+    currentData = loadFromStorage()
+
+    if (currentData[locationId]) {
+      delete currentData[locationId]
+      saveToStorage(currentData)
+      console.log(`✅ Location ${locationId} deleted successfully`)
+      return true
+    }
+
+    return false
+  } catch (error) {
+    console.error("❌ Error deleting location:", error)
+    return false
+  }
+}
+
+// Delete floor from location
+export function deleteFloor(locationId: string, floorId: string): boolean {
+  try {
+    currentData = loadFromStorage()
+
+    if (currentData[locationId] && currentData[locationId].floors) {
+      const floorIndex = currentData[locationId].floors.findIndex((floor: any) => floor.id === floorId)
+      if (floorIndex !== -1) {
+        currentData[locationId].floors.splice(floorIndex, 1)
+        saveToStorage(currentData)
+        console.log(`✅ Floor ${floorId} deleted from location ${locationId}`)
+        return true
+      }
+    }
+
+    return false
+  } catch (error) {
+    console.error("❌ Error deleting floor:", error)
+    return false
+  }
 }
 
 // Reset to default data (useful for testing)

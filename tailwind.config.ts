@@ -19,6 +19,10 @@ const config: Config = {
       },
     },
     extend: {
+      fontFamily: {
+        interface: ["Inter", "sans-serif"],
+        whitney: ["Whitney", "Inter", "sans-serif"],
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
@@ -26,7 +30,7 @@ const config: Config = {
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         primary: {
-          DEFAULT: "#7C2D12", // Dark maroon
+          DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",
         },
         secondary: {
@@ -53,24 +57,27 @@ const config: Config = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        // Custom office colors
+        // Updated Beardsley brand colors - toned down
         office: {
-          maroon: "#7C2D12",
-          "maroon-light": "#A3341A",
-          "maroon-dark": "#5B1F0C",
-          green: "#16A34A",
-          "green-light": "#22C55E",
-          "green-muted": "#DCFCE7",
-          orange: "#EA580C",
-          "orange-light": "#FB923C",
-          "orange-muted": "#FED7AA",
+          maroon: "#8B1538", // Lighter maroon
+          "maroon-light": "#A0476F", // Much lighter
+          "maroon-dark": "#6B1028", // Darker but not as harsh
+          orange: "#F59E0B", // Warmer orange
+          "orange-light": "#FCD34D", // Light amber
+          "orange-muted": "#FEF3C7", // Very light amber
+          green: "#10B981", // Emerald green
+          "green-light": "#34D399", // Light emerald
+          "green-muted": "#D1FAE5", // Very light emerald
+          blue: "#3B82F6", // Primary blue
+          "blue-light": "#60A5FA", // Light blue
+          "blue-muted": "#DBEAFE", // Very light blue
         },
-        // Room type colors
+        // Room type colors updated with balanced palette
         room: {
-          conference: "#DCFCE7", // Light green
+          conference: "#D1FAE5", // Light emerald
           kitchen: "#FED7AA", // Light orange
-          office: "#F1F5F9", // Light gray
-          reception: "#E0E7FF", // Light blue
+          office: "#F8FAFC", // Light slate
+          reception: "#DBEAFE", // Light blue
           print: "#FCE7F3", // Light pink
           restroom: "#F3F4F6", // Very light gray
         },

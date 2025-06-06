@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { Settings, Users, Building, Printer, Save, X, Trash2, ArrowRight, UserPlus } from "lucide-react"
+import { Settings, Users, Building, Printer, Save, X, Trash2, ArrowRight, UserPlus, Upload, Hash } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -14,7 +14,7 @@ import { Separator } from "@/components/ui/separator"
 import { Badge } from "@/components/ui/badge"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { PhotoUpload } from "@/components/photo-upload"
-import { getPhotoUrl } from "@/lib/employee-data"
+import { getPhotoUrl, uploadEmployeeByNumber, openPrinterDriverLocation } from "@/lib/employee-data"
 
 interface EnhancedEditModePanelProps {
   location: any
@@ -57,9 +57,13 @@ export function EnhancedEditModePanel({
     email: "",
     phone: "",
     notes: "",
+    employeeNumber: "",
     photo: null as string | null,
   })
   const [showAddEmployee, setShowAddEmployee] = useState(false)
+  const [showUploadEmployee, setShowUploadEmployee] = useState(false)
+  const [uploadEmployeeNumber, setUploadEmployeeNumber] = useState("")
+  const [uploadCsvData, setUploadCsvData] = useState("")
   const [selectedTargetOffice, setSelectedTargetOffice] = useState("")
   const [selectedTargetFloor, setSelectedTargetFloor] = useState("")
 
@@ -79,7 +83,6 @@ export function EnhancedEditModePanel({
 
   const handleAddNewEmployee = () => {
     if (newEmployee.name && newEmployee.email) {
-      const nameParts = newEmployee.name.split(" ")
       const photoUrl = newEmployee.photo || getPhotoUrl(newEmployee.name)
 
       onAddEmployee(
@@ -97,9 +100,24 @@ export function EnhancedEditModePanel({
         email: "",
         phone: "",
         notes: "",
+        employeeNumber: "",
         photo: null,
       })
       setShowAddEmployee(false)
+    }
+  }
+
+  const handleUploadEmployee = () => {
+    if (uploadEmployeeNumber && uploadCsvData) {
+      const success = uploadEmployeeByNumber(uploadEmployeeNumber, uploadCsvData)
+      if (success) {
+        alert("Employee data uploaded successfully!")
+        setUploadEmployeeNumber("")
+        setUploadCsvData("")
+        setShowUploadEmployee(false)
+      } else {
+        alert("Employee number not found in CSV data.")
+      }
     }
   }
 
@@ -115,6 +133,10 @@ export function EnhancedEditModePanel({
     if (selectedEmployee) {
       onDeleteEmployee(selectedEmployee.id)
     }
+  }
+
+  const handlePrinterDriverAccess = (printerName: string) => {
+    openPrinterDriverLocation(printerName)
   }
 
   // Get available floors for the selected target office
@@ -206,6 +228,16 @@ export function EnhancedEditModePanel({
                   </div>
 
                   <div>
+                    <Label htmlFor="new-employee-number">Employee Number</Label>
+                    <Input
+                      id="new-employee-number"
+                      value={newEmployee.employeeNumber}
+                      onChange={(e) => setNewEmployee({ ...newEmployee, employeeNumber: e.target.value })}
+                      placeholder="e.g., 00053"
+                    />
+                  </div>
+
+                  <div>
                     <Label htmlFor="new-title">Title</Label>
                     <Input
                       id="new-title"
@@ -264,6 +296,56 @@ export function EnhancedEditModePanel({
               </DialogContent>
             </Dialog>
 
+            {/* Upload Employee by Number */}
+            <Dialog open={showUploadEmployee} onOpenChange={setShowUploadEmployee}>
+              <DialogTrigger asChild>
+                <Button
+                  variant="outline"
+                  className="w-full border-office-orange text-office-orange hover:bg-office-orange hover:text-white"
+                >
+                  <Hash className="mr-1 h-3 w-3" />
+                  Upload Employee by Number
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="max-w-md">
+                <DialogHeader>
+                  <DialogTitle>Upload Employee Data</DialogTitle>
+                </DialogHeader>
+                <div className="space-y-4">
+                  <div>
+                    <Label htmlFor="upload-employee-number">Employee Number</Label>
+                    <Input
+                      id="upload-employee-number"
+                      value={uploadEmployeeNumber}
+                      onChange={(e) => setUploadEmployeeNumber(e.target.value)}
+                      placeholder="e.g., 00053"
+                    />
+                  </div>
+
+                  <div>
+                    <Label htmlFor="upload-csv-data">CSV Data</Label>
+                    <Textarea
+                      id="upload-csv-data"
+                      value={uploadCsvData}
+                      onChange={(e) => setUploadCsvData(e.target.value)}
+                      placeholder="Paste CSV data here..."
+                      rows={6}
+                    />
+                  </div>
+
+                  <div className="flex gap-2">
+                    <Button onClick={handleUploadEmployee} className="flex-1">
+                      <Upload className="mr-1 h-3 w-3" />
+                      Upload
+                    </Button>
+                    <Button variant="outline" onClick={() => setShowUploadEmployee(false)} className="flex-1">
+                      Cancel
+                    </Button>
+                  </div>
+                </div>
+              </DialogContent>
+            </Dialog>
+
             <Separator />
 
             {selectedEmployee ? (
@@ -283,6 +365,14 @@ export function EnhancedEditModePanel({
                         id="emp-name"
                         value={editingEmployee.name}
                         onChange={(e) => setEditingEmployee({ ...editingEmployee, name: e.target.value })}
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="emp-employee-number">Employee Number</Label>
+                      <Input
+                        id="emp-employee-number"
+                        value={editingEmployee.employeeNumber || ""}
+                        onChange={(e) => setEditingEmployee({ ...editingEmployee, employeeNumber: e.target.value })}
                       />
                     </div>
                     <div>
@@ -491,14 +581,26 @@ export function EnhancedEditModePanel({
                 floor.amenities
                   ?.filter((amenity: any) => amenity.type === "printer")
                   .map((printer: any) => (
-                    <div key={printer.id} className="flex items-center justify-between p-2 border rounded">
-                      <div>
-                        <p className="font-medium">{printer.name}</p>
+                    <div
+                      key={printer.id}
+                      className="flex items-center justify-between p-3 border rounded-lg bg-gray-50"
+                    >
+                      <div className="flex-1">
+                        <p className="font-medium text-office-maroon">{printer.name}</p>
                         <p className="text-sm text-muted-foreground">{printer.ipAddress}</p>
+                        <p className="text-xs text-office-green">{printer.status}</p>
                       </div>
-                      <div className="flex gap-1">
+                      <div className="flex gap-2">
+                        <Button
+                          onClick={() => handlePrinterDriverAccess(printer.name)}
+                          variant="outline"
+                          size="sm"
+                          className="border-office-orange text-office-orange hover:bg-office-orange hover:text-white"
+                        >
+                          Drivers
+                        </Button>
                         <Select onValueChange={(value) => onMovePrinter(printer.id, value)}>
-                          <SelectTrigger className="w-32">
+                          <SelectTrigger className="w-24">
                             <SelectValue placeholder="Move" />
                           </SelectTrigger>
                           <SelectContent>

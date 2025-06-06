@@ -16,15 +16,22 @@ import {
   Sofa,
   StepBackIcon as Stairs,
   Settings,
+  Plus,
+  Edit3,
+  Move,
+  Trash2,
 } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { cn } from "@/lib/utils"
+import { Alert, AlertDescription } from "@/components/ui/alert"
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
+import { Label } from "@/components/ui/label"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { openPrinterDriverLocation, furnitureTypes } from "@/lib/employee-data"
 import { EmployeeHoverCard } from "@/components/employee-hover-card"
 import { PrinterTooltip } from "@/components/printer-tooltip"
-import { Alert, AlertDescription } from "@/components/ui/alert"
-import { getPrinterDriverUrl } from "@/lib/employee-data"
 
 interface EnhancedSeatingChartProps {
   floorData: any
@@ -35,6 +42,12 @@ interface EnhancedSeatingChartProps {
   isEditMode?: boolean
   onUpdateSeatPosition?: (seatId: string, x: number, y: number) => void
   onMoveSeat?: (fromSeatId: string, toSeatId: string) => void
+  onUpdateRoom?: (roomId: string, updates: any) => void
+  onDeleteRoom?: (roomId: string) => void
+  onAddRoom?: (room: any) => void
+  onAddAmenity?: (amenity: any) => void
+  onUpdateAmenity?: (amenityId: string, updates: any) => void
+  onDeleteAmenity?: (amenityId: string) => void
 }
 
 export function EnhancedSeatingChart({
@@ -46,6 +59,12 @@ export function EnhancedSeatingChart({
   isEditMode = false,
   onUpdateSeatPosition,
   onMoveSeat,
+  onUpdateRoom,
+  onDeleteRoom,
+  onAddRoom,
+  onAddAmenity,
+  onUpdateAmenity,
+  onDeleteAmenity,
 }: EnhancedSeatingChartProps) {
   const containerRef = useRef<HTMLDivElement>(null)
   const chartRef = useRef<HTMLDivElement>(null)
@@ -66,6 +85,35 @@ export function EnhancedSeatingChart({
   const [draggedSeatOffset, setDraggedSeatOffset] = useState({ x: 0, y: 0 })
   const [isDraggingSeat, setIsDraggingSeat] = useState(false)
   const [dropTarget, setDropTarget] = useState<string | null>(null)
+
+  // Room editing states
+  const [selectedRoom, setSelectedRoom] = useState<any>(null)
+  const [isDraggingRoom, setIsDraggingRoom] = useState(false)
+  const [isResizingRoom, setIsResizingRoom] = useState(false)
+  const [draggedRoom, setDraggedRoom] = useState<any>(null)
+  const [resizeHandle, setResizeHandle] = useState<string | null>(null)
+  const [roomDragOffset, setRoomDragOffset] = useState({ x: 0, y: 0 })
+  const [showAddAmenityDialog, setShowAddAmenityDialog] = useState(false)
+  const [showAddRoomDialog, setShowAddRoomDialog] = useState(false)
+  const [newAmenity, setNewAmenity] = useState({
+    type: "printer",
+    name: "",
+    x: 100,
+    y: 100,
+  })
+  const [newRoom, setNewRoom] = useState({
+    name: "",
+    type: "office",
+    x: 100,
+    y: 100,
+    width: 150,
+    height: 100,
+  })
+
+  // Amenity editing states
+  const [selectedAmenity, setSelectedAmenity] = useState<any>(null)
+  const [isDraggingAmenity, setIsDraggingAmenity] = useState(false)
+  const [draggedAmenity, setDraggedAmenity] = useState<any>(null)
 
   // Reset view to default
   const resetView = () => {
@@ -102,14 +150,30 @@ export function EnhancedSeatingChart({
     }
   }, [])
 
-  // Handle mouse drag for panning (only when not in edit mode or not dragging a seat)
+  // Handle mouse drag for panning
   const handleMouseDown = (e: React.MouseEvent) => {
-    if (e.button !== 0 || isEditMode || isDraggingSeat) return
+    if (e.button !== 0 || isEditMode || isDraggingSeat || isDraggingRoom || isDraggingAmenity || isResizingRoom) return
     setIsDragging(true)
     setDragStart({ x: e.clientX - position.x, y: e.clientY - position.y })
   }
 
   const handleMouseMove = (e: React.MouseEvent) => {
+    if (isDraggingSeat) {
+      handleSeatDrag(e)
+      return
+    }
+    if (isDraggingRoom) {
+      handleRoomDrag(e)
+      return
+    }
+    if (isResizingRoom) {
+      handleRoomResize(e)
+      return
+    }
+    if (isDraggingAmenity) {
+      handleAmenityDrag(e)
+      return
+    }
     if (!isDragging || isEditMode) return
     setPosition({
       x: e.clientX - dragStart.x,
@@ -117,33 +181,177 @@ export function EnhancedSeatingChart({
     })
   }
 
-  const handleMouseUp = () => {
+  const handleMouseUp = (e: React.MouseEvent) => {
+    if (isDraggingSeat) {
+      handleSeatDrop()
+      return
+    }
+    if (isDraggingRoom || isResizingRoom) {
+      handleRoomDrop()
+      return
+    }
+    if (isDraggingAmenity) {
+      handleAmenityDrop()
+      return
+    }
     setIsDragging(false)
   }
 
-  // Handle touch events for mobile
-  const handleTouchStart = (e: React.TouchEvent) => {
-    if (e.touches.length !== 1 || isEditMode) return
-    setIsDragging(true)
-    setDragStart({
-      x: e.touches[0].clientX - position.x,
-      y: e.touches[0].clientY - position.y,
+  // Room drag and drop handlers
+  const handleRoomMouseDown = (room: any, e: React.MouseEvent, handle?: string) => {
+    if (!isEditMode) return
+    e.stopPropagation()
+
+    const containerRect = containerRef.current?.getBoundingClientRect() || { left: 0, top: 0 }
+    const svgX = (e.clientX - containerRect.left - position.x) / scale
+    const svgY = (e.clientY - containerRect.top - position.y) / scale
+
+    if (handle) {
+      setIsResizingRoom(true)
+      setResizeHandle(handle)
+      setDraggedRoom({ ...room })
+    } else {
+      setIsDraggingRoom(true)
+      setDraggedRoom({ ...room })
+      setRoomDragOffset({
+        x: svgX - room.x,
+        y: svgY - room.y,
+      })
+    }
+
+    setSelectedRoom(room)
+  }
+
+  const handleRoomDrag = (e: React.MouseEvent) => {
+    if (!isDraggingRoom || !draggedRoom) return
+
+    e.preventDefault()
+
+    const containerRect = containerRef.current?.getBoundingClientRect() || { left: 0, top: 0 }
+    const svgX = (e.clientX - containerRect.left - position.x) / scale
+    const svgY = (e.clientY - containerRect.top - position.y) / scale
+
+    setDraggedRoom({
+      ...draggedRoom,
+      x: Math.max(0, svgX - roomDragOffset.x),
+      y: Math.max(0, svgY - roomDragOffset.y),
     })
   }
 
-  const handleTouchMove = (e: React.TouchEvent) => {
-    if (!isDragging || e.touches.length !== 1 || isEditMode) return
-    setPosition({
-      x: e.touches[0].clientX - dragStart.x,
-      y: e.touches[0].clientY - position.y,
+  const handleRoomResize = (e: React.MouseEvent) => {
+    if (!isResizingRoom || !draggedRoom || !resizeHandle) return
+
+    e.preventDefault()
+
+    const containerRect = containerRef.current?.getBoundingClientRect() || { left: 0, top: 0 }
+    const svgX = (e.clientX - containerRect.left - position.x) / scale
+    const svgY = (e.clientY - containerRect.top - position.y) / scale
+
+    const newRoom = { ...draggedRoom }
+    const minSize = 50
+
+    switch (resizeHandle) {
+      case "bottom-right":
+        newRoom.width = Math.max(minSize, svgX - newRoom.x)
+        newRoom.height = Math.max(minSize, svgY - newRoom.y)
+        break
+      case "top-left":
+        const newWidth = newRoom.width + (newRoom.x - svgX)
+        const newHeight = newRoom.height + (newRoom.y - svgY)
+        if (newWidth >= minSize) {
+          newRoom.x = svgX
+          newRoom.width = newWidth
+        }
+        if (newHeight >= minSize) {
+          newRoom.y = svgY
+          newRoom.height = newHeight
+        }
+        break
+      case "top-right":
+        newRoom.width = Math.max(minSize, svgX - newRoom.x)
+        const newHeightTR = newRoom.height + (newRoom.y - svgY)
+        if (newHeightTR >= minSize) {
+          newRoom.y = svgY
+          newRoom.height = newHeightTR
+        }
+        break
+      case "bottom-left":
+        const newWidthBL = newRoom.width + (newRoom.x - svgX)
+        if (newWidthBL >= minSize) {
+          newRoom.x = svgX
+          newRoom.width = newWidthBL
+        }
+        newRoom.height = Math.max(minSize, svgY - newRoom.y)
+        break
+    }
+
+    setDraggedRoom(newRoom)
+  }
+
+  const handleRoomDrop = () => {
+    if (!draggedRoom || !onUpdateRoom) return
+
+    onUpdateRoom(draggedRoom.id, {
+      x: draggedRoom.x,
+      y: draggedRoom.y,
+      width: draggedRoom.width,
+      height: draggedRoom.height,
+    })
+
+    setIsDraggingRoom(false)
+    setIsResizingRoom(false)
+    setDraggedRoom(null)
+    setResizeHandle(null)
+  }
+
+  // Amenity drag and drop handlers
+  const handleAmenityMouseDown = (amenity: any, e: React.MouseEvent) => {
+    if (!isEditMode) return
+    e.stopPropagation()
+
+    setIsDraggingAmenity(true)
+    setDraggedAmenity({ ...amenity })
+    setSelectedAmenity(amenity)
+
+    const containerRect = containerRef.current?.getBoundingClientRect() || { left: 0, top: 0 }
+    const svgX = (e.clientX - containerRect.left - position.x) / scale
+    const svgY = (e.clientY - containerRect.top - position.y) / scale
+
+    setDraggedSeatOffset({
+      x: svgX - amenity.x,
+      y: svgY - amenity.y,
     })
   }
 
-  const handleTouchEnd = () => {
-    setIsDragging(false)
+  const handleAmenityDrag = (e: React.MouseEvent) => {
+    if (!isDraggingAmenity || !draggedAmenity) return
+
+    e.preventDefault()
+
+    const containerRect = containerRef.current?.getBoundingClientRect() || { left: 0, top: 0 }
+    const svgX = (e.clientX - containerRect.left - position.x) / scale
+    const svgY = (e.clientY - containerRect.top - position.y) / scale
+
+    setDraggedAmenity({
+      ...draggedAmenity,
+      x: Math.max(0, svgX - draggedSeatOffset.x),
+      y: Math.max(0, svgY - draggedSeatOffset.y),
+    })
   }
 
-  // Handle seat drag and drop in edit mode
+  const handleAmenityDrop = () => {
+    if (!isDraggingAmenity || !draggedAmenity || !onUpdateAmenity) return
+
+    onUpdateAmenity(draggedAmenity.id, {
+      x: draggedAmenity.x,
+      y: draggedAmenity.y,
+    })
+
+    setIsDraggingAmenity(false)
+    setDraggedAmenity(null)
+  }
+
+  // Seat drag and drop handlers (existing functionality)
   const handleSeatMouseDown = (seat: any, e: React.MouseEvent) => {
     if (!isEditMode || !seat.employee) return
 
@@ -165,7 +373,6 @@ export function EnhancedSeatingChart({
 
     e.preventDefault()
 
-    // Update dragged seat position
     const containerRect = containerRef.current?.getBoundingClientRect() || { left: 0, top: 0 }
     const svgX = (e.clientX - containerRect.left - position.x) / scale - draggedSeatOffset.x
     const svgY = (e.clientY - containerRect.top - position.y) / scale - draggedSeatOffset.y
@@ -173,21 +380,92 @@ export function EnhancedSeatingChart({
     setDraggedSeat({ ...draggedSeat, x: svgX, y: svgY })
   }
 
-  const handleSeatDrop = (e: React.MouseEvent) => {
+  const handleSeatDrop = () => {
     if (!isDraggingSeat || !draggedSeat) return
 
     setIsDraggingSeat(false)
 
-    // Check if dropped on another seat
     if (dropTarget && onMoveSeat) {
       onMoveSeat(draggedSeat.id, dropTarget)
     } else if (onUpdateSeatPosition) {
-      // Update seat position
       onUpdateSeatPosition(draggedSeat.id, draggedSeat.x, draggedSeat.y)
     }
 
     setDraggedSeat(null)
     setDropTarget(null)
+  }
+
+  // Add new amenity
+  const handleAddAmenity = () => {
+    if (!onAddAmenity) return
+
+    const amenity = {
+      id: `amenity-${Date.now()}`,
+      type: newAmenity.type,
+      name: newAmenity.name || `New ${newAmenity.type}`,
+      x: newAmenity.x,
+      y: newAmenity.y,
+      ...(newAmenity.type === "printer" && {
+        ipAddress: "192.168.1.100",
+        queueName: "NEW-PRINT-01",
+        status: "Online",
+      }),
+    }
+
+    onAddAmenity(amenity)
+    setShowAddAmenityDialog(false)
+    setNewAmenity({
+      type: "printer",
+      name: "",
+      x: 100,
+      y: 100,
+    })
+  }
+
+  // Add new room
+  const handleAddRoom = () => {
+    if (!onAddRoom) return
+
+    const room = {
+      id: `room-${Date.now()}`,
+      name: newRoom.name || `New ${newRoom.type}`,
+      type: newRoom.type,
+      x: newRoom.x,
+      y: newRoom.y,
+      width: newRoom.width,
+      height: newRoom.height,
+    }
+
+    onAddRoom(room)
+    setShowAddRoomDialog(false)
+    setNewRoom({
+      name: "",
+      type: "office",
+      x: 100,
+      y: 100,
+      width: 150,
+      height: 100,
+    })
+  }
+
+  // Delete selected room
+  const handleDeleteRoom = () => {
+    if (!selectedRoom || !onDeleteRoom) return
+
+    if (confirm(`Are you sure you want to delete the room "${selectedRoom.name}"?`)) {
+      onDeleteRoom(selectedRoom.id)
+      setSelectedRoom(null)
+    }
+  }
+
+  // Delete selected amenity
+  const handleDeleteAmenity = () => {
+    if (!selectedAmenity || !onDeleteAmenity) return
+
+    if (confirm(`Are you sure you want to delete "${selectedAmenity.name}"?`)) {
+      onDeleteAmenity(selectedAmenity.id)
+      setSelectedAmenity(null)
+    }
   }
 
   // Handle hover events for employee cards
@@ -233,10 +511,7 @@ export function EnhancedSeatingChart({
   // Handle printer click to open driver download
   const handlePrinterClick = (printer: any) => {
     if (!isEditMode) {
-      const driverUrl = getPrinterDriverUrl(printer.name)
-      if (driverUrl !== "#") {
-        window.open(driverUrl, "_blank")
-      }
+      openPrinterDriverLocation(printer.name)
     }
   }
 
@@ -254,7 +529,6 @@ export function EnhancedSeatingChart({
     let foundFloor = null
     let foundSeat = null
 
-    // Search across all floors
     for (const floor of allFloors) {
       const seat = floor.seats.find(
         (seat: any) =>
@@ -279,24 +553,18 @@ export function EnhancedSeatingChart({
         seat: foundSeat,
       })
 
-      // Switch to the floor where the employee was found
       if (foundFloor.id !== currentFloorId) {
         onFloorChange(foundFloor.id)
       }
 
-      // Highlight the seat
       setHighlightedSeat(foundSeat.id)
-
-      // Show employee details in sidebar
       onSelectEmployee(foundEmployee)
 
-      // Center the view on the employee's seat after a brief delay to allow floor switch
       setTimeout(() => {
         if (containerRef.current && chartRef.current) {
           const containerWidth = containerRef.current.clientWidth
           const containerHeight = containerRef.current.clientHeight
 
-          // Calculate position to center the seat using SVG coordinates
           const seatX = foundSeat.x * scale
           const seatY = foundSeat.y * scale
 
@@ -322,46 +590,46 @@ export function EnhancedSeatingChart({
   const getRoomColor = (roomType: string) => {
     switch (roomType) {
       case "conference":
-        return "#DCFCE7" // Light green
+        return "#DCFCE7"
       case "kitchen":
-        return "#FED7AA" // Light orange
+        return "#FED7AA"
       case "reception":
-        return "#E0E7FF" // Light blue
+        return "#E0E7FF"
       case "print":
-        return "#FCE7F3" // Light pink
+        return "#FCE7F3"
       case "restroom":
-        return "#F3F4F6" // Light gray
+        return "#F3F4F6"
       case "office":
-        return "#F1F5F9" // Light slate
+        return "#F1F5F9"
       case "storage":
-        return "#FEF3C7" // Light yellow
+        return "#FEF3C7"
       case "mechanical":
-        return "#E5E7EB" // Gray
+        return "#E5E7EB"
       default:
-        return "#F9FAFB" // Very light gray
+        return "#F9FAFB"
     }
   }
 
   const getRoomStroke = (roomType: string) => {
     switch (roomType) {
       case "conference":
-        return "#16A34A" // Green
+        return "#16A34A"
       case "kitchen":
-        return "#EA580C" // Orange
+        return "#EA580C"
       case "reception":
-        return "#3B82F6" // Blue
+        return "#3B82F6"
       case "print":
-        return "#EC4899" // Pink
+        return "#EC4899"
       case "restroom":
-        return "#9CA3AF" // Gray
+        return "#9CA3AF"
       case "office":
-        return "#64748B" // Slate
+        return "#64748B"
       case "storage":
-        return "#F59E0B" // Amber
+        return "#F59E0B"
       case "mechanical":
-        return "#6B7280" // Gray
+        return "#6B7280"
       default:
-        return "#E5E7EB" // Light gray
+        return "#E5E7EB"
     }
   }
 
@@ -400,10 +668,195 @@ export function EnhancedSeatingChart({
 
         <div className="flex gap-2">
           {isEditMode && (
-            <div className="flex items-center gap-2 px-3 py-1 bg-orange-100 text-orange-800 rounded-md text-sm">
-              <Settings className="h-3 w-3" />
-              Edit Mode Active
-            </div>
+            <>
+              <div className="flex items-center gap-2 px-3 py-1 bg-orange-100 text-orange-800 rounded-md text-sm">
+                <Settings className="h-3 w-3" />
+                Edit Mode Active
+              </div>
+
+              {/* Add Room Dialog */}
+              <Dialog open={showAddRoomDialog} onOpenChange={setShowAddRoomDialog}>
+                <DialogTrigger asChild>
+                  <Button variant="outline" size="sm" className="border-office-green text-office-green">
+                    <Plus className="h-3 w-3 mr-1" />
+                    Add Room
+                  </Button>
+                </DialogTrigger>
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle>Add New Room</DialogTitle>
+                  </DialogHeader>
+                  <div className="space-y-4">
+                    <div>
+                      <Label htmlFor="room-name">Room Name</Label>
+                      <Input
+                        id="room-name"
+                        value={newRoom.name}
+                        onChange={(e) => setNewRoom({ ...newRoom, name: e.target.value })}
+                        placeholder="Enter room name"
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="room-type">Type</Label>
+                      <Select value={newRoom.type} onValueChange={(value) => setNewRoom({ ...newRoom, type: value })}>
+                        <SelectTrigger>
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="office">Office</SelectItem>
+                          <SelectItem value="conference">Conference Room</SelectItem>
+                          <SelectItem value="kitchen">Kitchen</SelectItem>
+                          <SelectItem value="reception">Reception</SelectItem>
+                          <SelectItem value="restroom">Restroom</SelectItem>
+                          <SelectItem value="storage">Storage</SelectItem>
+                          <SelectItem value="mechanical">Mechanical</SelectItem>
+                          <SelectItem value="print">Print Room</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <Label htmlFor="room-x">X Position</Label>
+                        <Input
+                          id="room-x"
+                          type="number"
+                          value={newRoom.x}
+                          onChange={(e) => setNewRoom({ ...newRoom, x: Number.parseInt(e.target.value) || 0 })}
+                        />
+                      </div>
+                      <div>
+                        <Label htmlFor="room-y">Y Position</Label>
+                        <Input
+                          id="room-y"
+                          type="number"
+                          value={newRoom.y}
+                          onChange={(e) => setNewRoom({ ...newRoom, y: Number.parseInt(e.target.value) || 0 })}
+                        />
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <Label htmlFor="room-width">Width</Label>
+                        <Input
+                          id="room-width"
+                          type="number"
+                          value={newRoom.width}
+                          onChange={(e) =>
+                            setNewRoom({ ...newRoom, width: Math.max(50, Number.parseInt(e.target.value) || 50) })
+                          }
+                        />
+                      </div>
+                      <div>
+                        <Label htmlFor="room-height">Height</Label>
+                        <Input
+                          id="room-height"
+                          type="number"
+                          value={newRoom.height}
+                          onChange={(e) =>
+                            setNewRoom({ ...newRoom, height: Math.max(50, Number.parseInt(e.target.value) || 50) })
+                          }
+                        />
+                      </div>
+                    </div>
+                    <div className="flex gap-2">
+                      <Button onClick={handleAddRoom} className="flex-1">
+                        Add Room
+                      </Button>
+                      <Button variant="outline" onClick={() => setShowAddRoomDialog(false)} className="flex-1">
+                        Cancel
+                      </Button>
+                    </div>
+                  </div>
+                </DialogContent>
+              </Dialog>
+
+              {/* Add Amenity Dialog */}
+              <Dialog open={showAddAmenityDialog} onOpenChange={setShowAddAmenityDialog}>
+                <DialogTrigger asChild>
+                  <Button variant="outline" size="sm" className="border-office-orange text-office-orange">
+                    <Plus className="h-3 w-3 mr-1" />
+                    Add Amenity
+                  </Button>
+                </DialogTrigger>
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle>Add New Amenity</DialogTitle>
+                  </DialogHeader>
+                  <div className="space-y-4">
+                    <div>
+                      <Label htmlFor="amenity-type">Type</Label>
+                      <Select
+                        value={newAmenity.type}
+                        onValueChange={(value) => setNewAmenity({ ...newAmenity, type: value })}
+                      >
+                        <SelectTrigger>
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="printer">Printer</SelectItem>
+                          <SelectItem value="restroom">Restroom</SelectItem>
+                          <SelectItem value="kitchen">Kitchen</SelectItem>
+                          <SelectItem value="exit">Emergency Exit</SelectItem>
+                          <SelectItem value="conference">Conference Room</SelectItem>
+                          <SelectItem value="furniture">Furniture</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div>
+                      <Label htmlFor="amenity-name">Name</Label>
+                      <Input
+                        id="amenity-name"
+                        value={newAmenity.name}
+                        onChange={(e) => setNewAmenity({ ...newAmenity, name: e.target.value })}
+                        placeholder={`New ${newAmenity.type}`}
+                      />
+                    </div>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <Label htmlFor="amenity-x">X Position</Label>
+                        <Input
+                          id="amenity-x"
+                          type="number"
+                          value={newAmenity.x}
+                          onChange={(e) => setNewAmenity({ ...newAmenity, x: Number.parseInt(e.target.value) || 0 })}
+                        />
+                      </div>
+                      <div>
+                        <Label htmlFor="amenity-y">Y Position</Label>
+                        <Input
+                          id="amenity-y"
+                          type="number"
+                          value={newAmenity.y}
+                          onChange={(e) => setNewAmenity({ ...newAmenity, y: Number.parseInt(e.target.value) || 0 })}
+                        />
+                      </div>
+                    </div>
+                    <div className="flex gap-2">
+                      <Button onClick={handleAddAmenity} className="flex-1">
+                        Add Amenity
+                      </Button>
+                      <Button variant="outline" onClick={() => setShowAddAmenityDialog(false)} className="flex-1">
+                        Cancel
+                      </Button>
+                    </div>
+                  </div>
+                </DialogContent>
+              </Dialog>
+
+              {/* Delete buttons for selected items */}
+              {selectedRoom && (
+                <Button variant="destructive" size="sm" onClick={handleDeleteRoom}>
+                  <Trash2 className="h-3 w-3 mr-1" />
+                  Delete Room
+                </Button>
+              )}
+              {selectedAmenity && (
+                <Button variant="destructive" size="sm" onClick={handleDeleteAmenity}>
+                  <Trash2 className="h-3 w-3 mr-1" />
+                  Delete Amenity
+                </Button>
+              )}
+            </>
           )}
           <Button
             variant="outline"
@@ -434,8 +887,9 @@ export function EnhancedSeatingChart({
         <Alert className="mb-4 border-orange-200 bg-orange-50">
           <Settings className="h-4 w-4 text-orange-600" />
           <AlertDescription className="text-orange-800">
-            <strong>Edit Mode:</strong> Drag employees to move them to different seats. Click on employees to edit their
-            details in the admin panel.
+            <strong>Edit Mode:</strong> Drag employees to move them. Drag rooms to reposition them. Drag room corners to
+            resize. Click items to select them, then use delete buttons. Add new rooms and amenities with the buttons
+            above.
           </AlertDescription>
         </Alert>
       )}
@@ -460,12 +914,9 @@ export function EnhancedSeatingChart({
         ref={containerRef}
         className="h-[700px] overflow-hidden rounded-xl border-2 border-office-maroon/20 bg-gradient-to-br from-gray-50 to-gray-100 shadow-lg"
         onMouseDown={handleMouseDown}
-        onMouseMove={isDraggingSeat ? handleSeatDrag : handleMouseMove}
-        onMouseUp={isDraggingSeat ? handleSeatDrop : handleMouseUp}
+        onMouseMove={handleMouseMove}
+        onMouseUp={handleMouseUp}
         onMouseLeave={handleMouseUp}
-        onTouchStart={handleTouchStart}
-        onTouchMove={handleTouchMove}
-        onTouchEnd={handleTouchEnd}
         style={{ cursor: isDragging ? "grabbing" : isEditMode ? "default" : "grab" }}
       >
         <div
@@ -474,7 +925,10 @@ export function EnhancedSeatingChart({
           style={{
             transform: `scale(${scale}) translate(${position.x / scale}px, ${position.y / scale}px)`,
             transformOrigin: "0 0",
-            transition: isDragging || isDraggingSeat ? "none" : "transform 100ms",
+            transition:
+              isDragging || isDraggingSeat || isDraggingRoom || isDraggingAmenity || isResizingRoom
+                ? "none"
+                : "transform 100ms",
           }}
         >
           {/* Floor plan SVG container */}
@@ -491,45 +945,135 @@ export function EnhancedSeatingChart({
               <rect width="1000" height="600" fill="#FAFAFA" stroke="#E5E7EB" strokeWidth="2" rx="8" />
 
               {/* Render rooms */}
-              {floorData.rooms?.map((room: any) => (
-                <g key={room.id}>
-                  <rect
-                    x={room.x}
-                    y={room.y}
-                    width={room.width}
-                    height={room.height}
-                    fill={getRoomColor(room.type)}
-                    stroke={getRoomStroke(room.type)}
-                    strokeWidth="2"
-                    rx="4"
-                  />
-                  <text
-                    x={room.x + room.width / 2}
-                    y={room.y + room.height / 2}
-                    textAnchor="middle"
-                    dominantBaseline="central"
-                    className="text-xs font-medium pointer-events-none select-none"
-                    fill={getRoomStroke(room.type)}
-                  >
-                    {room.name}
-                  </text>
-                </g>
-              ))}
+              {floorData.rooms?.map((room: any) => {
+                const isDraggedRoom = (isDraggingRoom || isResizingRoom) && draggedRoom && draggedRoom.id === room.id
+                const displayRoom = isDraggedRoom ? draggedRoom : room
 
-              {/* Render doors */}
-              {floorData.doors?.map((door: any, index: number) => (
-                <rect
-                  key={`door-${index}`}
-                  x={door.x}
-                  y={door.y}
-                  width="8"
-                  height="20"
-                  fill="#8B5CF6"
-                  stroke="#7C3AED"
-                  strokeWidth="1"
-                  rx="2"
-                />
-              ))}
+                return (
+                  <g key={room.id}>
+                    <rect
+                      x={displayRoom.x}
+                      y={displayRoom.y}
+                      width={displayRoom.width}
+                      height={displayRoom.height}
+                      fill={getRoomColor(displayRoom.type)}
+                      stroke={getRoomStroke(displayRoom.type)}
+                      strokeWidth={selectedRoom?.id === room.id ? "4" : "2"}
+                      rx="4"
+                      className={cn(
+                        isEditMode && "cursor-move hover:stroke-blue-500",
+                        selectedRoom?.id === room.id && "stroke-blue-500",
+                      )}
+                      onMouseDown={(e) => handleRoomMouseDown(room, e as any)}
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        if (isEditMode) setSelectedRoom(room)
+                      }}
+                    />
+                    <text
+                      x={displayRoom.x + displayRoom.width / 2}
+                      y={displayRoom.y + displayRoom.height / 2}
+                      textAnchor="middle"
+                      dominantBaseline="central"
+                      className="text-xs font-medium pointer-events-none select-none"
+                      fill={getRoomStroke(displayRoom.type)}
+                    >
+                      {displayRoom.name}
+                    </text>
+
+                    {/* Resize handles for selected room in edit mode */}
+                    {isEditMode && selectedRoom?.id === room.id && (
+                      <>
+                        {/* Corner resize handles */}
+                        <circle
+                          cx={displayRoom.x + displayRoom.width}
+                          cy={displayRoom.y + displayRoom.height}
+                          r="6"
+                          fill="#3B82F6"
+                          stroke="#FFFFFF"
+                          strokeWidth="2"
+                          className="cursor-se-resize"
+                          onMouseDown={(e) => {
+                            e.stopPropagation()
+                            handleRoomMouseDown(room, e as any, "bottom-right")
+                          }}
+                        />
+                        <circle
+                          cx={displayRoom.x}
+                          cy={displayRoom.y}
+                          r="6"
+                          fill="#3B82F6"
+                          stroke="#FFFFFF"
+                          strokeWidth="2"
+                          className="cursor-nw-resize"
+                          onMouseDown={(e) => {
+                            e.stopPropagation()
+                            handleRoomMouseDown(room, e as any, "top-left")
+                          }}
+                        />
+                        <circle
+                          cx={displayRoom.x + displayRoom.width}
+                          cy={displayRoom.y}
+                          r="6"
+                          fill="#3B82F6"
+                          stroke="#FFFFFF"
+                          strokeWidth="2"
+                          className="cursor-ne-resize"
+                          onMouseDown={(e) => {
+                            e.stopPropagation()
+                            handleRoomMouseDown(room, e as any, "top-right")
+                          }}
+                        />
+                        <circle
+                          cx={displayRoom.x}
+                          cy={displayRoom.y + displayRoom.height}
+                          r="6"
+                          fill="#3B82F6"
+                          stroke="#FFFFFF"
+                          strokeWidth="2"
+                          className="cursor-sw-resize"
+                          onMouseDown={(e) => {
+                            e.stopPropagation()
+                            handleRoomMouseDown(room, e as any, "bottom-left")
+                          }}
+                        />
+                      </>
+                    )}
+                  </g>
+                )
+              })}
+
+              {/* Render furniture */}
+              {floorData.furniture?.map((furniture: any) => {
+                const furnitureType = furnitureTypes[furniture.type as keyof typeof furnitureTypes]
+                if (!furnitureType) return null
+
+                return (
+                  <g key={furniture.id}>
+                    <rect
+                      x={furniture.x}
+                      y={furniture.y}
+                      width={furniture.width || furnitureType.width}
+                      height={furniture.height || furnitureType.height}
+                      fill={furnitureType.color}
+                      stroke={furnitureType.strokeColor}
+                      strokeWidth="2"
+                      rx="2"
+                      className="drop-shadow-sm"
+                    />
+                    <text
+                      x={furniture.x + (furniture.width || furnitureType.width) / 2}
+                      y={furniture.y + (furniture.height || furnitureType.height) / 2}
+                      textAnchor="middle"
+                      dominantBaseline="central"
+                      className="text-xs font-medium pointer-events-none select-none fill-white"
+                      style={{ fontSize: "8px" }}
+                    >
+                      {furnitureType.name.split(" ")[0]}
+                    </text>
+                  </g>
+                )
+              })}
 
               {/* Employee seats as SVG elements */}
               {floorData.seats?.map((seat: any) => {
@@ -606,12 +1150,14 @@ export function EnhancedSeatingChart({
               {floorData.amenities?.map((amenity: any) => {
                 const isPrinter = amenity.type === "printer"
                 const isFurniture = amenity.type === "furniture"
+                const isDraggedAmenity = draggedAmenity && draggedAmenity.id === amenity.id
+                const displayAmenity = isDraggedAmenity ? draggedAmenity : amenity
 
                 return (
                   <g key={amenity.id}>
                     <circle
-                      cx={amenity.x}
-                      cy={amenity.y}
+                      cx={displayAmenity.x}
+                      cy={displayAmenity.y}
                       r={isFurniture ? "12" : "10"}
                       className={cn(
                         "transition-all duration-200",
@@ -620,17 +1166,30 @@ export function EnhancedSeatingChart({
                           : isFurniture
                             ? "fill-amber-100 stroke-amber-500 stroke-2"
                             : "fill-white stroke-gray-300 stroke-2",
+                        isEditMode && "cursor-move hover:stroke-blue-500",
+                        selectedAmenity?.id === amenity.id && "stroke-blue-500 stroke-4",
+                        isDraggedAmenity && "opacity-70",
                       )}
-                      onMouseEnter={isPrinter ? (e) => handlePrinterMouseEnter(amenity, e as any) : undefined}
-                      onMouseLeave={isPrinter ? handlePrinterMouseLeave : undefined}
-                      onClick={isPrinter && !isEditMode ? () => handlePrinterClick(amenity) : undefined}
+                      onMouseEnter={
+                        isPrinter && !isEditMode ? (e) => handlePrinterMouseEnter(amenity, e as any) : undefined
+                      }
+                      onMouseLeave={isPrinter && !isEditMode ? handlePrinterMouseLeave : undefined}
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        if (isPrinter && !isEditMode) {
+                          handlePrinterClick(amenity)
+                        } else if (isEditMode) {
+                          setSelectedAmenity(amenity)
+                        }
+                      }}
+                      onMouseDown={isEditMode ? (e) => handleAmenityMouseDown(amenity, e as any) : undefined}
                       style={{
                         filter: "drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1))",
                       }}
                     />
                     <foreignObject
-                      x={amenity.x - 6}
-                      y={amenity.y - 6}
+                      x={displayAmenity.x - 6}
+                      y={displayAmenity.y - 6}
                       width="12"
                       height="12"
                       className="pointer-events-none"
@@ -730,6 +1289,33 @@ export function EnhancedSeatingChart({
             <span className="text-xs">Doors</span>
           </div>
         </div>
+        {isEditMode && (
+          <div className="mt-4 pt-4 border-t border-gray-200">
+            <h5 className="text-sm font-medium text-office-maroon mb-2">Edit Mode Controls</h5>
+            <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-5 text-xs text-muted-foreground">
+              <div className="flex items-center gap-2">
+                <Move className="h-3 w-3" />
+                <span>Drag to move items</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Edit3 className="h-3 w-3" />
+                <span>Drag corners to resize rooms</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Plus className="h-3 w-3" />
+                <span>Add new rooms/amenities</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Settings className="h-3 w-3" />
+                <span>Click items to select</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Trash2 className="h-3 w-3" />
+                <span>Delete selected items</span>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   )

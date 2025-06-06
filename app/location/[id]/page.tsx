@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react"
 import Link from "next/link"
-import { ChevronLeft, Printer, Bath, DoorClosed, Coffee, Wifi, Shield } from "lucide-react"
+import { ChevronLeft, Printer, Bath, DoorClosed, Coffee, Wifi, Shield, Trash2 } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
@@ -12,7 +12,8 @@ import { EmployeeCard } from "@/components/employee-card"
 import { OfficeInfo } from "@/components/office-info"
 import { EnhancedEditModePanel } from "@/components/enhanced-edit-mode-panel"
 import { AdminAccessDialog } from "@/components/admin-access-dialog"
-import { getLocationData, getAllLocations, saveLocationData } from "@/lib/data"
+import { AddFloorDialog } from "@/components/add-floor-dialog"
+import { getLocationData, getAllLocations, saveLocationData, deleteFloor } from "@/lib/data"
 
 export default function LocationPage({ params }: { params: { id: string } }) {
   const [location, setLocation] = useState<any>(null)
@@ -21,7 +22,7 @@ export default function LocationPage({ params }: { params: { id: string } }) {
   const [isAdminMode, setIsAdminMode] = useState(false)
   const [allLocations, setAllLocations] = useState<any[]>([])
 
-  useEffect(() => {
+  const loadLocationData = () => {
     // Fetch location data
     const locationData = getLocationData(params.id)
     const allLocationData = getAllLocations()
@@ -102,6 +103,10 @@ export default function LocationPage({ params }: { params: { id: string } }) {
     if (locationData && locationData.floors.length > 0) {
       setSelectedFloor(locationData.floors[0].id)
     }
+  }
+
+  useEffect(() => {
+    loadLocationData()
   }, [params.id])
 
   const handleFloorChange = (floorId: string) => {
@@ -113,6 +118,36 @@ export default function LocationPage({ params }: { params: { id: string } }) {
     if (!isAdmin) {
       // Clear selected employee when exiting admin mode
       setSelectedEmployee(null)
+    }
+  }
+
+  const handleFloorAdded = () => {
+    loadLocationData() // Refresh the data when a new floor is added
+  }
+
+  const handleDeleteFloor = (floorId: string) => {
+    if (!location || location.floors.length <= 1) {
+      alert("Cannot delete the last floor. Each office must have at least one floor.")
+      return
+    }
+
+    const floorToDelete = location.floors.find((floor: any) => floor.id === floorId)
+    if (!floorToDelete) return
+
+    if (confirm(`Are you sure you want to delete "${floorToDelete.name}"? This action cannot be undone.`)) {
+      const success = deleteFloor(params.id, floorId)
+      if (success) {
+        loadLocationData()
+        // If we deleted the currently selected floor, switch to the first available floor
+        if (selectedFloor === floorId) {
+          const remainingFloors = location.floors.filter((floor: any) => floor.id !== floorId)
+          if (remainingFloors.length > 0) {
+            setSelectedFloor(remainingFloors[0].id)
+          }
+        }
+      } else {
+        alert("Failed to delete floor. Please try again.")
+      }
     }
   }
 
@@ -168,6 +203,110 @@ export default function LocationPage({ params }: { params: { id: string } }) {
               return seat
             }),
           }
+        }
+      }
+      return floor
+    })
+
+    saveChanges(updatedLocation)
+  }
+
+  const handleUpdateRoom = (roomId: string, updates: any) => {
+    if (!location) return
+
+    const updatedLocation = { ...location }
+    updatedLocation.floors = updatedLocation.floors.map((floor: any) => {
+      if (floor.id === selectedFloor) {
+        return {
+          ...floor,
+          rooms: floor.rooms.map((room: any) => (room.id === roomId ? { ...room, ...updates } : room)),
+        }
+      }
+      return floor
+    })
+
+    saveChanges(updatedLocation)
+  }
+
+  const handleDeleteRoom = (roomId: string) => {
+    if (!location) return
+
+    const updatedLocation = { ...location }
+    updatedLocation.floors = updatedLocation.floors.map((floor: any) => {
+      if (floor.id === selectedFloor) {
+        return {
+          ...floor,
+          rooms: floor.rooms.filter((room: any) => room.id !== roomId),
+        }
+      }
+      return floor
+    })
+
+    saveChanges(updatedLocation)
+  }
+
+  const handleAddRoom = (room: any) => {
+    if (!location) return
+
+    const updatedLocation = { ...location }
+    updatedLocation.floors = updatedLocation.floors.map((floor: any) => {
+      if (floor.id === selectedFloor) {
+        return {
+          ...floor,
+          rooms: [...(floor.rooms || []), room],
+        }
+      }
+      return floor
+    })
+
+    saveChanges(updatedLocation)
+  }
+
+  const handleAddAmenity = (amenity: any) => {
+    if (!location) return
+
+    const updatedLocation = { ...location }
+    updatedLocation.floors = updatedLocation.floors.map((floor: any) => {
+      if (floor.id === selectedFloor) {
+        return {
+          ...floor,
+          amenities: [...(floor.amenities || []), amenity],
+        }
+      }
+      return floor
+    })
+
+    saveChanges(updatedLocation)
+  }
+
+  const handleUpdateAmenity = (amenityId: string, updates: any) => {
+    if (!location) return
+
+    const updatedLocation = { ...location }
+    updatedLocation.floors = updatedLocation.floors.map((floor: any) => {
+      if (floor.id === selectedFloor) {
+        return {
+          ...floor,
+          amenities: floor.amenities?.map((amenity: any) =>
+            amenity.id === amenityId ? { ...amenity, ...updates } : amenity,
+          ),
+        }
+      }
+      return floor
+    })
+
+    saveChanges(updatedLocation)
+  }
+
+  const handleDeleteAmenity = (amenityId: string) => {
+    if (!location) return
+
+    const updatedLocation = { ...location }
+    updatedLocation.floors = updatedLocation.floors.map((floor: any) => {
+      if (floor.id === selectedFloor) {
+        return {
+          ...floor,
+          amenities: floor.amenities?.filter((amenity: any) => amenity.id !== amenityId),
         }
       }
       return floor
@@ -350,7 +489,7 @@ export default function LocationPage({ params }: { params: { id: string } }) {
     return (
       <div className="container flex h-[50vh] items-center justify-center">
         <div className="text-center">
-          <h2 className="text-2xl font-bold text-office-maroon">Loading...</h2>
+          <h2 className="text-2xl font-bold text-slate-800 font-interface">Loading...</h2>
         </div>
       </div>
     )
@@ -359,14 +498,14 @@ export default function LocationPage({ params }: { params: { id: string } }) {
   const currentFloor = location.floors.find((floor: any) => floor.id === selectedFloor)
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100">
+    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-slate-100">
       <div className="container px-4 py-8">
         <div className="mb-6 flex items-center gap-4">
           <Button
             variant="outline"
             size="icon"
             asChild
-            className="border-office-maroon/20 bg-white hover:bg-office-maroon hover:text-white"
+            className="border-slate-200 bg-white hover:bg-slate-100 h-10 w-10"
           >
             <Link href="/">
               <ChevronLeft className="h-4 w-4" />
@@ -375,50 +514,80 @@ export default function LocationPage({ params }: { params: { id: string } }) {
           </Button>
           <div className="flex-1">
             <div className="flex items-center gap-2">
-              <h1 className="text-2xl font-bold text-office-maroon md:text-3xl">{location.name}</h1>
+              <h1 className="text-2xl font-bold text-slate-800 md:text-3xl font-interface">{location.name}</h1>
               {isAdminMode && (
-                <Badge variant="secondary" className="bg-orange-100 text-orange-800 border-orange-200">
+                <Badge variant="secondary" className="bg-orange-100 text-orange-800 border-orange-200 font-whitney">
                   <Shield className="mr-1 h-3 w-3" />
                   Admin Mode
                 </Badge>
               )}
               <AdminAccessDialog onAdminAccess={handleAdminAccess} isAdminMode={isAdminMode} />
             </div>
-            <p className="text-muted-foreground">{location.address}</p>
+            <p className="text-muted-foreground font-whitney">{location.address}</p>
           </div>
         </div>
 
         <div className="grid gap-6 lg:grid-cols-[1fr_300px]">
           <div className="space-y-6">
-            <Tabs value={selectedFloor} onValueChange={setSelectedFloor} className="w-full">
-              <TabsList className="w-full justify-start bg-white border border-office-maroon/20">
-                {location.floors.map((floor: any) => (
-                  <TabsTrigger
-                    key={floor.id}
-                    value={floor.id}
-                    className="data-[state=active]:bg-office-maroon data-[state=active]:text-white"
-                  >
-                    {floor.name}
-                  </TabsTrigger>
-                ))}
-              </TabsList>
-              {location.floors.map((floor: any) => (
-                <TabsContent key={floor.id} value={floor.id} className="mt-4">
-                  <div className="rounded-lg bg-background">
-                    <EnhancedSeatingChart
-                      floorData={floor}
-                      allFloors={location.floors}
-                      currentFloorId={selectedFloor}
-                      onSelectEmployee={(employee) => setSelectedEmployee(employee)}
-                      onFloorChange={handleFloorChange}
-                      isEditMode={isAdminMode}
-                      onUpdateSeatPosition={handleUpdateSeatPosition}
-                      onMoveSeat={handleMoveSeat}
-                    />
+            <div className="flex items-center justify-between">
+              <Tabs value={selectedFloor} onValueChange={setSelectedFloor} className="flex-1">
+                <div className="flex items-center justify-between">
+                  <TabsList className="bg-white border border-slate-200">
+                    {location.floors.map((floor: any) => (
+                      <TabsTrigger
+                        key={floor.id}
+                        value={floor.id}
+                        className="data-[state=active]:bg-blue-600 data-[state=active]:text-white font-whitney"
+                      >
+                        {floor.name}
+                      </TabsTrigger>
+                    ))}
+                  </TabsList>
+
+                  <div className="flex items-center gap-2 ml-4">
+                    {isAdminMode && (
+                      <>
+                        <AddFloorDialog locationId={params.id} onFloorAdded={handleFloorAdded} />
+                        {location.floors.length > 1 && (
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => handleDeleteFloor(selectedFloor)}
+                            className="border-red-200 text-red-700 hover:bg-red-50 h-10 px-4"
+                          >
+                            <Trash2 className="mr-2 h-4 w-4" />
+                            Delete Floor
+                          </Button>
+                        )}
+                      </>
+                    )}
                   </div>
-                </TabsContent>
-              ))}
-            </Tabs>
+                </div>
+
+                {location.floors.map((floor: any) => (
+                  <TabsContent key={floor.id} value={floor.id} className="mt-4">
+                    <div className="rounded-lg bg-background">
+                      <EnhancedSeatingChart
+                        floorData={floor}
+                        allFloors={location.floors}
+                        currentFloorId={selectedFloor}
+                        onSelectEmployee={(employee) => setSelectedEmployee(employee)}
+                        onFloorChange={handleFloorChange}
+                        isEditMode={isAdminMode}
+                        onUpdateSeatPosition={handleUpdateSeatPosition}
+                        onMoveSeat={handleMoveSeat}
+                        onUpdateRoom={handleUpdateRoom}
+                        onDeleteRoom={handleDeleteRoom}
+                        onAddRoom={handleAddRoom}
+                        onAddAmenity={handleAddAmenity}
+                        onUpdateAmenity={handleUpdateAmenity}
+                        onDeleteAmenity={handleDeleteAmenity}
+                      />
+                    </div>
+                  </TabsContent>
+                ))}
+              </Tabs>
+            </div>
           </div>
 
           <div className="space-y-6">
@@ -442,12 +611,12 @@ export default function LocationPage({ params }: { params: { id: string } }) {
                 currentFloorId={selectedFloor}
               />
             ) : (
-              <div className="h-fit rounded-lg border border-office-maroon/20 bg-white p-4 shadow-sm lg:sticky lg:top-4">
+              <div className="h-fit rounded-lg border border-slate-200 bg-white p-4 shadow-sm lg:sticky lg:top-4">
                 {selectedEmployee ? (
                   <EmployeeCard employee={selectedEmployee} onClose={() => setSelectedEmployee(null)} />
                 ) : (
                   <div className="flex h-[300px] flex-col items-center justify-center text-center text-muted-foreground">
-                    <p>Select a seat to view employee details</p>
+                    <p className="font-whitney">Select a seat to view employee details</p>
                   </div>
                 )}
               </div>
