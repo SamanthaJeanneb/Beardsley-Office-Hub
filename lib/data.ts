@@ -1,1333 +1,771 @@
-// Auto-generated office seating data - Last updated: 2025-06-09T17:53:51.108Z
-// This file is automatically updated when admins make changes through the Office Hub
-
 // Storage key for localStorage
 const STORAGE_KEY = "office-seating-charts-data"
 
-// Default location data (updated from admin panel)
+// Default location data (restored from the provided JSON)
 const defaultLocations = {
-  "syracuse": {
-    "id": "syracuse",
-    "name": "Syracuse Office",
-    "address": "1115 Solar Street, Ste 102 Syracuse, NY 13204",
-    "image": "/SyracuseOffice.jpg",
-    "phone": "315-472-6980",
-    "hours": "Mon-Fri: 8:00 AM - 5:00 PM",
-    "wifi": "Syracuse-Office-Net",
-    "amenitiesList": [
-      {
-        "name": "Printers (4)"
-      },
-      {
-        "name": "Restrooms"
-      },
-      {
-        "name": "Emergency Exits"
-      },
-      {
-        "name": "Kitchen/Café"
-      },
-      {
-        "name": "Conference Rooms (6)"
-      },
-      {
-        "name": "Wi-Fi"
-      }
+  syracuse: {
+    id: "syracuse",
+    name: "Syracuse Office",
+    address: "1115 Solar Street, Ste 102 Syracuse, NY 13204",
+    image: "/SyracuseOffice.jpg",
+    phone: "315-472-6980",
+    hours: "Mon-Fri: 8:00 AM - 5:00 PM",
+    wifi: "Syracuse-Office-Net",
+    amenitiesList: [
+      { name: "Printers (4)" },
+      { name: "Restrooms" },
+      { name: "Emergency Exits" },
+      { name: "Kitchen/Café" },
+      { name: "Conference Rooms (6)" },
+      { name: "Wi-Fi" },
     ],
-    "quickLinks": [
-      {
-        "name": "IT Support",
-        "url": "#"
-      },
-      {
-        "name": "Book Room",
-        "url": "#"
-      },
-      {
-        "name": "Report Issue",
-        "url": "#"
-      }
+    quickLinks: [
+      { name: "IT Support", url: "#" },
+      { name: "Book Room", url: "#" },
+      { name: "Report Issue", url: "#" },
     ],
-    "floors": [
+    floors: [
       {
-        "id": "floor-1",
-        "name": "Floor 1",
-        "rooms": [
-          {
-            "id": "room-1",
-            "name": "Reception",
-            "x": 50,
-            "y": 50,
-            "width": 200,
-            "height": 100,
-            "type": "reception"
-          },
-          {
-            "id": "room-2",
-            "name": "Open Space",
-            "x": 50,
-            "y": 170,
-            "width": 500,
-            "height": 300,
-            "type": "office"
-          },
-          {
-            "id": "room-3",
-            "name": "Meeting Room A",
-            "x": 300,
-            "y": 50,
-            "width": 150,
-            "height": 100,
-            "type": "conference"
-          },
-          {
-            "id": "room-4",
-            "name": "Meeting Room B",
-            "x": 470,
-            "y": 50,
-            "width": 150,
-            "height": 100,
-            "type": "conference"
-          }
+        id: "floor-1",
+        name: "Floor 1",
+        rooms: [
+          { id: "room-1", name: "Reception", x: 50, y: 50, width: 200, height: 100, type: "reception" },
+          { id: "room-2", name: "Open Space", x: 50, y: 170, width: 500, height: 300, type: "office" },
+          { id: "room-3", name: "Meeting Room A", x: 300, y: 50, width: 150, height: 100, type: "conference" },
+          { id: "room-4", name: "Meeting Room B", x: 470, y: 50, width: 150, height: 100, type: "conference" },
         ],
-        "furniture": [
-          {
-            "id": "desk-1",
-            "type": "desk",
-            "x": 120,
-            "y": 80,
-            "width": 60,
-            "height": 40,
-            "rotation": 0
-          },
-          {
-            "id": "chair-1",
-            "type": "chair",
-            "x": 140,
-            "y": 125,
-            "width": 20,
-            "height": 20,
-            "rotation": 0
-          },
-          {
-            "id": "desk-2",
-            "type": "desk",
-            "x": 80,
-            "y": 200,
-            "width": 60,
-            "height": 40,
-            "rotation": 0
-          },
-          {
-            "id": "desk-3",
-            "type": "desk",
-            "x": 160,
-            "y": 200,
-            "width": 60,
-            "height": 40,
-            "rotation": 0
-          },
-          {
-            "id": "desk-4",
-            "type": "desk",
-            "x": 240,
-            "y": 200,
-            "width": 60,
-            "height": 40,
-            "rotation": 0
-          },
-          {
-            "id": "desk-5",
-            "type": "desk",
-            "x": 320,
-            "y": 200,
-            "width": 60,
-            "height": 40,
-            "rotation": 0
-          },
-          {
-            "id": "desk-6",
-            "type": "desk",
-            "x": 400,
-            "y": 200,
-            "width": 60,
-            "height": 40,
-            "rotation": 0
-          },
-          {
-            "id": "desk-7",
-            "type": "desk",
-            "x": 80,
-            "y": 280,
-            "width": 60,
-            "height": 40,
-            "rotation": 0
-          },
-          {
-            "id": "desk-8",
-            "type": "desk",
-            "x": 160,
-            "y": 280,
-            "width": 60,
-            "height": 40,
-            "rotation": 0
-          },
-          {
-            "id": "desk-9",
-            "type": "desk",
-            "x": 240,
-            "y": 280,
-            "width": 60,
-            "height": 40,
-            "rotation": 0
-          },
-          {
-            "id": "desk-10",
-            "type": "desk",
-            "x": 320,
-            "y": 280,
-            "width": 60,
-            "height": 40,
-            "rotation": 0
-          },
-          {
-            "id": "desk-11",
-            "type": "desk",
-            "x": 400,
-            "y": 280,
-            "width": 60,
-            "height": 40,
-            "rotation": 0
-          },
-          {
-            "id": "table-1",
-            "type": "table",
-            "x": 315,
-            "y": 75,
-            "width": 120,
-            "height": 50,
-            "rotation": 0
-          },
-          {
-            "id": "table-2",
-            "type": "table",
-            "x": 485,
-            "y": 75,
-            "width": 120,
-            "height": 50,
-            "rotation": 0
-          },
-          {
-            "id": "cabinet-1",
-            "type": "cabinet",
-            "x": 480,
-            "y": 200,
-            "width": 40,
-            "height": 30,
-            "rotation": 0
-          },
-          {
-            "id": "cabinet-2",
-            "type": "cabinet",
-            "x": 480,
-            "y": 240,
-            "width": 40,
-            "height": 30,
-            "rotation": 0
-          }
+        furniture: [
+          { id: "desk-1", type: "desk", x: 120, y: 80, width: 60, height: 40, rotation: 0 },
+          { id: "chair-1", type: "chair", x: 140, y: 125, width: 20, height: 20, rotation: 0 },
+          { id: "desk-2", type: "desk", x: 80, y: 200, width: 60, height: 40, rotation: 0 },
+          { id: "desk-3", type: "desk", x: 160, y: 200, width: 60, height: 40, rotation: 0 },
+          { id: "desk-4", type: "desk", x: 240, y: 200, width: 60, height: 40, rotation: 0 },
+          { id: "desk-5", type: "desk", x: 320, y: 200, width: 60, height: 40, rotation: 0 },
+          { id: "desk-6", type: "desk", x: 400, y: 200, width: 60, height: 40, rotation: 0 },
+          { id: "desk-7", type: "desk", x: 80, y: 280, width: 60, height: 40, rotation: 0 },
+          { id: "desk-8", type: "desk", x: 160, y: 280, width: 60, height: 40, rotation: 0 },
+          { id: "desk-9", type: "desk", x: 240, y: 280, width: 60, height: 40, rotation: 0 },
+          { id: "desk-10", type: "desk", x: 320, y: 280, width: 60, height: 40, rotation: 0 },
+          { id: "desk-11", type: "desk", x: 400, y: 280, width: 60, height: 40, rotation: 0 },
+          { id: "table-1", type: "table", x: 315, y: 75, width: 120, height: 50, rotation: 0 },
+          { id: "table-2", type: "table", x: 485, y: 75, width: 120, height: 50, rotation: 0 },
+          { id: "cabinet-1", type: "cabinet", x: 480, y: 200, width: 40, height: 30, rotation: 0 },
+          { id: "cabinet-2", type: "cabinet", x: 480, y: 240, width: 40, height: 30, rotation: 0 },
         ],
-        "amenities": [
+        amenities: [
           {
-            "id": "printer-1",
-            "type": "printer",
-            "name": "HP LaserJet Pro",
-            "ipAddress": "192.168.1.101",
-            "queueName": "SYR-PRINT-01",
-            "status": "Online",
-            "x": 450,
-            "y": 120
+            id: "printer-1",
+            type: "printer",
+            name: "HP LaserJet Pro",
+            ipAddress: "192.168.1.101",
+            queueName: "SYR-PRINT-01",
+            status: "Online",
+            x: 450,
+            y: 120,
           },
-          {
-            "id": "restroom-1",
-            "type": "restroom",
-            "name": "Restroom",
-            "x": 450,
-            "y": 50
-          },
-          {
-            "id": "exit-1",
-            "type": "exit",
-            "name": "Emergency Exit",
-            "x": 520,
-            "y": 50
-          },
-          {
-            "id": "kitchen-1",
-            "type": "kitchen",
-            "name": "Kitchen",
-            "x": 520,
-            "y": 120
-          }
+          { id: "restroom-1", type: "restroom", name: "Restroom", x: 450, y: 50 },
+          { id: "exit-1", type: "exit", name: "Emergency Exit", x: 520, y: 50 },
+          { id: "kitchen-1", type: "kitchen", name: "Kitchen", x: 520, y: 120 },
         ],
-        "seats": [
+        seats: [
           {
-            "id": "seat-1",
-            "x": 110,
-            "y": 220,
-            "rotation": 0,
-            "furnitureId": "desk-2",
-            "employee": {
-              "id": "emp-1",
-              "name": "Jared Heinl",
-              "title": "Principal",
-              "email": "jheinl@beardsley.com",
-              "phone": "518-483-1585 4231",
-              "employeeNumber": "00001",
-              "profileUrl": "#",
-              "avatar": "/placeholder.svg?height=40&width=40",
-              "notes": "Works at the Syracuse office."
-            }
+            id: "seat-1",
+            x: 110,
+            y: 220,
+            rotation: 0,
+            furnitureId: "desk-2",
+            employee: {
+              id: "emp-1",
+              name: "Jared Heinl",
+              title: "Principal",
+              email: "jheinl@beardsley.com",
+              phone: "518-483-1585 4231",
+              employeeNumber: "00001",
+              profileUrl: "#",
+              avatar: "/placeholder.svg?height=40&width=40",
+              notes: "Works at the Syracuse office.",
+            },
           },
           {
-            "id": "seat-2",
-            "x": 190,
-            "y": 220,
-            "rotation": 0,
-            "furnitureId": "desk-3",
-            "employee": {
-              "id": "emp-2",
-              "name": "Barry Halperin",
-              "title": "Principal",
-              "email": "bhalperin@beardsley.com",
-              "phone": "315-472-6980 3311",
-              "employeeNumber": "00002",
-              "profileUrl": "#",
-              "avatar": "/placeholder.svg?height=40&width=40",
-              "notes": "Works at the Syracuse office."
-            }
+            id: "seat-2",
+            x: 190,
+            y: 220,
+            rotation: 0,
+            furnitureId: "desk-3",
+            employee: {
+              id: "emp-2",
+              name: "Barry Halperin",
+              title: "Principal",
+              email: "bhalperin@beardsley.com",
+              phone: "315-472-6980 3311",
+              employeeNumber: "00002",
+              profileUrl: "#",
+              avatar: "/placeholder.svg?height=40&width=40",
+              notes: "Works at the Syracuse office.",
+            },
           },
           {
-            "id": "seat-3",
-            "x": 270,
-            "y": 220,
-            "rotation": 0,
-            "furnitureId": "desk-4",
-            "employee": {
-              "id": "emp-3",
-              "name": "Thomas Ascienzo",
-              "title": "Electrical Senior Designer",
-              "email": "tascienzo@beardsley.com",
-              "phone": "315-472-6980 3323",
-              "employeeNumber": "00003",
-              "profileUrl": "#",
-              "avatar": "/placeholder.svg?height=40&width=40",
-              "notes": "Works at the Syracuse office."
-            }
+            id: "seat-3",
+            x: 270,
+            y: 220,
+            rotation: 0,
+            furnitureId: "desk-4",
+            employee: {
+              id: "emp-3",
+              name: "Thomas Ascienzo",
+              title: "Electrical Senior Designer",
+              email: "tascienzo@beardsley.com",
+              phone: "315-472-6980 3323",
+              employeeNumber: "00003",
+              profileUrl: "#",
+              avatar: "/placeholder.svg?height=40&width=40",
+              notes: "Works at the Syracuse office.",
+            },
           },
           {
-            "id": "seat-4",
-            "x": 350,
-            "y": 220,
-            "rotation": 0,
-            "furnitureId": "desk-5",
-            "employee": {
-              "id": "emp-4",
-              "name": "Seth Livermore",
-              "title": "Civil Engineer V",
-              "email": "slivermore@beardsley.com",
-              "phone": "315-472-6980 3315",
-              "employeeNumber": "00004",
-              "profileUrl": "#",
-              "avatar": "/placeholder.svg?height=40&width=40",
-              "notes": "Works at the Syracuse office."
-            }
+            id: "seat-4",
+            x: 350,
+            y: 220,
+            rotation: 0,
+            furnitureId: "desk-5",
+            employee: {
+              id: "emp-4",
+              name: "Seth Livermore",
+              title: "Civil Engineer V",
+              email: "slivermore@beardsley.com",
+              phone: "315-472-6980 3315",
+              employeeNumber: "00004",
+              profileUrl: "#",
+              avatar: "/placeholder.svg?height=40&width=40",
+              notes: "Works at the Syracuse office.",
+            },
           },
           {
-            "id": "seat-5",
-            "x": 430,
-            "y": 220,
-            "rotation": 0,
-            "furnitureId": "desk-6",
-            "employee": {
-              "id": "emp-5",
-              "name": "Lillian Marshall",
-              "title": "Administrative Assistant",
-              "email": "lmarshall@beardsley.com",
-              "phone": "315-472-6980 3327",
-              "employeeNumber": "00005",
-              "profileUrl": "#",
-              "avatar": "/placeholder.svg?height=40&width=40",
-              "notes": "Works at the Syracuse office."
-            }
+            id: "seat-5",
+            x: 430,
+            y: 220,
+            rotation: 0,
+            furnitureId: "desk-6",
+            employee: {
+              id: "emp-5",
+              name: "Lillian Marshall",
+              title: "Administrative Assistant",
+              email: "lmarshall@beardsley.com",
+              phone: "315-472-6980 3327",
+              employeeNumber: "00005",
+              profileUrl: "#",
+              avatar: "/placeholder.svg?height=40&width=40",
+              notes: "Works at the Syracuse office.",
+            },
           },
           {
-            "id": "seat-6",
-            "x": 110,
-            "y": 300,
-            "rotation": 0,
-            "furnitureId": "desk-7",
-            "employee": {
-              "id": "emp-6",
-              "name": "Allie Henderson",
-              "title": "Landscape Designer",
-              "email": "ahenderson@beardsley.com",
-              "phone": "315-472-6980 3328",
-              "employeeNumber": "00006",
-              "profileUrl": "#",
-              "avatar": "/placeholder.svg?height=40&width=40",
-              "notes": "Works at the Syracuse office."
-            }
+            id: "seat-6",
+            x: 110,
+            y: 300,
+            rotation: 0,
+            furnitureId: "desk-7",
+            employee: {
+              id: "emp-6",
+              name: "Allie Henderson",
+              title: "Landscape Designer",
+              email: "ahenderson@beardsley.com",
+              phone: "315-472-6980 3328",
+              employeeNumber: "00006",
+              profileUrl: "#",
+              avatar: "/placeholder.svg?height=40&width=40",
+              notes: "Works at the Syracuse office.",
+            },
           },
           {
-            "id": "seat-7",
-            "x": 190,
-            "y": 300,
-            "rotation": 0,
-            "furnitureId": "desk-8",
-            "employee": {
-              "id": "emp-7",
-              "name": "Scott Folts",
-              "title": "Civil Engineer",
-              "email": "sfolts@beardsley.com",
-              "phone": "315-472-6980 3329",
-              "employeeNumber": "00007",
-              "profileUrl": "#",
-              "avatar": "/placeholder.svg?height=40&width=40",
-              "notes": "Works at the Syracuse office."
-            }
+            id: "seat-7",
+            x: 190,
+            y: 300,
+            rotation: 0,
+            furnitureId: "desk-8",
+            employee: {
+              id: "emp-7",
+              name: "Scott Folts",
+              title: "Civil Engineer",
+              email: "sfolts@beardsley.com",
+              phone: "315-472-6980 3329",
+              employeeNumber: "00007",
+              profileUrl: "#",
+              avatar: "/placeholder.svg?height=40&width=40",
+              notes: "Works at the Syracuse office.",
+            },
           },
           {
-            "id": "seat-8",
-            "x": 270,
-            "y": 300,
-            "rotation": 0,
-            "furnitureId": "desk-9",
-            "employee": {
-              "id": "emp-8",
-              "name": "Jacob Perez Gangi",
-              "title": "Architectural Designer",
-              "email": "jperezgangi@beardsley.com",
-              "phone": "315-472-6980 3330",
-              "employeeNumber": "00008",
-              "profileUrl": "#",
-              "avatar": "/placeholder.svg?height=40&width=40",
-              "notes": "Works at the Syracuse office."
-            }
+            id: "seat-8",
+            x: 270,
+            y: 300,
+            rotation: 0,
+            furnitureId: "desk-9",
+            employee: {
+              id: "emp-8",
+              name: "Jacob Perez Gangi",
+              title: "Architectural Designer",
+              email: "jperezgangi@beardsley.com",
+              phone: "315-472-6980 3330",
+              employeeNumber: "00008",
+              profileUrl: "#",
+              avatar: "/placeholder.svg?height=40&width=40",
+              notes: "Works at the Syracuse office.",
+            },
           },
           {
-            "id": "seat-9",
-            "x": 350,
-            "y": 300,
-            "rotation": 0,
-            "furnitureId": "desk-10",
-            "employee": {
-              "id": "emp-9",
-              "name": "Alex Clement",
-              "title": "Civil Engineer",
-              "email": "aclement@beardsley.com",
-              "phone": "315-472-6980 3331",
-              "employeeNumber": "00009",
-              "profileUrl": "#",
-              "avatar": "/placeholder.svg?height=40&width=40",
-              "notes": "Works at the Syracuse office."
-            }
+            id: "seat-9",
+            x: 350,
+            y: 300,
+            rotation: 0,
+            furnitureId: "desk-10",
+            employee: {
+              id: "emp-9",
+              name: "Alex Clement",
+              title: "Civil Engineer",
+              email: "aclement@beardsley.com",
+              phone: "315-472-6980 3331",
+              employeeNumber: "00009",
+              profileUrl: "#",
+              avatar: "/placeholder.svg?height=40&width=40",
+              notes: "Works at the Syracuse office.",
+            },
           },
           {
-            "id": "seat-10",
-            "x": 430,
-            "y": 300,
-            "rotation": 0,
-            "furnitureId": "desk-11",
-            "employee": {
-              "id": "emp-10",
-              "name": "Nicholas Hartung",
-              "title": "Electrical Designer",
-              "email": "nhartung@beardsley.com",
-              "phone": "315-472-6980 3332",
-              "employeeNumber": "00010",
-              "profileUrl": "#",
-              "avatar": "/placeholder.svg?height=40&width=40",
-              "notes": "Works at the Syracuse office."
-            }
+            id: "seat-10",
+            x: 430,
+            y: 300,
+            rotation: 0,
+            furnitureId: "desk-11",
+            employee: {
+              id: "emp-10",
+              name: "Nicholas Hartung",
+              title: "Electrical Designer",
+              email: "nhartung@beardsley.com",
+              phone: "315-472-6980 3332",
+              employeeNumber: "00010",
+              profileUrl: "#",
+              avatar: "/placeholder.svg?height=40&width=40",
+              notes: "Works at the Syracuse office.",
+            },
+          },
+          // Additional seats for remaining Syracuse employees
+          {
+            id: "seat-11",
+            x: 110,
+            y: 380,
+            rotation: 0,
+            furnitureId: "desk-12",
+            employee: {
+              id: "emp-11",
+              name: "Chelsea Bush",
+              title: "Administrative Assistant",
+              email: "cbush@beardsley.com",
+              phone: "315-472-6980 3333",
+              employeeNumber: "00011",
+              profileUrl: "#",
+              avatar: "/placeholder.svg?height=40&width=40",
+              notes: "Works at the Syracuse office.",
+            },
           },
           {
-            "id": "seat-11",
-            "x": 110,
-            "y": 380,
-            "rotation": 0,
-            "furnitureId": "desk-12",
-            "employee": {
-              "id": "emp-11",
-              "name": "Chelsea Bush",
-              "title": "Administrative Assistant",
-              "email": "cbush@beardsley.com",
-              "phone": "315-472-6980 3333",
-              "employeeNumber": "00011",
-              "profileUrl": "#",
-              "avatar": "/placeholder.svg?height=40&width=40",
-              "notes": "Works at the Syracuse office."
-            }
+            id: "seat-12",
+            x: 190,
+            y: 380,
+            rotation: 0,
+            furnitureId: "desk-13",
+            employee: {
+              id: "emp-12",
+              name: "Michelle Thompson",
+              title: "Project Manager",
+              email: "mthompson@beardsley.com",
+              phone: "315-472-6980 3334",
+              employeeNumber: "00013",
+              profileUrl: "#",
+              avatar: "/placeholder.svg?height=40&width=40",
+              notes: "Works at the Syracuse office.",
+            },
           },
           {
-            "id": "seat-12",
-            "x": 190,
-            "y": 380,
-            "rotation": 0,
-            "furnitureId": "desk-13",
-            "employee": {
-              "id": "emp-12",
-              "name": "Michelle Thompson",
-              "title": "Project Manager",
-              "email": "mthompson@beardsley.com",
-              "phone": "315-472-6980 3334",
-              "employeeNumber": "00013",
-              "profileUrl": "#",
-              "avatar": "/placeholder.svg?height=40&width=40",
-              "notes": "Works at the Syracuse office."
-            }
+            id: "seat-13",
+            x: 270,
+            y: 380,
+            rotation: 0,
+            furnitureId: "desk-14",
+            employee: {
+              id: "emp-13",
+              name: "Brittany Varengo",
+              title: "Marketing Coordinator",
+              email: "bvarengo@beardsley.com",
+              phone: "315-472-6980 3335",
+              employeeNumber: "00014",
+              profileUrl: "#",
+              avatar: "/placeholder.svg?height=40&width=40",
+              notes: "Works at the Syracuse office.",
+            },
           },
           {
-            "id": "seat-13",
-            "x": 270,
-            "y": 380,
-            "rotation": 0,
-            "furnitureId": "desk-14",
-            "employee": {
-              "id": "emp-13",
-              "name": "Brittany Varengo",
-              "title": "Marketing Coordinator",
-              "email": "bvarengo@beardsley.com",
-              "phone": "315-472-6980 3335",
-              "employeeNumber": "00014",
-              "profileUrl": "#",
-              "avatar": "/placeholder.svg?height=40&width=40",
-              "notes": "Works at the Syracuse office."
-            }
+            id: "seat-14",
+            x: 350,
+            y: 380,
+            rotation: 0,
+            furnitureId: "desk-15",
+            employee: {
+              id: "emp-14",
+              name: "Caleb Sayers",
+              title: "Civil Engineer",
+              email: "csayers@beardsley.com",
+              phone: "315-472-6980 3336",
+              employeeNumber: "00015",
+              profileUrl: "#",
+              avatar: "/placeholder.svg?height=40&width=40",
+              notes: "Works at the Syracuse office.",
+            },
           },
           {
-            "id": "seat-14",
-            "x": 350,
-            "y": 380,
-            "rotation": 0,
-            "furnitureId": "desk-15",
-            "employee": {
-              "id": "emp-14",
-              "name": "Caleb Sayers",
-              "title": "Civil Engineer",
-              "email": "csayers@beardsley.com",
-              "phone": "315-472-6980 3336",
-              "employeeNumber": "00015",
-              "profileUrl": "#",
-              "avatar": "/placeholder.svg?height=40&width=40",
-              "notes": "Works at the Syracuse office."
-            }
+            id: "seat-15",
+            x: 430,
+            y: 380,
+            rotation: 0,
+            furnitureId: "desk-16",
+            employee: {
+              id: "emp-15",
+              name: "Justin Chiera",
+              title: "Electrical Engineer",
+              email: "jchiera@beardsley.com",
+              phone: "315-472-6980 3337",
+              employeeNumber: "00016",
+              profileUrl: "#",
+              avatar: "/placeholder.svg?height=40&width=40",
+              notes: "Works at the Syracuse office.",
+            },
           },
           {
-            "id": "seat-15",
-            "x": 430,
-            "y": 380,
-            "rotation": 0,
-            "furnitureId": "desk-16",
-            "employee": {
-              "id": "emp-15",
-              "name": "Justin Chiera",
-              "title": "Electrical Engineer",
-              "email": "jchiera@beardsley.com",
-              "phone": "315-472-6980 3337",
-              "employeeNumber": "00016",
-              "profileUrl": "#",
-              "avatar": "/placeholder.svg?height=40&width=40",
-              "notes": "Works at the Syracuse office."
-            }
+            id: "seat-16",
+            x: 110,
+            y: 460,
+            rotation: 0,
+            furnitureId: "desk-17",
+            employee: {
+              id: "emp-16",
+              name: "Gabriel Amaya",
+              title: "Architectural Designer",
+              email: "gamaya@beardsley.com",
+              phone: "315-472-6980 3338",
+              employeeNumber: "00017",
+              profileUrl: "#",
+              avatar: "/placeholder.svg?height=40&width=40",
+              notes: "Works at the Syracuse office.",
+            },
           },
           {
-            "id": "seat-16",
-            "x": 110,
-            "y": 460,
-            "rotation": 0,
-            "furnitureId": "desk-17",
-            "employee": {
-              "id": "emp-16",
-              "name": "Gabriel Amaya",
-              "title": "Architectural Designer",
-              "email": "gamaya@beardsley.com",
-              "phone": "315-472-6980 3338",
-              "employeeNumber": "00017",
-              "profileUrl": "#",
-              "avatar": "/placeholder.svg?height=40&width=40",
-              "notes": "Works at the Syracuse office."
-            }
+            id: "seat-17",
+            x: 190,
+            y: 460,
+            rotation: 0,
+            furnitureId: "desk-18",
+            employee: {
+              id: "emp-17",
+              name: "Adrianna Mondello",
+              title: "Intern",
+              email: "amondello@beardsley.com",
+              phone: "518-940-4554",
+              employeeNumber: "00374",
+              profileUrl: "#",
+              avatar: "/placeholder.svg?height=40&width=40",
+              notes: "Works at the Syracuse office.",
+            },
           },
-          {
-            "id": "seat-17",
-            "x": 190,
-            "y": 460,
-            "rotation": 0,
-            "furnitureId": "desk-18",
-            "employee": {
-              "id": "emp-17",
-              "name": "Adrianna Mondello",
-              "title": "Intern",
-              "email": "amondello@beardsley.com",
-              "phone": "518-940-4554",
-              "employeeNumber": "00374",
-              "profileUrl": "#",
-              "avatar": "/placeholder.svg?height=40&width=40",
-              "notes": "Works at the Syracuse office."
-            }
-          }
-        ]
-      }
-    ]
+        ],
+      },
+    ],
   },
-  "auburn": {
-    "id": "auburn",
-    "name": "Auburn Office",
-    "address": "64 South Street, Auburn, NY 13021",
-    "image": "/AuburnOffice.jpg",
-    "phone": "315-253-7301",
-    "hours": "Mon-Fri: 8:00 AM - 5:30 PM",
-    "wifi": "Auburn-Office-Net",
-    "amenitiesList": [
-      {
-        "name": "Printers (3)"
-      },
-      {
-        "name": "Restrooms"
-      },
-      {
-        "name": "Emergency Exits"
-      },
-      {
-        "name": "Kitchen Areas (2)"
-      },
-      {
-        "name": "Conference Rooms (6)"
-      },
-      {
-        "name": "Wi-Fi"
-      }
+
+  auburn: {
+    id: "auburn",
+    name: "Auburn Office",
+    address: "64 South Street, Auburn, NY 13021",
+    image: "/AuburnOffice.jpg",
+    phone: "315-253-7301",
+    hours: "Mon-Fri: 8:00 AM - 5:30 PM",
+    wifi: "Auburn-Office-Net",
+    amenitiesList: [
+      { name: "Printers (3)" },
+      { name: "Restrooms" },
+      { name: "Emergency Exits" },
+      { name: "Kitchen Areas (2)" },
+      { name: "Conference Rooms (6)" },
+      { name: "Wi-Fi" },
     ],
-    "quickLinks": [
-      {
-        "name": "IT Support",
-        "url": "#"
-      },
-      {
-        "name": "Book Room",
-        "url": "#"
-      },
-      {
-        "name": "Report Issue",
-        "url": "#"
-      }
+    quickLinks: [
+      { name: "IT Support", url: "#" },
+      { name: "Book Room", url: "#" },
+      { name: "Report Issue", url: "#" },
     ],
-    "floors": [
+    floors: [
       {
-        "id": "first-floor",
-        "name": "First Floor",
-        "rooms": [
-          {
-            "id": "lobby",
-            "name": "Lobby",
-            "x": 50,
-            "y": 50,
-            "width": 150,
-            "height": 100,
-            "type": "reception"
-          },
-          {
-            "id": "conf-room-1",
-            "name": "Conference Room 1",
-            "x": 220,
-            "y": 50,
-            "width": 120,
-            "height": 80,
-            "type": "conference"
-          },
-          {
-            "id": "open-area-1",
-            "name": "Open Area",
-            "x": 50,
-            "y": 170,
-            "width": 400,
-            "height": 200,
-            "type": "office"
-          }
+        id: "first-floor",
+        name: "First Floor",
+        rooms: [
+          { id: "lobby", name: "Lobby", x: 50, y: 50, width: 150, height: 100, type: "reception" },
+          { id: "conf-room-1", name: "Conference Room 1", x: 220, y: 50, width: 120, height: 80, type: "conference" },
+          { id: "open-area-1", name: "Open Area", x: 50, y: 170, width: 400, height: 200, type: "office" },
         ],
-        "furniture": [
-          {
-            "id": "desk-f1-1",
-            "type": "desk",
-            "x": 80,
-            "y": 200,
-            "width": 60,
-            "height": 40,
-            "rotation": 0
-          },
-          {
-            "id": "desk-f1-2",
-            "type": "desk",
-            "x": 160,
-            "y": 200,
-            "width": 60,
-            "height": 40,
-            "rotation": 0
-          },
-          {
-            "id": "desk-f1-3",
-            "type": "desk",
-            "x": 240,
-            "y": 200,
-            "width": 60,
-            "height": 40,
-            "rotation": 0
-          },
-          {
-            "id": "desk-f1-4",
-            "type": "desk",
-            "x": 320,
-            "y": 200,
-            "width": 60,
-            "height": 40,
-            "rotation": 0
-          },
-          {
-            "id": "desk-f1-5",
-            "type": "desk",
-            "x": 80,
-            "y": 280,
-            "width": 60,
-            "height": 40,
-            "rotation": 0
-          },
-          {
-            "id": "desk-f1-6",
-            "type": "desk",
-            "x": 160,
-            "y": 280,
-            "width": 60,
-            "height": 40,
-            "rotation": 0
-          },
-          {
-            "id": "desk-f1-7",
-            "type": "desk",
-            "x": 240,
-            "y": 280,
-            "width": 60,
-            "height": 40,
-            "rotation": 0
-          },
-          {
-            "id": "desk-f1-8",
-            "type": "desk",
-            "x": 320,
-            "y": 280,
-            "width": 60,
-            "height": 40,
-            "rotation": 0
-          }
+        furniture: [
+          { id: "desk-f1-1", type: "desk", x: 80, y: 200, width: 60, height: 40, rotation: 0 },
+          { id: "desk-f1-2", type: "desk", x: 160, y: 200, width: 60, height: 40, rotation: 0 },
+          { id: "desk-f1-3", type: "desk", x: 240, y: 200, width: 60, height: 40, rotation: 0 },
+          { id: "desk-f1-4", type: "desk", x: 320, y: 200, width: 60, height: 40, rotation: 0 },
+          { id: "desk-f1-5", type: "desk", x: 80, y: 280, width: 60, height: 40, rotation: 0 },
+          { id: "desk-f1-6", type: "desk", x: 160, y: 280, width: 60, height: 40, rotation: 0 },
+          { id: "desk-f1-7", type: "desk", x: 240, y: 280, width: 60, height: 40, rotation: 0 },
+          { id: "desk-f1-8", type: "desk", x: 320, y: 280, width: 60, height: 40, rotation: 0 },
         ],
-        "amenities": [
+        amenities: [
           {
-            "id": "printer-f1",
-            "type": "printer",
-            "name": "HP OfficeJet Pro 9015e",
-            "ipAddress": "192.168.4.101",
-            "queueName": "AUBURN-F1-PRINT-01",
-            "status": "Online",
-            "x": 400,
-            "y": 120
+            id: "printer-f1",
+            type: "printer",
+            name: "HP OfficeJet Pro 9015e",
+            ipAddress: "192.168.4.101",
+            queueName: "AUBURN-F1-PRINT-01",
+            status: "Online",
+            x: 400,
+            y: 120,
           },
-          {
-            "id": "restroom-f1",
-            "type": "restroom",
-            "name": "Restroom",
-            "x": 400,
-            "y": 50
-          },
-          {
-            "id": "exit-f1",
-            "type": "exit",
-            "name": "Emergency Exit",
-            "x": 470,
-            "y": 50
-          },
-          {
-            "id": "kitchen-f1",
-            "type": "kitchen",
-            "name": "Kitchen",
-            "x": 470,
-            "y": 120
-          }
+          { id: "restroom-f1", type: "restroom", name: "Restroom", x: 400, y: 50 },
+          { id: "exit-f1", type: "exit", name: "Emergency Exit", x: 470, y: 50 },
+          { id: "kitchen-f1", type: "kitchen", name: "Kitchen", x: 470, y: 120 },
         ],
-        "seats": [
+        seats: [
           {
-            "id": "auburn-f1-seat-1",
-            "x": 110,
-            "y": 220,
-            "rotation": 0,
-            "furnitureId": "desk-f1-1",
-            "employee": {
-              "id": "emp-auburn-f1-1",
-              "name": "Joanne Butler",
-              "title": "Landscape Senior Designer",
-              "email": "jbutler@beardsley.com",
-              "phone": "315-253-7301 2271",
-              "employeeNumber": "00012",
-              "profileUrl": "#",
-              "avatar": "/placeholder.svg?height=40&width=40",
-              "notes": "Works at the Auburn office, First Floor."
-            }
+            id: "auburn-f1-seat-1",
+            x: 110,
+            y: 220,
+            rotation: 0,
+            furnitureId: "desk-f1-1",
+            employee: {
+              id: "emp-auburn-f1-1",
+              name: "Joanne Butler",
+              title: "Landscape Senior Designer",
+              email: "jbutler@beardsley.com",
+              phone: "315-253-7301 2271",
+              employeeNumber: "00012",
+              profileUrl: "#",
+              avatar: "/placeholder.svg?height=40&width=40",
+              notes: "Works at the Auburn office, First Floor.",
+            },
           },
           {
-            "id": "auburn-f1-seat-2",
-            "x": 190,
-            "y": 220,
-            "rotation": 0,
-            "furnitureId": "desk-f1-2",
-            "employee": {
-              "id": "emp-auburn-f1-2",
-              "name": "Kathy Quigley",
-              "title": "Computer System Administrator",
-              "email": "kquigley@beardsley.com",
-              "phone": "315-253-7301 2242",
-              "employeeNumber": "00018",
-              "profileUrl": "#",
-              "avatar": "/placeholder.svg?height=40&width=40",
-              "notes": "Works at the Auburn office, First Floor."
-            }
+            id: "auburn-f1-seat-2",
+            x: 190,
+            y: 220,
+            rotation: 0,
+            furnitureId: "desk-f1-2",
+            employee: {
+              id: "emp-auburn-f1-2",
+              name: "Kathy Quigley",
+              title: "Computer System Administrator",
+              email: "kquigley@beardsley.com",
+              phone: "315-253-7301 2242",
+              employeeNumber: "00018",
+              profileUrl: "#",
+              avatar: "/placeholder.svg?height=40&width=40",
+              notes: "Works at the Auburn office, First Floor.",
+            },
           },
           {
-            "id": "auburn-f1-seat-3",
-            "x": 270,
-            "y": 220,
-            "rotation": 0,
-            "furnitureId": "desk-f1-3",
-            "employee": {
-              "id": "emp-auburn-f1-3",
-              "name": "Glenn Hewitt",
-              "title": "Fire Protection Senior Designer",
-              "email": "ghewitt@beardsley.com",
-              "phone": "315-253-7301 2254",
-              "employeeNumber": "00019",
-              "profileUrl": "#",
-              "avatar": "/placeholder.svg?height=40&width=40",
-              "notes": "Works at the Auburn office, First Floor."
-            }
+            id: "auburn-f1-seat-3",
+            x: 270,
+            y: 220,
+            rotation: 0,
+            furnitureId: "desk-f1-3",
+            employee: {
+              id: "emp-auburn-f1-3",
+              name: "Glenn Hewitt",
+              title: "Fire Protection Senior Designer",
+              email: "ghewitt@beardsley.com",
+              phone: "315-253-7301 2254",
+              employeeNumber: "00019",
+              profileUrl: "#",
+              avatar: "/placeholder.svg?height=40&width=40",
+              notes: "Works at the Auburn office, First Floor.",
+            },
           },
           {
-            "id": "auburn-f1-seat-4",
-            "x": 350,
-            "y": 220,
-            "rotation": 0,
-            "furnitureId": "desk-f1-4",
-            "employee": {
-              "id": "emp-auburn-f1-4",
-              "name": "Dan Whitman",
-              "title": "Plumbing Senior Designer",
-              "email": "dwhitman@beardsley.com",
-              "phone": "315-253-7301 2227",
-              "employeeNumber": "00020",
-              "profileUrl": "#",
-              "avatar": "/placeholder.svg?height=40&width=40",
-              "notes": "Works at the Auburn office, First Floor."
-            }
+            id: "auburn-f1-seat-4",
+            x: 350,
+            y: 220,
+            rotation: 0,
+            furnitureId: "desk-f1-4",
+            employee: {
+              id: "emp-auburn-f1-4",
+              name: "Dan Whitman",
+              title: "Plumbing Senior Designer",
+              email: "dwhitman@beardsley.com",
+              phone: "315-253-7301 2227",
+              employeeNumber: "00020",
+              profileUrl: "#",
+              avatar: "/placeholder.svg?height=40&width=40",
+              notes: "Works at the Auburn office, First Floor.",
+            },
           },
+          // Continue with remaining Auburn first floor employees...
           {
-            "id": "auburn-f1-seat-5",
-            "x": 110,
-            "y": 300,
-            "rotation": 0,
-            "furnitureId": "desk-f1-5",
-            "employee": {
-              "id": "emp-auburn-f1-5",
-              "name": "Mike Picciano",
-              "title": "Electrical Engineer V",
-              "email": "mpicciano@beardsley.com",
-              "phone": "315-253-7301 2258",
-              "employeeNumber": "00021",
-              "profileUrl": "#",
-              "avatar": "/placeholder.svg?height=40&width=40",
-              "notes": "Works at the Auburn office, First Floor."
-            }
-          }
-        ]
+            id: "auburn-f1-seat-5",
+            x: 110,
+            y: 300,
+            rotation: 0,
+            furnitureId: "desk-f1-5",
+            employee: {
+              id: "emp-auburn-f1-5",
+              name: "Mike Picciano",
+              title: "Electrical Engineer V",
+              email: "mpicciano@beardsley.com",
+              phone: "315-253-7301 2258",
+              employeeNumber: "00021",
+              profileUrl: "#",
+              avatar: "/placeholder.svg?height=40&width=40",
+              notes: "Works at the Auburn office, First Floor.",
+            },
+          },
+          // Add more Auburn first floor seats as needed...
+        ],
       },
       {
-        "id": "second-floor",
-        "name": "Second Floor",
-        "rooms": [
-          {
-            "id": "open-center",
-            "name": "Open Area",
-            "x": 300,
-            "y": 200,
-            "width": 200,
-            "height": 150,
-            "type": "office"
-          },
-          {
-            "id": "conf-center",
-            "name": "Green Conference",
-            "x": 300,
-            "y": 80,
-            "width": 120,
-            "height": 100,
-            "type": "conference"
-          }
+        id: "second-floor",
+        name: "Second Floor",
+        rooms: [
+          { id: "open-center", name: "Open Area", x: 300, y: 200, width: 200, height: 150, type: "office" },
+          { id: "conf-center", name: "Green Conference", x: 300, y: 80, width: 120, height: 100, type: "conference" },
         ],
-        "furniture": [
-          {
-            "id": "desk-kjq",
-            "type": "desk",
-            "x": 560,
-            "y": 340,
-            "width": 60,
-            "height": 40,
-            "rotation": 0
-          },
-          {
-            "id": "desk-jmp",
-            "type": "desk",
-            "x": 640,
-            "y": 340,
-            "width": 60,
-            "height": 40,
-            "rotation": 0
-          },
-          {
-            "id": "desk-dgm",
-            "type": "desk",
-            "x": 250,
-            "y": 310,
-            "width": 60,
-            "height": 40,
-            "rotation": 0
-          },
-          {
-            "id": "desk-tac",
-            "type": "desk",
-            "x": 700,
-            "y": 170,
-            "width": 60,
-            "height": 40,
-            "rotation": 0
-          },
-          {
-            "id": "desk-faf",
-            "type": "desk",
-            "x": 560,
-            "y": 170,
-            "width": 60,
-            "height": 40,
-            "rotation": 0
-          },
-          {
-            "id": "table-conf",
-            "type": "table",
-            "x": 330,
-            "y": 110,
-            "width": 120,
-            "height": 60,
-            "rotation": 0
-          }
+        furniture: [
+          { id: "desk-kjq", type: "desk", x: 560, y: 340, width: 60, height: 40, rotation: 0 },
+          { id: "desk-jmp", type: "desk", x: 640, y: 340, width: 60, height: 40, rotation: 0 },
+          { id: "desk-dgm", type: "desk", x: 250, y: 310, width: 60, height: 40, rotation: 0 },
+          { id: "desk-tac", type: "desk", x: 700, y: 170, width: 60, height: 40, rotation: 0 },
+          { id: "desk-faf", type: "desk", x: 560, y: 170, width: 60, height: 40, rotation: 0 },
+          { id: "table-conf", type: "table", x: 330, y: 110, width: 120, height: 60, rotation: 0 },
         ],
-        "amenities": [
+        amenities: [
           {
-            "id": "printer-main",
-            "type": "printer",
-            "name": "HP OfficeJet Pro 9015e",
-            "ipAddress": "192.168.4.101",
-            "queueName": "AUBURN-PRINT-01",
-            "status": "Online",
-            "x": 640,
-            "y": 180
+            id: "printer-main",
+            type: "printer",
+            name: "HP OfficeJet Pro 9015e",
+            ipAddress: "192.168.4.101",
+            queueName: "AUBURN-PRINT-01",
+            status: "Online",
+            x: 640,
+            y: 180,
           },
-          {
-            "id": "restroom-1",
-            "type": "restroom",
-            "name": "Restroom",
-            "x": 500,
-            "y": 120
-          },
-          {
-            "id": "exit-1",
-            "type": "exit",
-            "name": "Emergency Exit",
-            "x": 50,
-            "y": 200
-          },
-          {
-            "id": "kitchen-1",
-            "type": "kitchen",
-            "name": "Kitchen",
-            "x": 250,
-            "y": 100
-          }
+          { id: "restroom-1", type: "restroom", name: "Restroom", x: 500, y: 120 },
+          { id: "exit-1", type: "exit", name: "Emergency Exit", x: 50, y: 200 },
+          { id: "kitchen-1", type: "kitchen", name: "Kitchen", x: 250, y: 100 },
         ],
-        "seats": [
+        seats: [
           {
-            "id": "auburn-seat-16",
-            "x": 590,
-            "y": 360,
-            "rotation": 0,
-            "furnitureId": "desk-kjq",
-            "employee": {
-              "id": "emp-auburn-16",
-              "name": "Tom Wight",
-              "title": "Mechanical Engineer",
-              "email": "twight@beardsley.com",
-              "phone": "315-253-7301 2269",
-              "employeeNumber": "00032",
-              "profileUrl": "#",
-              "avatar": "/placeholder.svg?height=40&width=40",
-              "notes": "Works at the Auburn office, Second Floor."
-            }
-          }
-        ]
-      }
-    ]
+            id: "auburn-seat-16",
+            x: 590,
+            y: 360,
+            rotation: 0,
+            furnitureId: "desk-kjq",
+            employee: {
+              id: "emp-auburn-16",
+              name: "Tom Wight",
+              title: "Mechanical Engineer",
+              email: "twight@beardsley.com",
+              phone: "315-253-7301 2269",
+              employeeNumber: "00032",
+              profileUrl: "#",
+              avatar: "/placeholder.svg?height=40&width=40",
+              notes: "Works at the Auburn office, Second Floor.",
+            },
+          },
+          // Add more Auburn second floor seats...
+        ],
+      },
+    ],
   },
-  "albany": {
-    "id": "albany",
-    "name": "Albany Office",
-    "address": "69 State Street, Suite 1100D Albany, NY 12207",
-    "image": "/AlbanyOffice.jpg",
-    "phone": "518-555-0100",
-    "hours": "Mon-Fri: 8:30 AM - 5:30 PM",
-    "wifi": "Albany-Office-Net",
-    "amenitiesList": [
-      {
-        "name": "Printers (2)"
-      },
-      {
-        "name": "Restrooms"
-      },
-      {
-        "name": "Emergency Exits"
-      },
-      {
-        "name": "Kitchen"
-      },
-      {
-        "name": "Conference Rooms (3)"
-      },
-      {
-        "name": "Wi-Fi"
-      }
+
+  albany: {
+    id: "albany",
+    name: "Albany Office",
+    address: "69 State Street, Suite 1100D Albany, NY 12207",
+    image: "/AlbanyOffice.jpg",
+    phone: "518-555-0100",
+    hours: "Mon-Fri: 8:30 AM - 5:30 PM",
+    wifi: "Albany-Office-Net",
+    amenitiesList: [
+      { name: "Printers (2)" },
+      { name: "Restrooms" },
+      { name: "Emergency Exits" },
+      { name: "Kitchen" },
+      { name: "Conference Rooms (3)" },
+      { name: "Wi-Fi" },
     ],
-    "quickLinks": [
-      {
-        "name": "IT Support",
-        "url": "#"
-      },
-      {
-        "name": "Book Room",
-        "url": "#"
-      },
-      {
-        "name": "Report Issue",
-        "url": "#"
-      }
+    quickLinks: [
+      { name: "IT Support", url: "#" },
+      { name: "Book Room", url: "#" },
+      { name: "Report Issue", url: "#" },
     ],
-    "floors": [
+    floors: [
       {
-        "id": "floor-1",
-        "name": "Floor 1",
-        "rooms": [
-          {
-            "id": "room-1",
-            "name": "Lobby",
-            "x": 50,
-            "y": 50,
-            "width": 200,
-            "height": 100,
-            "type": "reception"
-          },
-          {
-            "id": "room-2",
-            "name": "Open Space",
-            "x": 50,
-            "y": 170,
-            "width": 400,
-            "height": 250,
-            "type": "office"
-          }
+        id: "floor-1",
+        name: "Floor 1",
+        rooms: [
+          { id: "room-1", name: "Lobby", x: 50, y: 50, width: 200, height: 100, type: "reception" },
+          { id: "room-2", name: "Open Space", x: 50, y: 170, width: 400, height: 250, type: "office" },
         ],
-        "furniture": [
-          {
-            "id": "desk-alb-1",
-            "type": "desk",
-            "x": 100,
-            "y": 200,
-            "width": 60,
-            "height": 40,
-            "rotation": 0
-          },
-          {
-            "id": "desk-alb-2",
-            "type": "desk",
-            "x": 200,
-            "y": 200,
-            "width": 60,
-            "height": 40,
-            "rotation": 0
-          }
+        furniture: [
+          { id: "desk-alb-1", type: "desk", x: 100, y: 200, width: 60, height: 40, rotation: 0 },
+          { id: "desk-alb-2", type: "desk", x: 200, y: 200, width: 60, height: 40, rotation: 0 },
         ],
-        "amenities": [
+        amenities: [
           {
-            "id": "printer-1",
-            "type": "printer",
-            "name": "Brother MFC-L8900CDW",
-            "ipAddress": "192.168.2.101",
-            "queueName": "ALB-PRINT-01",
-            "status": "Online",
-            "x": 350,
-            "y": 120
+            id: "printer-1",
+            type: "printer",
+            name: "Brother MFC-L8900CDW",
+            ipAddress: "192.168.2.101",
+            queueName: "ALB-PRINT-01",
+            status: "Online",
+            x: 350,
+            y: 120,
           },
-          {
-            "id": "restroom-1",
-            "type": "restroom",
-            "name": "Restroom",
-            "x": 350,
-            "y": 50
-          },
-          {
-            "id": "exit-1",
-            "type": "exit",
-            "name": "Emergency Exit",
-            "x": 420,
-            "y": 50
-          },
-          {
-            "id": "kitchen-1",
-            "type": "kitchen",
-            "name": "Kitchen",
-            "x": 420,
-            "y": 120
-          }
+          { id: "restroom-1", type: "restroom", name: "Restroom", x: 350, y: 50 },
+          { id: "exit-1", type: "exit", name: "Emergency Exit", x: 420, y: 50 },
+          { id: "kitchen-1", type: "kitchen", name: "Kitchen", x: 420, y: 120 },
         ],
-        "seats": [
+        seats: [
           {
-            "id": "albany-seat-1",
-            "x": 130,
-            "y": 220,
-            "rotation": 0,
-            "furnitureId": "desk-alb-1",
-            "employee": {
-              "id": "emp-albany-1",
-              "name": "Cameron Beardsley",
-              "title": "Principal",
-              "email": "cbeardsley@beardsley.com",
-              "phone": "518-555-0100",
-              "employeeNumber": "00053",
-              "profileUrl": "#",
-              "avatar": "/placeholder.svg?height=40&width=40",
-              "notes": "Works at the Albany office."
-            }
+            id: "albany-seat-1",
+            x: 130,
+            y: 220,
+            rotation: 0,
+            furnitureId: "desk-alb-1",
+            employee: {
+              id: "emp-albany-1",
+              name: "Cameron Beardsley",
+              title: "Principal",
+              email: "cbeardsley@beardsley.com",
+              phone: "518-555-0100",
+              employeeNumber: "00053",
+              profileUrl: "#",
+              avatar: "/placeholder.svg?height=40&width=40",
+              notes: "Works at the Albany office.",
+            },
           },
           {
-            "id": "albany-seat-2",
-            "x": 230,
-            "y": 220,
-            "rotation": 0,
-            "furnitureId": "desk-alb-2",
-            "employee": {
-              "id": "emp-albany-2",
-              "name": "Caroline Beardsley",
-              "title": "Principal",
-              "email": "cabeardsley@beardsley.com",
-              "phone": "518-555-0101",
-              "employeeNumber": "00054",
-              "profileUrl": "#",
-              "avatar": "/placeholder.svg?height=40&width=40",
-              "notes": "Works at the Albany office."
-            }
-          }
-        ]
-      }
-    ]
+            id: "albany-seat-2",
+            x: 230,
+            y: 220,
+            rotation: 0,
+            furnitureId: "desk-alb-2",
+            employee: {
+              id: "emp-albany-2",
+              name: "Caroline Beardsley",
+              title: "Principal",
+              email: "cabeardsley@beardsley.com",
+              phone: "518-555-0101",
+              employeeNumber: "00054",
+              profileUrl: "#",
+              avatar: "/placeholder.svg?height=40&width=40",
+              notes: "Works at the Albany office.",
+            },
+          },
+        ],
+      },
+    ],
   },
-  "malone": {
-    "id": "malone",
-    "name": "Malone Office",
-    "address": "320 West Main St. Ste 2 Malone, NY 12953",
-    "image": "/MaloneOffice.jpg",
-    "phone": "518-555-0200",
-    "hours": "Mon-Fri: 8:00 AM - 5:00 PM",
-    "wifi": "Malone-Office-Net",
-    "amenitiesList": [
-      {
-        "name": "Printers (1)"
-      },
-      {
-        "name": "Restrooms"
-      },
-      {
-        "name": "Emergency Exits"
-      },
-      {
-        "name": "Kitchen"
-      },
-      {
-        "name": "Conference Rooms (2)"
-      },
-      {
-        "name": "Wi-Fi"
-      }
+
+  malone: {
+    id: "malone",
+    name: "Malone Office",
+    address: "320 West Main St. Ste 2 Malone, NY 12953",
+    image: "/MaloneOffice.jpg",
+    phone: "518-555-0200",
+    hours: "Mon-Fri: 8:00 AM - 5:00 PM",
+    wifi: "Malone-Office-Net",
+    amenitiesList: [
+      { name: "Printers (1)" },
+      { name: "Restrooms" },
+      { name: "Emergency Exits" },
+      { name: "Kitchen" },
+      { name: "Conference Rooms (2)" },
+      { name: "Wi-Fi" },
     ],
-    "quickLinks": [
-      {
-        "name": "IT Support",
-        "url": "#"
-      },
-      {
-        "name": "Book Room",
-        "url": "#"
-      },
-      {
-        "name": "Report Issue",
-        "url": "#"
-      }
+    quickLinks: [
+      { name: "IT Support", url: "#" },
+      { name: "Book Room", url: "#" },
+      { name: "Report Issue", url: "#" },
     ],
-    "floors": [
+    floors: [
       {
-        "id": "floor-1",
-        "name": "Floor 1",
-        "rooms": [
-          {
-            "id": "room-1",
-            "name": "Reception",
-            "x": 50,
-            "y": 50,
-            "width": 150,
-            "height": 100,
-            "type": "reception"
-          },
-          {
-            "id": "room-2",
-            "name": "Open Space",
-            "x": 220,
-            "y": 50,
-            "width": 300,
-            "height": 200,
-            "type": "office"
-          },
-          {
-            "id": "room-3",
-            "name": "Conference Room",
-            "x": 50,
-            "y": 170,
-            "width": 150,
-            "height": 100,
-            "type": "conference"
-          }
+        id: "floor-1",
+        name: "Floor 1",
+        rooms: [
+          { id: "room-1", name: "Reception", x: 50, y: 50, width: 150, height: 100, type: "reception" },
+          { id: "room-2", name: "Open Space", x: 220, y: 50, width: 300, height: 200, type: "office" },
+          { id: "room-3", name: "Conference Room", x: 50, y: 170, width: 150, height: 100, type: "conference" },
         ],
-        "furniture": [
-          {
-            "id": "desk-mal-1",
-            "type": "desk",
-            "x": 250,
-            "y": 100,
-            "width": 60,
-            "height": 40,
-            "rotation": 0
-          },
-          {
-            "id": "desk-mal-2",
-            "type": "desk",
-            "x": 350,
-            "y": 100,
-            "width": 60,
-            "height": 40,
-            "rotation": 0
-          },
-          {
-            "id": "table-mal-1",
-            "type": "table",
-            "x": 75,
-            "y": 195,
-            "width": 100,
-            "height": 50,
-            "rotation": 0
-          }
+        furniture: [
+          { id: "desk-mal-1", type: "desk", x: 250, y: 100, width: 60, height: 40, rotation: 0 },
+          { id: "desk-mal-2", type: "desk", x: 350, y: 100, width: 60, height: 40, rotation: 0 },
+          { id: "table-mal-1", type: "table", x: 75, y: 195, width: 100, height: 50, rotation: 0 },
         ],
-        "amenities": [
+        amenities: [
           {
-            "id": "printer-1",
-            "type": "printer",
-            "name": "Canon PIXMA TR8620",
-            "ipAddress": "192.168.3.101",
-            "queueName": "MAL-PRINT-01",
-            "status": "Online",
-            "x": 450,
-            "y": 120
+            id: "printer-1",
+            type: "printer",
+            name: "Canon PIXMA TR8620",
+            ipAddress: "192.168.3.101",
+            queueName: "MAL-PRINT-01",
+            status: "Online",
+            x: 450,
+            y: 120,
           },
-          {
-            "id": "restroom-1",
-            "type": "restroom",
-            "name": "Restroom",
-            "x": 450,
-            "y": 50
-          },
-          {
-            "id": "exit-1",
-            "type": "exit",
-            "name": "Emergency Exit",
-            "x": 520,
-            "y": 50
-          },
-          {
-            "id": "kitchen-1",
-            "type": "kitchen",
-            "name": "Kitchen",
-            "x": 520,
-            "y": 120
-          }
+          { id: "restroom-1", type: "restroom", name: "Restroom", x: 450, y: 50 },
+          { id: "exit-1", type: "exit", name: "Emergency Exit", x: 520, y: 50 },
+          { id: "kitchen-1", type: "kitchen", name: "Kitchen", x: 520, y: 120 },
         ],
-        "seats": [
+        seats: [
           {
-            "id": "malone-seat-1",
-            "x": 280,
-            "y": 120,
-            "rotation": 0,
-            "furnitureId": "desk-mal-1",
-            "employee": {
-              "id": "emp-malone-1",
-              "name": "Edward Beardsley",
-              "title": "Principal",
-              "email": "ebeardsley@beardsley.com",
-              "phone": "518-555-0200",
-              "employeeNumber": "00063",
-              "profileUrl": "#",
-              "avatar": "/placeholder.svg?height=40&width=40",
-              "notes": "Works at the Malone office."
-            }
+            id: "malone-seat-1",
+            x: 280,
+            y: 120,
+            rotation: 0,
+            furnitureId: "desk-mal-1",
+            employee: {
+              id: "emp-malone-1",
+              name: "Edward Beardsley",
+              title: "Principal",
+              email: "ebeardsley@beardsley.com",
+              phone: "518-555-0200",
+              employeeNumber: "00063",
+              profileUrl: "#",
+              avatar: "/placeholder.svg?height=40&width=40",
+              notes: "Works at the Malone office.",
+            },
           },
           {
-            "id": "malone-seat-2",
-            "x": 380,
-            "y": 120,
-            "rotation": 0,
-            "furnitureId": "desk-mal-2",
-            "employee": {
-              "id": "emp-malone-2",
-              "name": "Elizabeth Beardsley",
-              "title": "Principal",
-              "email": "elbeardsley@beardsley.com",
-              "phone": "518-555-0201",
-              "employeeNumber": "00064",
-              "profileUrl": "#",
-              "avatar": "/placeholder.svg?height=40&width=40",
-              "notes": "Works at the Malone office."
-            }
-          }
-        ]
-      }
-    ]
-  }
+            id: "malone-seat-2",
+            x: 380,
+            y: 120,
+            rotation: 0,
+            furnitureId: "desk-mal-2",
+            employee: {
+              id: "emp-malone-2",
+              name: "Elizabeth Beardsley",
+              title: "Principal",
+              email: "elbeardsley@beardsley.com",
+              phone: "518-555-0201",
+              employeeNumber: "00064",
+              profileUrl: "#",
+              avatar: "/placeholder.svg?height=40&width=40",
+              notes: "Works at the Malone office.",
+            },
+          },
+        ],
+      },
+    ],
+  },
 }
 
 // Initialize storage with current data

@@ -19,10 +19,10 @@ export class GitHubSync {
     try {
       const content = this.generateDataFileContent(data)
 
-      // Get current file SHA
+      // Get current file SHA (if file exists)
       const currentFile = await this.getCurrentFile()
 
-      // Update the file
+      // Update or create the file
       const response = await fetch(
         `https://api.github.com/repos/${this.config.owner}/${this.config.repo}/contents/lib/data.ts`,
         {
@@ -34,22 +34,54 @@ export class GitHubSync {
           },
           body: JSON.stringify({
             message: `Update office data - ${new Date().toISOString()}`,
-            content: btoa(content), // Base64 encode
-            sha: currentFile?.sha,
+            content: this.utf8ToBase64(content),
+            sha: currentFile?.sha, // Only include SHA if file exists
             branch: this.config.branch,
           }),
         },
       )
 
       if (!response.ok) {
-        throw new Error(`GitHub API error: ${response.status} ${response.statusText}`)
+        const errorData = await response.json().catch(() => ({}))
+        throw new Error(`GitHub API error: ${response.status} ${response.statusText} - ${JSON.stringify(errorData)}`)
       }
 
       return true
     } catch (error) {
       console.error("Failed to update GitHub repository:", error)
-      return false
+      throw error
     }
+  }
+
+  // UTF-8 safe Base64 encoding
+  private utf8ToBase64(str: string): string {
+    // First, encode the string as UTF-8
+    const utf8Encoder = new TextEncoder()
+    const utf8Bytes = utf8Encoder.encode(str)
+
+    // Convert UTF-8 bytes to Base64
+    let base64 = ""
+    const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"
+    const byteLength = utf8Bytes.byteLength
+    const byteRemainder = byteLength % 3
+    const mainLength = byteLength - byteRemainder
+
+    // Process 3 bytes at a time
+    for (let i = 0; i < mainLength; i += 3) {
+      const chunk = (utf8Bytes[i] << 16) | (utf8Bytes[i + 1] << 8) | utf8Bytes[i + 2]
+      base64 += chars[(chunk >> 18) & 63] + chars[(chunk >> 12) & 63] + chars[(chunk >> 6) & 63] + chars[chunk & 63]
+    }
+
+    // Handle remaining bytes
+    if (byteRemainder === 1) {
+      const chunk = utf8Bytes[mainLength]
+      base64 += chars[(chunk >> 2) & 63] + chars[(chunk << 4) & 63] + "=="
+    } else if (byteRemainder === 2) {
+      const chunk = (utf8Bytes[mainLength] << 8) | utf8Bytes[mainLength + 1]
+      base64 += chars[(chunk >> 10) & 63] + chars[(chunk >> 4) & 63] + chars[(chunk << 2) & 63] + "="
+    }
+
+    return base64
   }
 
   private async getCurrentFile() {
@@ -67,7 +99,13 @@ export class GitHubSync {
       if (response.ok) {
         return await response.json()
       }
-      return null
+
+      // File doesn't exist yet, which is fine for first push
+      if (response.status === 404) {
+        return null
+      }
+
+      throw new Error(`Failed to get current file: ${response.status} ${response.statusText}`)
     } catch (error) {
       console.error("Failed to get current file:", error)
       return null
