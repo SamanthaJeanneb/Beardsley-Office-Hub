@@ -934,51 +934,50 @@ export function EnhancedEditModePanel({
               <h4 className="font-medium text-beardsley-red">Equipment Management</h4>
             </div>
 
-            <div className="space-y-2">
+            <div className="space-y-2 max-h-96 overflow-y-auto">
               <Label>Printers in this office:</Label>
-              {location.floors?.map((floor: any) =>
-                floor.amenities
-                  ?.filter((amenity: any) => amenity.type === "printer")
-                  .map((printer: any) => (
-                    <div
-                      key={printer.id}
-                      className="flex items-center justify-between p-3 border rounded-lg bg-gray-50"
-                    >
-                      <div className="flex-1">
-                        <p className="font-medium text-beardsley-red">{printer.name}</p>
-                        <p className="text-sm text-muted-foreground">{printer.ipAddress}</p>
-                        <p className="text-xs text-beardsley-green">{printer.status}</p>
+              <div className="space-y-3">
+                {location.floors?.map((floor: any) =>
+                  floor.amenities
+                    ?.filter((amenity: any) => amenity.type === "printer")
+                    .map((printer: any) => (
+                      <div key={printer.id} className="flex flex-col gap-3 p-3 border rounded-lg bg-gray-50">
+                        <div className="flex-1 min-w-0">
+                          <p className="font-medium text-beardsley-red truncate">{printer.name}</p>
+                          <p className="text-sm text-muted-foreground truncate">{printer.ipAddress}</p>
+                          <p className="text-xs text-beardsley-green">{printer.status}</p>
+                        </div>
+                        <div className="flex flex-wrap gap-2">
+                          <Button
+                            onClick={() => handlePrinterDriverAccess(printer.name)}
+                            variant="outline"
+                            size="sm"
+                            className="border-beardsley-orange text-beardsley-orange hover:bg-beardsley-orange hover:text-white flex-1 min-w-0"
+                          >
+                            Drivers
+                          </Button>
+                          <Select onValueChange={(value) => onMovePrinter(printer.id, value)}>
+                            <SelectTrigger className="flex-1 min-w-0">
+                              <SelectValue placeholder="Move" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {allLocations
+                                .filter((loc) => loc.id !== location.id)
+                                .map((loc) => (
+                                  <SelectItem key={loc.id} value={loc.id}>
+                                    {loc.name}
+                                  </SelectItem>
+                                ))}
+                            </SelectContent>
+                          </Select>
+                          <Button onClick={() => onDeletePrinter(printer.id)} variant="destructive" size="sm">
+                            <Trash2 className="h-3 w-3" />
+                          </Button>
+                        </div>
                       </div>
-                      <div className="flex gap-2">
-                        <Button
-                          onClick={() => handlePrinterDriverAccess(printer.name)}
-                          variant="outline"
-                          size="sm"
-                          className="border-beardsley-orange text-beardsley-orange hover:bg-beardsley-orange hover:text-white"
-                        >
-                          Drivers
-                        </Button>
-                        <Select onValueChange={(value) => onMovePrinter(printer.id, value)}>
-                          <SelectTrigger className="w-24">
-                            <SelectValue placeholder="Move" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            {allLocations
-                              .filter((loc) => loc.id !== location.id)
-                              .map((loc) => (
-                                <SelectItem key={loc.id} value={loc.id}>
-                                  {loc.name}
-                                </SelectItem>
-                              ))}
-                          </SelectContent>
-                        </Select>
-                        <Button onClick={() => onDeletePrinter(printer.id)} variant="destructive" size="sm">
-                          <Trash2 className="h-3 w-3" />
-                        </Button>
-                      </div>
-                    </div>
-                  )),
-              )}
+                    )),
+                )}
+              </div>
             </div>
           </TabsContent>
         </Tabs>

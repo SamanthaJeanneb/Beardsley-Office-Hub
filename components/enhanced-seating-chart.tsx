@@ -428,7 +428,7 @@ export function EnhancedSeatingChart({
 
   // Seat drag and drop handlers (existing functionality)
   const handleSeatMouseDown = (seat: any, e: React.MouseEvent) => {
-    if (!isEditMode || !seat.employee) return
+    if (!isEditMode) return
 
     e.stopPropagation()
     setIsDraggingSeat(true)
@@ -1202,7 +1202,7 @@ export function EnhancedSeatingChart({
                           ? "fill-orange-400 stroke-red-900 stroke-2"
                           : "fill-white stroke-gray-300 stroke-2",
                         highlightedSeat === seat.id && "animate-pulse stroke-green-500 stroke-4",
-                        isEditMode && seat.employee && "cursor-move hover:stroke-office-maroon",
+                        isEditMode && "cursor-move hover:stroke-office-maroon",
                         isDraggedSeat && "opacity-70",
                         dropTarget === seat.id && "stroke-green-500 stroke-4",
                         !isEditMode && seat.employee && "cursor-pointer",

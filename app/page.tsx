@@ -12,7 +12,6 @@ import {
   Printer,
   Plus,
   Award,
-  Globe,
   Star,
   ArrowRight,
   CheckCircle,
@@ -24,7 +23,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { getAllLocations } from "@/lib/data"
-import { getTotalEmployeeCount } from "@/lib/employee-data"
+import { employeeData } from "@/lib/employee-data"
 import { EnhancedNewOfficeDialog } from "@/components/enhanced-new-office-dialog"
 import { EmployeeSearchDialog } from "@/components/employee-search-dialog"
 import { GitHubPushButton } from "@/components/github-push-button"
@@ -32,14 +31,11 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 
 export default function HomePage() {
   const [locations, setLocations] = useState<any[]>([])
-  const [totalEmployees, setTotalEmployees] = useState(0)
 
   // Load data on component mount and when offices are added
   const loadData = () => {
     const allLocations = getAllLocations()
-    const employeeCount = getTotalEmployeeCount()
     setLocations(allLocations)
-    setTotalEmployees(employeeCount)
   }
 
   useEffect(() => {
@@ -67,8 +63,11 @@ export default function HomePage() {
     loadData() // Refresh the data when a new office is added
   }
 
+  // Use employee data count instead of calculated count
+  const totalEmployees = employeeData.length
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-amber-50">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-amber-50 fade-in">
       {/* GitHub Push Button in Top-Right Corner */}
       <div className="fixed top-4 right-4 z-50">
         <GitHubPushButton
@@ -100,28 +99,32 @@ export default function HomePage() {
 
             <div className="mt-12 flex flex-wrap justify-center gap-4">
               <Button
-                size="lg"
+                size="default"
                 variant="secondary"
-                className="bg-white text-beardsley-red hover:bg-gray-100 shadow-lg text-lg px-8 py-6 h-auto font-whitney w-48"
+                className="bg-white text-beardsley-red hover:bg-gray-100 shadow-lg px-6 py-3 font-whitney slide-in-bottom"
                 asChild
               >
                 <Link href="#locations">
-                  <MapPin className="mr-2 h-5 w-5" />
+                  <MapPin className="mr-2 h-4 w-4" />
                   Explore Locations
                 </Link>
               </Button>
 
-              <div className="h-auto">
-                <EmployeeSearchDialog
-                  allLocations={locations}
-                  buttonProps={{
-                    size: "lg",
-                    variant: "outline",
-                    className:
-                      "border-white text-white hover:bg-white hover:text-beardsley-red text-lg px-8 py-6 h-auto font-whitney w-48",
-                  }}
-                />
+              <div className="slide-in-bottom">
+                <EmployeeSearchDialog allLocations={locations} />
               </div>
+
+              <Button
+                size="default"
+                variant="outline"
+                className="border-white text-white hover:bg-white hover:text-beardsley-red shadow-lg px-6 py-3 font-whitney slide-in-bottom"
+                asChild
+              >
+                <Link href="/directory">
+                  <Users className="mr-2 h-4 w-4" />
+                  Employee Directory
+                </Link>
+              </Button>
             </div>
 
             {/* Quick Stats */}
@@ -146,7 +149,7 @@ export default function HomePage() {
       {/* Enhanced Company Stats */}
       <div className="container px-4 py-16">
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          <Card className="border-slate-200 hover:shadow-lg transition-shadow">
+          <Card className="border-slate-200 hover:shadow-lg transition-shadow slide-in-bottom">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium text-slate-800 font-interface">Total Employees</CardTitle>
               <Users className="h-4 w-4 text-beardsley-green" />
@@ -157,7 +160,7 @@ export default function HomePage() {
             </CardContent>
           </Card>
 
-          <Card className="border-slate-200 hover:shadow-lg transition-shadow">
+          <Card className="border-slate-200 hover:shadow-lg transition-shadow slide-in-bottom">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium text-slate-800 font-interface">Office Locations</CardTitle>
               <Building2 className="h-4 w-4 text-beardsley-orange" />
@@ -168,7 +171,7 @@ export default function HomePage() {
             </CardContent>
           </Card>
 
-          <Card className="border-slate-200 hover:shadow-lg transition-shadow">
+          <Card className="border-slate-200 hover:shadow-lg transition-shadow slide-in-bottom">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium text-slate-800 font-interface">Years of Service</CardTitle>
               <Award className="h-4 w-4 text-beardsley-red" />
@@ -199,7 +202,7 @@ export default function HomePage() {
               return (
                 <Card
                   key={location.id}
-                  className="group overflow-hidden border-slate-200 transition-all duration-300 hover:border-beardsley-red hover:shadow-xl hover:-translate-y-1"
+                  className="group overflow-hidden border-slate-200 transition-all duration-300 hover:border-beardsley-red hover:shadow-xl hover:-translate-y-1 slide-in-bottom"
                 >
                   <div className="aspect-video overflow-hidden relative">
                     <img
@@ -432,7 +435,7 @@ export default function HomePage() {
                 asChild
               >
                 <Link href="#locations">
-                  <Globe className="mr-2 h-5 w-5" />
+                  <MapPin className="mr-2 h-5 w-5" />
                   Explore All Locations
                 </Link>
               </Button>
@@ -442,45 +445,59 @@ export default function HomePage() {
       </div>
 
       {/* Enhanced Footer */}
-      <footer className="bg-slate-900 text-white">
-        <div className="container px-4 py-12">
+      <footer className="relative bg-white text-slate-800 border-t border-slate-200">
+        {/* Background architectural pattern */}
+        <div
+          className="absolute inset-0 opacity-5 bg-cover bg-center bg-no-repeat"
+          style={{
+            backgroundImage: `url('/placeholder.svg?height=400&width=1200')`,
+          }}
+        />
+        <div className="relative container px-4 py-12">
           <div className="mx-auto max-w-6xl">
             <div className="grid gap-8 md:grid-cols-4">
               <div className="md:col-span-2">
-                <h3 className="mb-4 text-2xl font-bold font-interface">Beardsley</h3>
-                <p className="text-slate-300 text-lg leading-relaxed max-w-md font-whitney">
+                <h3 className="mb-4 text-2xl font-bold font-interface text-beardsley-red">Beardsley</h3>
+                <p className="text-slate-600 text-lg leading-relaxed max-w-md font-whitney">
                   Professional engineering and architectural services across New York State for over 125 years.
                 </p>
                 <div className="mt-6 flex items-center gap-4">
                   <div className="flex items-center gap-2">
                     <CheckCircle className="h-5 w-5 text-beardsley-green" />
-                    <span className="text-slate-300 font-whitney">ISO Certified</span>
+                    <span className="text-slate-600 font-whitney">ISO Certified</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <Award className="h-5 w-5 text-beardsley-orange" />
-                    <span className="text-slate-300 font-whitney">Award Winning</span>
+                    <span className="text-slate-600 font-whitney">Award Winning</span>
                   </div>
                 </div>
               </div>
 
               <div>
-                <h4 className="mb-4 font-semibold text-lg font-interface">Quick Links</h4>
-                <ul className="space-y-3 text-slate-300">
+                <h4 className="mb-4 font-semibold text-lg font-interface text-slate-800">Quick Links</h4>
+                <ul className="space-y-3 text-slate-600">
                   <li>
-                    <Link href="#locations" className="hover:text-white transition-colors font-whitney">
+                    <Link href="#locations" className="hover:text-beardsley-red transition-colors font-whitney">
                       Office Locations
                     </Link>
                   </li>
                   <li>
-                    <button className="hover:text-white transition-colors font-whitney">Employee Directory</button>
-                  </li>
-                  <li>
-                    <Link href="#" className="hover:text-white transition-colors font-whitney">
-                      IT Support
+                    <Link href="/directory" className="hover:text-beardsley-red transition-colors font-whitney">
+                      Employee Directory
                     </Link>
                   </li>
                   <li>
-                    <Link href="#" className="hover:text-white transition-colors font-whitney">
+                    <a
+                      href="https://beardsley.sharepoint.com/sites/Intranet/SitePages/Employee-onboarding-team-home.aspx#send-a-help-desk-request"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="hover:text-beardsley-red transition-colors font-whitney"
+                    >
+                      IT Support
+                    </a>
+                  </li>
+                  <li>
+                    <Link href="#" className="hover:text-beardsley-red transition-colors font-whitney">
                       Admin Portal
                     </Link>
                   </li>
@@ -488,15 +505,22 @@ export default function HomePage() {
               </div>
 
               <div>
-                <h4 className="mb-4 font-semibold text-lg font-interface">Contact</h4>
-                <div className="space-y-3 text-slate-300">
+                <h4 className="mb-4 font-semibold text-lg font-interface text-slate-800">Contact</h4>
+                <div className="space-y-3 text-slate-600">
                   <div className="flex items-center gap-2">
                     <Phone className="h-4 w-4" />
                     <span className="font-whitney">Main: 315-253-7301</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <Users className="h-4 w-4" />
-                    <span className="font-whitney">IT Support: ext. 2242</span>
+                    <a
+                      href="https://beardsley.sharepoint.com/sites/Intranet/SitePages/Employee-onboarding-team-home.aspx#send-a-help-desk-request"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="font-whitney hover:text-beardsley-red transition-colors"
+                    >
+                      IT Support: ext. 2242
+                    </a>
                   </div>
                   <div className="flex items-center gap-2">
                     <Shield className="h-4 w-4" />
@@ -506,7 +530,7 @@ export default function HomePage() {
               </div>
             </div>
 
-            <div className="mt-12 border-t border-slate-700 pt-8 text-center text-slate-400">
+            <div className="mt-12 border-t border-slate-200 pt-8 text-center text-slate-500">
               <p className="font-whitney">
                 &copy; 2024 Beardsley. All rights reserved. | Office Hub v2.0 | Powered by Next.js
               </p>
