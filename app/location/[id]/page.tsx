@@ -726,3 +726,4 @@ export default function LocationPage({ params }: { params: { id: string } }) {
     </div>
   )
 }
+
