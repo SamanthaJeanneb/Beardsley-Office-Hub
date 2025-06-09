@@ -7,6 +7,7 @@ import { ThemeProvider } from "@/components/theme-provider"
 import { Button } from "@/components/ui/button"
 import "./globals.css"
 
+
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata = {
