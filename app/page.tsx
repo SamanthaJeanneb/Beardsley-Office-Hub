@@ -86,7 +86,7 @@ export default function HomePage() {
           <div className="mx-auto max-w-5xl text-center">
             <div className="mb-6 inline-flex items-center gap-2 rounded-full bg-white/20 px-4 py-2 text-white/90 backdrop-blur-sm">
               <Star className="h-4 w-4" />
-              <span className="text-sm font-medium font-whitney">125+ Years of Engineering Excellence</span>
+              <span className="text-sm font-medium font-whitney">125+ Years of Service</span>
             </div>
 
             <h1 className="text-5xl font-bold tracking-tight text-white md:text-7xl lg:text-8xl font-interface">
