@@ -27,7 +27,7 @@ import { Separator } from "@/components/ui/separator"
 import { Badge } from "@/components/ui/badge"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { PhotoUpload } from "@/components/photo-upload"
-import { getPhotoUrl, openPrinterDriverLocation } from "@/lib/employee-data"
+import { getPhotoUrl, openPrinterDriverLocation, getVantagePointUrl } from "@/lib/employee-data"
 
 interface EnhancedEditModePanelProps {
   location: any
@@ -104,6 +104,8 @@ export function EnhancedEditModePanel({
 
   const handleSaveEmployee = () => {
     if (editingEmployee) {
+      // Update the employee's profileUrl with the new employee number
+      editingEmployee.profileUrl = getVantagePointUrl(editingEmployee.name)
       onUpdateEmployee(editingEmployee)
       setEditingEmployee(null)
     }
@@ -874,6 +876,23 @@ export function EnhancedEditModePanel({
                     id="office-name"
                     value={editingLocation.name}
                     onChange={(e) => setEditingLocation({ ...editingLocation, name: e.target.value })}
+                  />
+                </div>
+                {/* Office Image Upload */}
+                <div>
+                  <Label htmlFor="office-image">Office Image</Label>
+                  <Input
+                    id="office-image"
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => {
+                      const file = e.target.files?.[0]
+                      if (file) {
+                        // You might want to upload the image to a storage service here
+                        // For simplicity, we'll just store the file name
+                        setEditingLocation({ ...editingLocation, image: file.name })
+                      }
+                    }}
                   />
                 </div>
                 <div>
