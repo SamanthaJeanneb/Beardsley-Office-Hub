@@ -71,7 +71,7 @@ export const printerDriverLinks: Record<string, string> = {
   "HP LaserJet Pro": "file://License/HP_LaserJet_Pro_Drivers",
   "HP OfficeJet Pro 9015e": "file://License/HP_OfficeJet_Pro_9015e_Drivers",
   "Canon PIXMA TR8620": "file://License/Canon_PIXMA_TR8620_Drivers",
-  "Brother MFC-L8900CDW": "file://License/Brother_MFC_L8900CDW_Drivers",
+  "Brother MFC-L8900CDW": "file://License/Brother_MFC-L8900CDW_Drivers",
   "HP LaserJet First Floor": "file://License/HP_LaserJet_Pro_Drivers",
 }
 
@@ -534,7 +534,7 @@ export const employeeData: EmployeeData[] = [
     employeeNumber: "71",
     fullName: "Jeff Velte",
     locationDescription: "Syracuse",
-    title: "Project Manager",
+    title: "Senior Project Manager",
     email: "jvelte@beardsley.com",
     workPhone: "315.253.7301",
     profitCenterName: "Beardsley",
@@ -544,7 +544,7 @@ export const employeeData: EmployeeData[] = [
     employeeNumber: "12",
     fullName: "Joanne Butler",
     locationDescription: "Syracuse",
-    title: "Project Engineer",
+    title: "Senior Project Manager",
     email: "jbutler@beardsley.com",
     workPhone: "315.253.7301",
     profitCenterName: "Beardsley",
@@ -554,8 +554,8 @@ export const employeeData: EmployeeData[] = [
     employeeNumber: "287",
     fullName: "Joanne Maddox Kinslow",
     locationDescription: "Syracuse",
-    title: "Project Manager",
-    email: "jmaddoxkinslow@beardsley.com",
+    title: "Administrative Assistant",
+    email: "jkinslow@beardsley.com",
     workPhone: "315.253.7301",
     profitCenterName: "Beardsley",
     statusDescription: "Active",
@@ -624,7 +624,7 @@ export const employeeData: EmployeeData[] = [
     employeeNumber: "135",
     fullName: "Kathy Mietz",
     locationDescription: "Syracuse",
-    title: "Project Manager",
+    title: "Administrative Assistant",
     email: "kmietz@beardsley.com",
     workPhone: "315.253.7301",
     profitCenterName: "Beardsley",
@@ -634,7 +634,7 @@ export const employeeData: EmployeeData[] = [
     employeeNumber: "26",
     fullName: "Kathy Quigley",
     locationDescription: "Syracuse",
-    title: "Senior Project Manager",
+    title: "Computer System Administrator",
     email: "kquigley@beardsley.com",
     workPhone: "315.253.7301",
     profitCenterName: "Beardsley",
@@ -644,7 +644,7 @@ export const employeeData: EmployeeData[] = [
     employeeNumber: "297",
     fullName: "Kurt Olsen",
     locationDescription: "Syracuse",
-    title: "Project Engineer",
+    title: "Project Manager",
     email: "kolsen@beardsley.com",
     workPhone: "315.253.7301",
     profitCenterName: "Beardsley",
@@ -656,16 +656,6 @@ export const employeeData: EmployeeData[] = [
     locationDescription: "Syracuse",
     title: "Project Engineer",
     email: "kdaddario@beardsley.com",
-    workPhone: "315.253.7301",
-    profitCenterName: "Beardsley",
-    statusDescription: "Active",
-  },
-  {
-    employeeNumber: "5",
-    fullName: "Lillian Marshall",
-    locationDescription: "Syracuse",
-    title: "Project Engineer",
-    email: "lmarshall@beardsley.com",
     workPhone: "315.253.7301",
     profitCenterName: "Beardsley",
     statusDescription: "Active",
@@ -704,7 +694,7 @@ export const employeeData: EmployeeData[] = [
     employeeNumber: "142",
     fullName: "Michael Reynolds",
     locationDescription: "Syracuse",
-    title: "Project Manager",
+    title: "Principal",
     email: "mreynolds@beardsley.com",
     workPhone: "315.253.7301",
     profitCenterName: "Beardsley",
@@ -714,7 +704,7 @@ export const employeeData: EmployeeData[] = [
     employeeNumber: "346",
     fullName: "Michelle Thompson",
     locationDescription: "Syracuse",
-    title: "Project Engineer",
+    title: "Project Manager",
     email: "mthompson@beardsley.com",
     workPhone: "315.253.7301",
     profitCenterName: "Beardsley",
@@ -724,7 +714,7 @@ export const employeeData: EmployeeData[] = [
     employeeNumber: "43",
     fullName: "Mike Naber",
     locationDescription: "Syracuse",
-    title: "Project Engineer",
+    title: "Senior Project Manager",
     email: "mnaber@beardsley.com",
     workPhone: "315.253.7301",
     profitCenterName: "Beardsley",
@@ -774,7 +764,7 @@ export const employeeData: EmployeeData[] = [
     employeeNumber: "36",
     fullName: "Phil Beyel",
     locationDescription: "Syracuse",
-    title: "Project Manager",
+    title: "Senior Project Manager",
     email: "pbeyel@beardsley.com",
     workPhone: "315.253.7301",
     profitCenterName: "Beardsley",
@@ -804,7 +794,7 @@ export const employeeData: EmployeeData[] = [
     employeeNumber: "229",
     fullName: "Seth Livermore",
     locationDescription: "Syracuse",
-    title: "Principal",
+    title: "Project Manager",
     email: "slivermore@beardsley.com",
     workPhone: "315.253.7301",
     profitCenterName: "Beardsley",
@@ -834,7 +824,7 @@ export const employeeData: EmployeeData[] = [
     employeeNumber: "32",
     fullName: "Tom Wight",
     locationDescription: "Syracuse",
-    title: "Project Manager",
+    title: "Senior Project Manager",
     email: "twight@beardsley.com",
     workPhone: "315.253.7301",
     profitCenterName: "Beardsley",
@@ -844,10 +834,139 @@ export const employeeData: EmployeeData[] = [
     employeeNumber: "330",
     fullName: "Tracey Carr",
     locationDescription: "Syracuse",
-    title: "Project Engineer",
+    title: "Administrative Assistant",
     email: "tcarr@beardsley.com",
     workPhone: "315.253.7301",
     profitCenterName: "Beardsley",
     statusDescription: "Active",
   },
 ]
+
+// Function to get employee data by employee number
+export function getEmployeeDataByNumber(employeeNumber: string): EmployeeData | null {
+  return employeeData.find((emp) => emp.employeeNumber === employeeNumber) || null
+}
+
+// Function to get employee data by full name
+export function getEmployeeDataByName(fullName: string): EmployeeData | null {
+  return employeeData.find((emp) => emp.fullName.toLowerCase() === fullName.toLowerCase()) || null
+}
+
+// Function to get all employees for a specific location
+export function getEmployeesByLocation(location: string): EmployeeData[] {
+  return employeeData.filter((emp) => emp.locationDescription.toLowerCase() === location.toLowerCase())
+}
+
+// Function to get all active employees
+export function getAllActiveEmployees(): EmployeeData[] {
+  return employeeData.filter((emp) => emp.statusDescription === "Active")
+}
+
+// Function to search employees by various criteria
+export function searchEmployeeData(query: string): EmployeeData[] {
+  const searchTerm = query.toLowerCase()
+  return employeeData.filter(
+    (emp) =>
+      emp.fullName.toLowerCase().includes(searchTerm) ||
+      emp.title.toLowerCase().includes(searchTerm) ||
+      emp.email.toLowerCase().includes(searchTerm) ||
+      emp.employeeNumber.includes(searchTerm) ||
+      emp.locationDescription.toLowerCase().includes(searchTerm),
+  )
+}
+
+// Function to validate employee number format
+export function isValidEmployeeNumber(employeeNumber: string): boolean {
+  // Employee numbers can be 1-3 digits, sometimes with leading zeros
+  return /^\d{1,3}$/.test(employeeNumber.replace(/^0+/, "")) && employeeNumber.length <= 3
+}
+
+// Function to format employee number with leading zeros
+export function formatEmployeeNumber(employeeNumber: string): string {
+  const num = employeeNumber.replace(/^0+/, "") // Remove leading zeros
+  return num.padStart(3, "0") // Add leading zeros to make it 3 digits
+}
+
+// Function to get employee count by location
+export function getEmployeeCountByLocation(): Record<string, number> {
+  const counts: Record<string, number> = {}
+  employeeData.forEach((emp) => {
+    const location = emp.locationDescription
+    counts[location] = (counts[location] || 0) + 1
+  })
+  return counts
+}
+
+// Function to get unique job titles
+export function getUniqueJobTitles(): string[] {
+  const titles = new Set(employeeData.map((emp) => emp.title))
+  return Array.from(titles).sort()
+}
+
+// Function to get unique locations
+export function getUniqueLocations(): string[] {
+  const locations = new Set(employeeData.map((emp) => emp.locationDescription))
+  return Array.from(locations).sort()
+}
+
+// Function to generate employee directory data
+export function generateEmployeeDirectory(): Record<string, EmployeeData[]> {
+  const directory: Record<string, EmployeeData[]> = {}
+  employeeData.forEach((emp) => {
+    const firstLetter = emp.fullName.charAt(0).toUpperCase()
+    if (!directory[firstLetter]) {
+      directory[firstLetter] = []
+    }
+    directory[firstLetter].push(emp)
+  })
+
+  // Sort employees within each letter group
+  Object.keys(directory).forEach((letter) => {
+    directory[letter].sort((a, b) => a.fullName.localeCompare(b.fullName))
+  })
+
+  return directory
+}
+
+// Function to export employee data as CSV
+export function exportEmployeeDataAsCSV(): string {
+  const headers = ["Employee Number", "Full Name", "Location", "Title", "Email", "Work Phone", "Status"]
+  const rows = employeeData.map((emp) => [
+    emp.employeeNumber,
+    emp.fullName,
+    emp.locationDescription,
+    emp.title,
+    emp.email,
+    emp.workPhone,
+    emp.statusDescription,
+  ])
+
+  const csvContent = [headers, ...rows].map((row) => row.map((field) => `"${field}"`).join(",")).join("\n")
+
+  return csvContent
+}
+
+// Function to get employee statistics
+export function getEmployeeStatistics(): {
+  totalEmployees: number
+  locationCounts: Record<string, number>
+  titleCounts: Record<string, number>
+  averageEmployeesPerLocation: number
+} {
+  const totalEmployees = employeeData.length
+  const locationCounts = getEmployeeCountByLocation()
+  const titleCounts: Record<string, number> = {}
+
+  employeeData.forEach((emp) => {
+    titleCounts[emp.title] = (titleCounts[emp.title] || 0) + 1
+  })
+
+  const averageEmployeesPerLocation = totalEmployees / Object.keys(locationCounts).length
+
+  return {
+    totalEmployees,
+    locationCounts,
+    titleCounts,
+    averageEmployeesPerLocation: Math.round(averageEmployeesPerLocation * 100) / 100,
+  }
+}
