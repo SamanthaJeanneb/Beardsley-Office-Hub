@@ -1,4 +1,4 @@
-// Auto-generated office seating data - Last updated: 2025-06-09T17:38:15.353Z
+// Auto-generated office seating data - Last updated: 2025-06-09T17:53:51.108Z
 // This file is automatically updated when admins make changes through the Office Hub
 
 // Storage key for localStorage
