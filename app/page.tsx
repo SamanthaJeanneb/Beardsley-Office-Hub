@@ -224,9 +224,6 @@ export default function HomePage() {
                           {location.address}
                         </CardDescription>
                       </div>
-                      <Badge variant={variant} className="ml-4 text-sm px-3 py-1 font-whitney">
-                        {status}
-                      </Badge>
                     </div>
                   </CardHeader>
 
