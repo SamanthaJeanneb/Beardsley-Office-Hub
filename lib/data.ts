@@ -1,4 +1,4 @@
-// Auto-generated office seating data - Last updated: 2025-06-09T19:02:03.447Z
+// Auto-generated office seating data - Last updated: 2025-06-09T19:09:49.950Z
 // This file is automatically updated when admins make changes through the Office Hub
 
 // Storage key for localStorage
@@ -970,8 +970,8 @@ const defaultLocations = {
         "seats": [
           {
             "id": "auburn-seat-16",
-            "x": 590,
-            "y": 360,
+            "x": 586.86181640625,
+            "y": 369.86083984375,
             "rotation": 0,
             "furnitureId": "desk-kjq",
             "employee": {
@@ -980,7 +980,7 @@ const defaultLocations = {
               "title": "Mechanical Engineer",
               "email": "twight@beardsley.com",
               "phone": "315-253-7301 2269",
-              "employeeNumber": "00032",
+              "employeeNumber": "00186",
               "profileUrl": "#",
               "avatar": "/placeholder.svg?height=40&width=40",
               "notes": "Works at the Auburn office, Second Floor."
