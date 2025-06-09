@@ -1,4 +1,4 @@
-// Auto-generated office seating data - Last updated: 2025-06-09T19:31:44.531Z
+// Auto-generated office seating data - Last updated: 2025-06-09T20:41:31.389Z
 // This file is automatically updated when admins make changes through the Office Hub
 
 // Storage key for localStorage
@@ -630,7 +630,7 @@ const defaultLocations = {
           {
             "id": "lobby",
             "name": "Lobby",
-            "x": 50,
+            "x": 51.25,
             "y": 50,
             "width": 150,
             "height": 100,
@@ -722,8 +722,8 @@ const defaultLocations = {
           {
             "id": "desk-f1-8",
             "type": "desk",
-            "x": 320,
-            "y": 280,
+            "x": 321.25,
+            "y": 281.25,
             "width": 60,
             "height": 40,
             "rotation": 0
@@ -887,6 +887,13 @@ const defaultLocations = {
               "profileUrl": "#",
               "avatar": "/photos/That-Guy_Resume.jpg"
             }
+          },
+          {
+            "id": "seat-1749501622988",
+            "x": 333.30645751953125,
+            "y": 530.7478637695312,
+            "rotation": 0,
+            "employee": null
           }
         ]
       },
