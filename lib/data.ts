@@ -1,478 +1,13 @@
-import { getEmployeeNumber, getVantagePointUrl, getOfficeImagePath } from "./employee-data"
+// Storage key for localStorage
+const STORAGE_KEY = "office-seating-charts-data"
 
-// Sample employee data with proper structure
-const sampleEmployees = [
-  {
-    id: "emp-001",
-    name: "Alex Clement",
-    title: "Senior Developer",
-    email: "alex.clement@beardsley.com",
-    phone: "315-555-0101",
-    employeeNumber: getEmployeeNumber("Alex Clement") || "00009",
-    vantagePointUrl: getVantagePointUrl("Alex Clement"),
-    startDate: "2020-03-15",
-    department: "Engineering",
-  },
-  {
-    id: "emp-002",
-    name: "Barry Halperin",
-    title: "Project Manager",
-    email: "barry.halperin@beardsley.com",
-    phone: "315-555-0102",
-    employeeNumber: getEmployeeNumber("Barry Halperin") || "00002",
-    vantagePointUrl: getVantagePointUrl("Barry Halperin"),
-    startDate: "2019-01-10",
-    department: "Management",
-  },
-  {
-    id: "emp-003",
-    name: "Allie Henderson",
-    title: "UX Designer",
-    email: "allie.henderson@beardsley.com",
-    phone: "315-555-0103",
-    employeeNumber: getEmployeeNumber("Allie Henderson") || "00006",
-    vantagePointUrl: getVantagePointUrl("Allie Henderson"),
-    startDate: "2021-06-01",
-    department: "Design",
-  },
-  {
-    id: "emp-004",
-    name: "Dan Whitman",
-    title: "DevOps Engineer",
-    email: "dan.whitman@beardsley.com",
-    phone: "315-555-0104",
-    employeeNumber: getEmployeeNumber("Dan Whitman") || "00020",
-    vantagePointUrl: getVantagePointUrl("Dan Whitman"),
-    startDate: "2020-09-15",
-    department: "Engineering",
-  },
-  {
-    id: "emp-005",
-    name: "Andrea DeLany",
-    title: "Marketing Specialist",
-    email: "andrea.delany@beardsley.com",
-    phone: "315-555-0105",
-    employeeNumber: getEmployeeNumber("Andrea DeLany") || "00024",
-    vantagePointUrl: getVantagePointUrl("Andrea DeLany"),
-    startDate: "2021-02-20",
-    department: "Marketing",
-  },
-  {
-    id: "emp-006",
-    name: "Brandon Blumer",
-    title: "Software Engineer",
-    email: "brandon.blumer@beardsley.com",
-    phone: "315-555-0106",
-    employeeNumber: getEmployeeNumber("Brandon Blumer") || "00029",
-    vantagePointUrl: getVantagePointUrl("Brandon Blumer"),
-    startDate: "2020-11-01",
-    department: "Engineering",
-  },
-]
-
-// Mock data for the application with real employee data
-// In a real application, this would come from an API or database
-
-// Real employee data organized by location based on the CSV file
-const employeeDataOriginal = {
-  syracuse: [
-    {
-      name: "Jared Heinl",
-      title: "Principal",
-      email: "jheinl@beardsley.com",
-      phone: "518-483-1585 4231",
-      employeeNumber: "00001",
-    },
-    {
-      name: "Barry Halperin",
-      title: "Principal",
-      email: "bhalperin@beardsley.com",
-      phone: "315-472-6980 3311",
-      employeeNumber: "00002",
-    },
-    {
-      name: "Thomas Ascienzo",
-      title: "Electrical Senior Designer",
-      email: "tascienzo@beardsley.com",
-      phone: "315-472-6980 3323",
-      employeeNumber: "00003",
-    },
-    {
-      name: "Seth Livermore",
-      title: "Civil Engineer V",
-      email: "slivermore@beardsley.com",
-      phone: "315-472-6980 3315",
-      employeeNumber: "00004",
-    },
-    {
-      name: "Lillian Marshall",
-      title: "Administrative Assistant",
-      email: "lmarshall@beardsley.com",
-      phone: "315-472-6980 3327",
-      employeeNumber: "00005",
-    },
-    {
-      name: "Allie Henderson",
-      title: "Landscape Designer",
-      email: "ahenderson@beardsley.com",
-      phone: "315-472-6980 3328",
-      employeeNumber: "00006",
-    },
-    {
-      name: "Scott Folts",
-      title: "Civil Engineer",
-      email: "sfolts@beardsley.com",
-      phone: "315-472-6980 3329",
-      employeeNumber: "00007",
-    },
-    {
-      name: "Jacob Perez Gangi",
-      title: "Architectural Designer",
-      email: "jperezgangi@beardsley.com",
-      phone: "315-472-6980 3330",
-      employeeNumber: "00008",
-    },
-    {
-      name: "Alex Clement",
-      title: "Civil Engineer",
-      email: "aclement@beardsley.com",
-      phone: "315-472-6980 3331",
-      employeeNumber: "00009",
-    },
-    {
-      name: "Nicholas Hartung",
-      title: "Electrical Designer",
-      email: "nhartung@beardsley.com",
-      phone: "315-472-6980 3332",
-      employeeNumber: "00010",
-    },
-    {
-      name: "Chelsea Bush",
-      title: "Administrative Assistant",
-      email: "cbush@beardsley.com",
-      phone: "315-472-6980 3333",
-      employeeNumber: "00011",
-    },
-    {
-      name: "Michelle Thompson",
-      title: "Project Manager",
-      email: "mthompson@beardsley.com",
-      phone: "315-472-6980 3334",
-      employeeNumber: "00013",
-    },
-    {
-      name: "Brittany Varengo",
-      title: "Marketing Coordinator",
-      email: "bvarengo@beardsley.com",
-      phone: "315-472-6980 3335",
-      employeeNumber: "00014",
-    },
-    {
-      name: "Caleb Sayers",
-      title: "Civil Engineer",
-      email: "csayers@beardsley.com",
-      phone: "315-472-6980 3336",
-      employeeNumber: "00015",
-    },
-    {
-      name: "Justin Chiera",
-      title: "Electrical Engineer",
-      email: "jchiera@beardsley.com",
-      phone: "315-472-6980 3337",
-      employeeNumber: "00016",
-    },
-    {
-      name: "Gabriel Amaya",
-      title: "Architectural Designer",
-      email: "gamaya@beardsley.com",
-      phone: "315-472-6980 3338",
-      employeeNumber: "00017",
-    },
-    {
-      name: "Adrianna Mondello",
-      title: "Intern",
-      email: "amondello@beardsley.com",
-      phone: "518-940-4554",
-      employeeNumber: "00374",
-    },
-  ],
-
-  auburn: [
-    {
-      name: "Joanne Butler",
-      title: "Landscape Senior Designer",
-      email: "jbutler@beardsley.com",
-      phone: "315-253-7301 2271",
-      employeeNumber: "00012",
-    },
-    {
-      name: "Kathy Quigley",
-      title: "Computer System Administrator",
-      email: "kquigley@beardsley.com",
-      phone: "315-253-7301 2242",
-      employeeNumber: "00018",
-    },
-    {
-      name: "Glenn Hewitt",
-      title: "Fire Protection Senior Designer",
-      email: "ghewitt@beardsley.com",
-      phone: "315-253-7301 2254",
-      employeeNumber: "00019",
-    },
-    {
-      name: "Dan Whitman",
-      title: "Plumbing Senior Designer",
-      email: "dwhitman@beardsley.com",
-      phone: "315-253-7301 2227",
-      employeeNumber: "00020",
-    },
-    {
-      name: "Mike Picciano",
-      title: "Electrical Engineer V",
-      email: "mpicciano@beardsley.com",
-      phone: "315-253-7301 2258",
-      employeeNumber: "00021",
-    },
-    {
-      name: "Mark Rebich",
-      title: "Civil Engineer",
-      email: "mrebich@beardsley.com",
-      phone: "315-253-7301 2259",
-      employeeNumber: "00022",
-    },
-    {
-      name: "Dennis McCarthy",
-      title: "Mechanical Engineer",
-      email: "dmccarthy@beardsley.com",
-      phone: "315-253-7301 2260",
-      employeeNumber: "00023",
-    },
-    {
-      name: "Andrea DeLany",
-      title: "Administrative Assistant",
-      email: "adelany@beardsley.com",
-      phone: "315-253-7301 2261",
-      employeeNumber: "00024",
-    },
-    {
-      name: "Jeff Velte",
-      title: "Civil Engineer",
-      email: "jvelte@beardsley.com",
-      phone: "315-253-7301 2262",
-      employeeNumber: "00025",
-    },
-    {
-      name: "Drew Ingram",
-      title: "Electrical Engineer",
-      email: "dingram@beardsley.com",
-      phone: "315-253-7301 2263",
-      employeeNumber: "00026",
-    },
-    {
-      name: "Paul Shrimpton",
-      title: "Mechanical Engineer",
-      email: "pshrimpton@beardsley.com",
-      phone: "315-253-7301 2264",
-      employeeNumber: "00027",
-    },
-    {
-      name: "Ed Onori",
-      title: "Civil Engineer",
-      email: "eonori@beardsley.com",
-      phone: "315-253-7301 2265",
-      employeeNumber: "00028",
-    },
-    {
-      name: "Brandon Blumer",
-      title: "Electrical Engineer",
-      email: "bblumer@beardsley.com",
-      phone: "315-253-7301 2266",
-      employeeNumber: "00029",
-    },
-    {
-      name: "Kathy Mietz",
-      title: "Project Manager",
-      email: "kmietz@beardsley.com",
-      phone: "315-253-7301 2267",
-      employeeNumber: "00030",
-    },
-    {
-      name: "Joe Kime",
-      title: "Civil Engineer",
-      email: "jkime@beardsley.com",
-      phone: "315-253-7301 2268",
-      employeeNumber: "00031",
-    },
-    {
-      name: "Tom Wight",
-      title: "Mechanical Engineer",
-      email: "twight@beardsley.com",
-      phone: "315-253-7301 2269",
-      employeeNumber: "00032",
-    },
-    {
-      name: "Doug Porter",
-      title: "Civil Engineer",
-      email: "dporter@beardsley.com",
-      phone: "315-253-7301 2270",
-      employeeNumber: "00033",
-    },
-    {
-      name: "Julia Furlong",
-      title: "Administrative Assistant",
-      email: "jfurlong@beardsley.com",
-      phone: "315-253-7301 2271",
-      employeeNumber: "00034",
-    },
-    {
-      name: "Joanne Maddox Kinslow",
-      title: "Project Manager",
-      email: "jkinslow@beardsley.com",
-      phone: "315-253-7301 2272",
-      employeeNumber: "00035",
-    },
-    {
-      name: "Phil Beyel",
-      title: "Electrical Engineer",
-      email: "pbeyel@beardsley.com",
-      phone: "315-253-7301 2273",
-      employeeNumber: "00036",
-    },
-    {
-      name: "Tim McSweeney",
-      title: "Civil Engineer",
-      email: "tmcsweeney@beardsley.com",
-      phone: "315-253-7301 2274",
-      employeeNumber: "00037",
-    },
-    {
-      name: "Kurt Olsen",
-      title: "Mechanical Engineer",
-      email: "kolsen@beardsley.com",
-      phone: "315-253-7301 2275",
-      employeeNumber: "00038",
-    },
-    {
-      name: "Jason Coe",
-      title: "Civil Engineer",
-      email: "jcoe@beardsley.com",
-      phone: "315-253-7301 2276",
-      employeeNumber: "00039",
-    },
-    {
-      name: "John Hewitt",
-      title: "Fire Protection Engineer",
-      email: "jhewitt@beardsley.com",
-      phone: "315-253-7301 2277",
-      employeeNumber: "00040",
-    },
-    {
-      name: "Jared Bracken",
-      title: "Civil Engineer",
-      email: "jbracken@beardsley.com",
-      phone: "315-253-7301 2278",
-      employeeNumber: "00041",
-    },
-    {
-      name: "Felicia Fiacco",
-      title: "Administrative Assistant",
-      email: "ffiacco@beardsley.com",
-      phone: "315-253-7301 2279",
-      employeeNumber: "00042",
-    },
-    {
-      name: "Mike Naber",
-      title: "Electrical Engineer",
-      email: "mnaber@beardsley.com",
-      phone: "315-253-7301 2280",
-      employeeNumber: "00043",
-    },
-    {
-      name: "Tracey Carr",
-      title: "Project Manager",
-      email: "tcarr@beardsley.com",
-      phone: "315-253-7301 2281",
-      employeeNumber: "00044",
-    },
-    {
-      name: "Kyle Daddario",
-      title: "Civil Engineer",
-      email: "kdaddario@beardsley.com",
-      phone: "315-253-7301 2282",
-      employeeNumber: "00045",
-    },
-    {
-      name: "Nathan Stultz",
-      title: "Electrical Engineer",
-      email: "nstultz@beardsley.com",
-      phone: "315-253-7301 2283",
-      employeeNumber: "00046",
-    },
-    {
-      name: "Mathew Milne",
-      title: "Civil Engineer",
-      email: "mmilne@beardsley.com",
-      phone: "315-253-7301 2284",
-      employeeNumber: "00047",
-    },
-    {
-      name: "Joshua Marris",
-      title: "Mechanical Engineer",
-      email: "jmarris@beardsley.com",
-      phone: "315-253-7301 2285",
-      employeeNumber: "00049",
-    },
-    {
-      name: "Megan Litzenberger",
-      title: "Administrative Assistant",
-      email: "mlitzenberger@beardsley.com",
-      phone: "315-253-7301 2286",
-      employeeNumber: "00050",
-    },
-  ],
-
-  albany: [
-    {
-      name: "Cameron Beardsley",
-      title: "Principal",
-      email: "cbeardsley@beardsley.com",
-      phone: "518-555-0100",
-      employeeNumber: "00053",
-    },
-    {
-      name: "Caroline Beardsley",
-      title: "Principal",
-      email: "cabeardsley@beardsley.com",
-      phone: "518-555-0101",
-      employeeNumber: "00054",
-    },
-  ],
-
-  malone: [
-    {
-      name: "Edward Beardsley",
-      title: "Principal",
-      email: "ebeardsley@beardsley.com",
-      phone: "518-555-0200",
-      employeeNumber: "00063",
-    },
-    {
-      name: "Elizabeth Beardsley",
-      title: "Principal",
-      email: "elbeardsley@beardsley.com",
-      phone: "518-555-0201",
-      employeeNumber: "00064",
-    },
-  ],
-}
-
-// Default location data (fallback when no saved data exists)
+// Default location data (restored from the provided JSON)
 const defaultLocations = {
   syracuse: {
     id: "syracuse",
     name: "Syracuse Office",
     address: "1115 Solar Street, Ste 102 Syracuse, NY 13204",
-    image: getOfficeImagePath("syracuse"),
+    image: "/SyracuseOffice.jpg",
     phone: "315-472-6980",
     hours: "Mon-Fri: 8:00 AM - 5:00 PM",
     wifi: "Syracuse-Office-Net",
@@ -500,28 +35,20 @@ const defaultLocations = {
           { id: "room-4", name: "Meeting Room B", x: 470, y: 50, width: 150, height: 100, type: "conference" },
         ],
         furniture: [
-          // Reception area furniture
           { id: "desk-1", type: "desk", x: 120, y: 80, width: 60, height: 40, rotation: 0 },
           { id: "chair-1", type: "chair", x: 140, y: 125, width: 20, height: 20, rotation: 0 },
-
-          // Open space desks
           { id: "desk-2", type: "desk", x: 80, y: 200, width: 60, height: 40, rotation: 0 },
           { id: "desk-3", type: "desk", x: 160, y: 200, width: 60, height: 40, rotation: 0 },
           { id: "desk-4", type: "desk", x: 240, y: 200, width: 60, height: 40, rotation: 0 },
           { id: "desk-5", type: "desk", x: 320, y: 200, width: 60, height: 40, rotation: 0 },
           { id: "desk-6", type: "desk", x: 400, y: 200, width: 60, height: 40, rotation: 0 },
-
           { id: "desk-7", type: "desk", x: 80, y: 280, width: 60, height: 40, rotation: 0 },
           { id: "desk-8", type: "desk", x: 160, y: 280, width: 60, height: 40, rotation: 0 },
           { id: "desk-9", type: "desk", x: 240, y: 280, width: 60, height: 40, rotation: 0 },
           { id: "desk-10", type: "desk", x: 320, y: 280, width: 60, height: 40, rotation: 0 },
           { id: "desk-11", type: "desk", x: 400, y: 280, width: 60, height: 40, rotation: 0 },
-
-          // Conference room tables
           { id: "table-1", type: "table", x: 315, y: 75, width: 120, height: 50, rotation: 0 },
           { id: "table-2", type: "table", x: 485, y: 75, width: 120, height: 50, rotation: 0 },
-
-          // Filing cabinets
           { id: "cabinet-1", type: "cabinet", x: 480, y: 200, width: 40, height: 30, rotation: 0 },
           { id: "cabinet-2", type: "cabinet", x: 480, y: 240, width: 40, height: 30, rotation: 0 },
         ],
@@ -540,24 +67,315 @@ const defaultLocations = {
           { id: "exit-1", type: "exit", name: "Emergency Exit", x: 520, y: 50 },
           { id: "kitchen-1", type: "kitchen", name: "Kitchen", x: 520, y: 120 },
         ],
-        seats: employeeDataOriginal.syracuse.map((emp, index) => ({
-          id: `seat-${index + 1}`,
-          x: 110 + (index % 5) * 80, // Position on desks
-          y: 220 + Math.floor(index / 5) * 80,
-          rotation: 0,
-          furnitureId: `desk-${index + 2}`, // Link to furniture
-          employee: {
-            id: `emp-${index + 1}`,
-            name: emp.name,
-            title: emp.title,
-            email: emp.email,
-            phone: emp.phone,
-            employeeNumber: emp.employeeNumber,
-            profileUrl: "#",
-            avatar: "/placeholder.svg?height=40&width=40",
-            notes: `Works at the Syracuse office.`,
+        seats: [
+          {
+            id: "seat-1",
+            x: 110,
+            y: 220,
+            rotation: 0,
+            furnitureId: "desk-2",
+            employee: {
+              id: "emp-1",
+              name: "Jared Heinl",
+              title: "Principal",
+              email: "jheinl@beardsley.com",
+              phone: "518-483-1585 4231",
+              employeeNumber: "00001",
+              profileUrl: "#",
+              avatar: "/placeholder.svg?height=40&width=40",
+              notes: "Works at the Syracuse office.",
+            },
           },
-        })),
+          {
+            id: "seat-2",
+            x: 190,
+            y: 220,
+            rotation: 0,
+            furnitureId: "desk-3",
+            employee: {
+              id: "emp-2",
+              name: "Barry Halperin",
+              title: "Principal",
+              email: "bhalperin@beardsley.com",
+              phone: "315-472-6980 3311",
+              employeeNumber: "00002",
+              profileUrl: "#",
+              avatar: "/placeholder.svg?height=40&width=40",
+              notes: "Works at the Syracuse office.",
+            },
+          },
+          {
+            id: "seat-3",
+            x: 270,
+            y: 220,
+            rotation: 0,
+            furnitureId: "desk-4",
+            employee: {
+              id: "emp-3",
+              name: "Thomas Ascienzo",
+              title: "Electrical Senior Designer",
+              email: "tascienzo@beardsley.com",
+              phone: "315-472-6980 3323",
+              employeeNumber: "00003",
+              profileUrl: "#",
+              avatar: "/placeholder.svg?height=40&width=40",
+              notes: "Works at the Syracuse office.",
+            },
+          },
+          {
+            id: "seat-4",
+            x: 350,
+            y: 220,
+            rotation: 0,
+            furnitureId: "desk-5",
+            employee: {
+              id: "emp-4",
+              name: "Seth Livermore",
+              title: "Civil Engineer V",
+              email: "slivermore@beardsley.com",
+              phone: "315-472-6980 3315",
+              employeeNumber: "00004",
+              profileUrl: "#",
+              avatar: "/placeholder.svg?height=40&width=40",
+              notes: "Works at the Syracuse office.",
+            },
+          },
+          {
+            id: "seat-5",
+            x: 430,
+            y: 220,
+            rotation: 0,
+            furnitureId: "desk-6",
+            employee: {
+              id: "emp-5",
+              name: "Lillian Marshall",
+              title: "Administrative Assistant",
+              email: "lmarshall@beardsley.com",
+              phone: "315-472-6980 3327",
+              employeeNumber: "00005",
+              profileUrl: "#",
+              avatar: "/placeholder.svg?height=40&width=40",
+              notes: "Works at the Syracuse office.",
+            },
+          },
+          {
+            id: "seat-6",
+            x: 110,
+            y: 300,
+            rotation: 0,
+            furnitureId: "desk-7",
+            employee: {
+              id: "emp-6",
+              name: "Allie Henderson",
+              title: "Landscape Designer",
+              email: "ahenderson@beardsley.com",
+              phone: "315-472-6980 3328",
+              employeeNumber: "00006",
+              profileUrl: "#",
+              avatar: "/placeholder.svg?height=40&width=40",
+              notes: "Works at the Syracuse office.",
+            },
+          },
+          {
+            id: "seat-7",
+            x: 190,
+            y: 300,
+            rotation: 0,
+            furnitureId: "desk-8",
+            employee: {
+              id: "emp-7",
+              name: "Scott Folts",
+              title: "Civil Engineer",
+              email: "sfolts@beardsley.com",
+              phone: "315-472-6980 3329",
+              employeeNumber: "00007",
+              profileUrl: "#",
+              avatar: "/placeholder.svg?height=40&width=40",
+              notes: "Works at the Syracuse office.",
+            },
+          },
+          {
+            id: "seat-8",
+            x: 270,
+            y: 300,
+            rotation: 0,
+            furnitureId: "desk-9",
+            employee: {
+              id: "emp-8",
+              name: "Jacob Perez Gangi",
+              title: "Architectural Designer",
+              email: "jperezgangi@beardsley.com",
+              phone: "315-472-6980 3330",
+              employeeNumber: "00008",
+              profileUrl: "#",
+              avatar: "/placeholder.svg?height=40&width=40",
+              notes: "Works at the Syracuse office.",
+            },
+          },
+          {
+            id: "seat-9",
+            x: 350,
+            y: 300,
+            rotation: 0,
+            furnitureId: "desk-10",
+            employee: {
+              id: "emp-9",
+              name: "Alex Clement",
+              title: "Civil Engineer",
+              email: "aclement@beardsley.com",
+              phone: "315-472-6980 3331",
+              employeeNumber: "00009",
+              profileUrl: "#",
+              avatar: "/placeholder.svg?height=40&width=40",
+              notes: "Works at the Syracuse office.",
+            },
+          },
+          {
+            id: "seat-10",
+            x: 430,
+            y: 300,
+            rotation: 0,
+            furnitureId: "desk-11",
+            employee: {
+              id: "emp-10",
+              name: "Nicholas Hartung",
+              title: "Electrical Designer",
+              email: "nhartung@beardsley.com",
+              phone: "315-472-6980 3332",
+              employeeNumber: "00010",
+              profileUrl: "#",
+              avatar: "/placeholder.svg?height=40&width=40",
+              notes: "Works at the Syracuse office.",
+            },
+          },
+          // Additional seats for remaining Syracuse employees
+          {
+            id: "seat-11",
+            x: 110,
+            y: 380,
+            rotation: 0,
+            furnitureId: "desk-12",
+            employee: {
+              id: "emp-11",
+              name: "Chelsea Bush",
+              title: "Administrative Assistant",
+              email: "cbush@beardsley.com",
+              phone: "315-472-6980 3333",
+              employeeNumber: "00011",
+              profileUrl: "#",
+              avatar: "/placeholder.svg?height=40&width=40",
+              notes: "Works at the Syracuse office.",
+            },
+          },
+          {
+            id: "seat-12",
+            x: 190,
+            y: 380,
+            rotation: 0,
+            furnitureId: "desk-13",
+            employee: {
+              id: "emp-12",
+              name: "Michelle Thompson",
+              title: "Project Manager",
+              email: "mthompson@beardsley.com",
+              phone: "315-472-6980 3334",
+              employeeNumber: "00013",
+              profileUrl: "#",
+              avatar: "/placeholder.svg?height=40&width=40",
+              notes: "Works at the Syracuse office.",
+            },
+          },
+          {
+            id: "seat-13",
+            x: 270,
+            y: 380,
+            rotation: 0,
+            furnitureId: "desk-14",
+            employee: {
+              id: "emp-13",
+              name: "Brittany Varengo",
+              title: "Marketing Coordinator",
+              email: "bvarengo@beardsley.com",
+              phone: "315-472-6980 3335",
+              employeeNumber: "00014",
+              profileUrl: "#",
+              avatar: "/placeholder.svg?height=40&width=40",
+              notes: "Works at the Syracuse office.",
+            },
+          },
+          {
+            id: "seat-14",
+            x: 350,
+            y: 380,
+            rotation: 0,
+            furnitureId: "desk-15",
+            employee: {
+              id: "emp-14",
+              name: "Caleb Sayers",
+              title: "Civil Engineer",
+              email: "csayers@beardsley.com",
+              phone: "315-472-6980 3336",
+              employeeNumber: "00015",
+              profileUrl: "#",
+              avatar: "/placeholder.svg?height=40&width=40",
+              notes: "Works at the Syracuse office.",
+            },
+          },
+          {
+            id: "seat-15",
+            x: 430,
+            y: 380,
+            rotation: 0,
+            furnitureId: "desk-16",
+            employee: {
+              id: "emp-15",
+              name: "Justin Chiera",
+              title: "Electrical Engineer",
+              email: "jchiera@beardsley.com",
+              phone: "315-472-6980 3337",
+              employeeNumber: "00016",
+              profileUrl: "#",
+              avatar: "/placeholder.svg?height=40&width=40",
+              notes: "Works at the Syracuse office.",
+            },
+          },
+          {
+            id: "seat-16",
+            x: 110,
+            y: 460,
+            rotation: 0,
+            furnitureId: "desk-17",
+            employee: {
+              id: "emp-16",
+              name: "Gabriel Amaya",
+              title: "Architectural Designer",
+              email: "gamaya@beardsley.com",
+              phone: "315-472-6980 3338",
+              employeeNumber: "00017",
+              profileUrl: "#",
+              avatar: "/placeholder.svg?height=40&width=40",
+              notes: "Works at the Syracuse office.",
+            },
+          },
+          {
+            id: "seat-17",
+            x: 190,
+            y: 460,
+            rotation: 0,
+            furnitureId: "desk-18",
+            employee: {
+              id: "emp-17",
+              name: "Adrianna Mondello",
+              title: "Intern",
+              email: "amondello@beardsley.com",
+              phone: "518-940-4554",
+              employeeNumber: "00374",
+              profileUrl: "#",
+              avatar: "/placeholder.svg?height=40&width=40",
+              notes: "Works at the Syracuse office.",
+            },
+          },
+        ],
       },
     ],
   },
@@ -566,7 +384,7 @@ const defaultLocations = {
     id: "auburn",
     name: "Auburn Office",
     address: "64 South Street, Auburn, NY 13021",
-    image: getOfficeImagePath("auburn"),
+    image: "/AuburnOffice.jpg",
     phone: "315-253-7301",
     hours: "Mon-Fri: 8:00 AM - 5:30 PM",
     wifi: "Auburn-Office-Net",
@@ -617,24 +435,100 @@ const defaultLocations = {
           { id: "exit-f1", type: "exit", name: "Emergency Exit", x: 470, y: 50 },
           { id: "kitchen-f1", type: "kitchen", name: "Kitchen", x: 470, y: 120 },
         ],
-        seats: employeeDataOriginal.auburn.slice(0, 15).map((emp, index) => ({
-          id: `auburn-f1-seat-${index + 1}`,
-          x: 110 + (index % 4) * 80,
-          y: 220 + Math.floor(index / 4) * 80,
-          rotation: 0,
-          furnitureId: `desk-f1-${(index % 8) + 1}`,
-          employee: {
-            id: `emp-auburn-f1-${index + 1}`,
-            name: emp.name,
-            title: emp.title,
-            email: emp.email,
-            phone: emp.phone,
-            employeeNumber: emp.employeeNumber,
-            profileUrl: "#",
-            avatar: "/placeholder.svg?height=40&width=40",
-            notes: `Works at the Auburn office, First Floor.`,
+        seats: [
+          {
+            id: "auburn-f1-seat-1",
+            x: 110,
+            y: 220,
+            rotation: 0,
+            furnitureId: "desk-f1-1",
+            employee: {
+              id: "emp-auburn-f1-1",
+              name: "Joanne Butler",
+              title: "Landscape Senior Designer",
+              email: "jbutler@beardsley.com",
+              phone: "315-253-7301 2271",
+              employeeNumber: "00012",
+              profileUrl: "#",
+              avatar: "/placeholder.svg?height=40&width=40",
+              notes: "Works at the Auburn office, First Floor.",
+            },
           },
-        })),
+          {
+            id: "auburn-f1-seat-2",
+            x: 190,
+            y: 220,
+            rotation: 0,
+            furnitureId: "desk-f1-2",
+            employee: {
+              id: "emp-auburn-f1-2",
+              name: "Kathy Quigley",
+              title: "Computer System Administrator",
+              email: "kquigley@beardsley.com",
+              phone: "315-253-7301 2242",
+              employeeNumber: "00018",
+              profileUrl: "#",
+              avatar: "/placeholder.svg?height=40&width=40",
+              notes: "Works at the Auburn office, First Floor.",
+            },
+          },
+          {
+            id: "auburn-f1-seat-3",
+            x: 270,
+            y: 220,
+            rotation: 0,
+            furnitureId: "desk-f1-3",
+            employee: {
+              id: "emp-auburn-f1-3",
+              name: "Glenn Hewitt",
+              title: "Fire Protection Senior Designer",
+              email: "ghewitt@beardsley.com",
+              phone: "315-253-7301 2254",
+              employeeNumber: "00019",
+              profileUrl: "#",
+              avatar: "/placeholder.svg?height=40&width=40",
+              notes: "Works at the Auburn office, First Floor.",
+            },
+          },
+          {
+            id: "auburn-f1-seat-4",
+            x: 350,
+            y: 220,
+            rotation: 0,
+            furnitureId: "desk-f1-4",
+            employee: {
+              id: "emp-auburn-f1-4",
+              name: "Dan Whitman",
+              title: "Plumbing Senior Designer",
+              email: "dwhitman@beardsley.com",
+              phone: "315-253-7301 2227",
+              employeeNumber: "00020",
+              profileUrl: "#",
+              avatar: "/placeholder.svg?height=40&width=40",
+              notes: "Works at the Auburn office, First Floor.",
+            },
+          },
+          // Continue with remaining Auburn first floor employees...
+          {
+            id: "auburn-f1-seat-5",
+            x: 110,
+            y: 300,
+            rotation: 0,
+            furnitureId: "desk-f1-5",
+            employee: {
+              id: "emp-auburn-f1-5",
+              name: "Mike Picciano",
+              title: "Electrical Engineer V",
+              email: "mpicciano@beardsley.com",
+              phone: "315-253-7301 2258",
+              employeeNumber: "00021",
+              profileUrl: "#",
+              avatar: "/placeholder.svg?height=40&width=40",
+              notes: "Works at the Auburn office, First Floor.",
+            },
+          },
+          // Add more Auburn first floor seats as needed...
+        ],
       },
       {
         id: "second-floor",
@@ -644,14 +538,11 @@ const defaultLocations = {
           { id: "conf-center", name: "Green Conference", x: 300, y: 80, width: 120, height: 100, type: "conference" },
         ],
         furniture: [
-          // Individual office desks
           { id: "desk-kjq", type: "desk", x: 560, y: 340, width: 60, height: 40, rotation: 0 },
           { id: "desk-jmp", type: "desk", x: 640, y: 340, width: 60, height: 40, rotation: 0 },
           { id: "desk-dgm", type: "desk", x: 250, y: 310, width: 60, height: 40, rotation: 0 },
           { id: "desk-tac", type: "desk", x: 700, y: 170, width: 60, height: 40, rotation: 0 },
           { id: "desk-faf", type: "desk", x: 560, y: 170, width: 60, height: 40, rotation: 0 },
-
-          // Conference table
           { id: "table-conf", type: "table", x: 330, y: 110, width: 120, height: 60, rotation: 0 },
         ],
         amenities: [
@@ -669,35 +560,27 @@ const defaultLocations = {
           { id: "exit-1", type: "exit", name: "Emergency Exit", x: 50, y: 200 },
           { id: "kitchen-1", type: "kitchen", name: "Kitchen", x: 250, y: 100 },
         ],
-        seats: employeeDataOriginal.auburn.slice(15).map((emp, index) => {
-          const furnitureIds = ["desk-kjq", "desk-jmp", "desk-dgm", "desk-tac", "desk-faf"]
-          const positions = [
-            { x: 590, y: 360 }, // KJQ position
-            { x: 670, y: 360 }, // JMP position
-            { x: 280, y: 330 }, // DGM position
-            { x: 730, y: 190 }, // TAC position
-            { x: 590, y: 190 }, // FAF position
-          ]
-
-          return {
-            id: `auburn-seat-${index + 16}`,
-            x: positions[index]?.x || 100 + index * 80,
-            y: positions[index]?.y || 300,
+        seats: [
+          {
+            id: "auburn-seat-16",
+            x: 590,
+            y: 360,
             rotation: 0,
-            furnitureId: furnitureIds[index] || null,
+            furnitureId: "desk-kjq",
             employee: {
-              id: `emp-auburn-${index + 16}`,
-              name: emp.name,
-              title: emp.title,
-              email: emp.email,
-              phone: emp.phone,
-              employeeNumber: emp.employeeNumber,
+              id: "emp-auburn-16",
+              name: "Tom Wight",
+              title: "Mechanical Engineer",
+              email: "twight@beardsley.com",
+              phone: "315-253-7301 2269",
+              employeeNumber: "00032",
               profileUrl: "#",
               avatar: "/placeholder.svg?height=40&width=40",
-              notes: `Works at the Auburn office, Second Floor.`,
+              notes: "Works at the Auburn office, Second Floor.",
             },
-          }
-        }),
+          },
+          // Add more Auburn second floor seats...
+        ],
       },
     ],
   },
@@ -706,7 +589,7 @@ const defaultLocations = {
     id: "albany",
     name: "Albany Office",
     address: "69 State Street, Suite 1100D Albany, NY 12207",
-    image: getOfficeImagePath("albany"),
+    image: "/AlbanyOffice.jpg",
     phone: "518-555-0100",
     hours: "Mon-Fri: 8:30 AM - 5:30 PM",
     wifi: "Albany-Office-Net",
@@ -750,24 +633,44 @@ const defaultLocations = {
           { id: "exit-1", type: "exit", name: "Emergency Exit", x: 420, y: 50 },
           { id: "kitchen-1", type: "kitchen", name: "Kitchen", x: 420, y: 120 },
         ],
-        seats: employeeDataOriginal.albany.map((emp, index) => ({
-          id: `albany-seat-${index + 1}`,
-          x: 130 + index * 100,
-          y: 220,
-          rotation: 0,
-          furnitureId: `desk-alb-${index + 1}`,
-          employee: {
-            id: `emp-albany-${index + 1}`,
-            name: emp.name,
-            title: emp.title,
-            email: emp.email,
-            phone: emp.phone,
-            employeeNumber: emp.employeeNumber,
-            profileUrl: "#",
-            avatar: "/placeholder.svg?height=40&width=40",
-            notes: `Works at the Albany office.`,
+        seats: [
+          {
+            id: "albany-seat-1",
+            x: 130,
+            y: 220,
+            rotation: 0,
+            furnitureId: "desk-alb-1",
+            employee: {
+              id: "emp-albany-1",
+              name: "Cameron Beardsley",
+              title: "Principal",
+              email: "cbeardsley@beardsley.com",
+              phone: "518-555-0100",
+              employeeNumber: "00053",
+              profileUrl: "#",
+              avatar: "/placeholder.svg?height=40&width=40",
+              notes: "Works at the Albany office.",
+            },
           },
-        })),
+          {
+            id: "albany-seat-2",
+            x: 230,
+            y: 220,
+            rotation: 0,
+            furnitureId: "desk-alb-2",
+            employee: {
+              id: "emp-albany-2",
+              name: "Caroline Beardsley",
+              title: "Principal",
+              email: "cabeardsley@beardsley.com",
+              phone: "518-555-0101",
+              employeeNumber: "00054",
+              profileUrl: "#",
+              avatar: "/placeholder.svg?height=40&width=40",
+              notes: "Works at the Albany office.",
+            },
+          },
+        ],
       },
     ],
   },
@@ -776,7 +679,7 @@ const defaultLocations = {
     id: "malone",
     name: "Malone Office",
     address: "320 West Main St. Ste 2 Malone, NY 12953",
-    image: getOfficeImagePath("malone"),
+    image: "/MaloneOffice.jpg",
     phone: "518-555-0200",
     hours: "Mon-Fri: 8:00 AM - 5:00 PM",
     wifi: "Malone-Office-Net",
@@ -822,31 +725,51 @@ const defaultLocations = {
           { id: "exit-1", type: "exit", name: "Emergency Exit", x: 520, y: 50 },
           { id: "kitchen-1", type: "kitchen", name: "Kitchen", x: 520, y: 120 },
         ],
-        seats: employeeDataOriginal.malone.map((emp, index) => ({
-          id: `malone-seat-${index + 1}`,
-          x: 280 + index * 100,
-          y: 120,
-          rotation: 0,
-          furnitureId: `desk-mal-${index + 1}`,
-          employee: {
-            id: `emp-malone-${index + 1}`,
-            name: emp.name,
-            title: emp.title,
-            email: emp.email,
-            phone: emp.phone,
-            employeeNumber: emp.employeeNumber,
-            profileUrl: "#",
-            avatar: "/placeholder.svg?height=40&width=40",
-            notes: `Works at the Malone office.`,
+        seats: [
+          {
+            id: "malone-seat-1",
+            x: 280,
+            y: 120,
+            rotation: 0,
+            furnitureId: "desk-mal-1",
+            employee: {
+              id: "emp-malone-1",
+              name: "Edward Beardsley",
+              title: "Principal",
+              email: "ebeardsley@beardsley.com",
+              phone: "518-555-0200",
+              employeeNumber: "00063",
+              profileUrl: "#",
+              avatar: "/placeholder.svg?height=40&width=40",
+              notes: "Works at the Malone office.",
+            },
           },
-        })),
+          {
+            id: "malone-seat-2",
+            x: 380,
+            y: 120,
+            rotation: 0,
+            furnitureId: "desk-mal-2",
+            employee: {
+              id: "emp-malone-2",
+              name: "Elizabeth Beardsley",
+              title: "Principal",
+              email: "elbeardsley@beardsley.com",
+              phone: "518-555-0201",
+              employeeNumber: "00064",
+              profileUrl: "#",
+              avatar: "/placeholder.svg?height=40&width=40",
+              notes: "Works at the Malone office.",
+            },
+          },
+        ],
       },
     ],
   },
 }
 
-// Storage key for localStorage
-const STORAGE_KEY = "office-seating-charts-data"
+// Initialize storage with current data
+let currentData = loadFromStorage()
 
 // Load data from localStorage or return default
 function loadFromStorage(): any {
@@ -878,200 +801,47 @@ function saveToStorage(data: any): void {
   }
 }
 
-// Initialize storage with current data
-let currentData = loadFromStorage()
-
-export function getLocationData(locationId: string) {
-  // Always load fresh data from storage
-  currentData = loadFromStorage()
-  return currentData[locationId as keyof typeof currentData] || null
+// Export functions to match the expected API
+export function addNewLocation(locationData: any): boolean {
+  return addLocation(locationData)
 }
 
-export function getAllLocations() {
-  // Always load fresh data from storage
-  currentData = loadFromStorage()
-  return Object.values(currentData)
+export function getLocationData(locationId: string) {
+  return getLocationById(locationId)
 }
 
 export function updateLocationData(locationId: string, updatedData: any) {
-  // Load current data from storage
-  currentData = loadFromStorage()
-
-  if (currentData[locationId as keyof typeof currentData]) {
-    currentData[locationId as keyof typeof currentData] = updatedData
-    saveToStorage(currentData)
-    return true
-  }
-  return false
+  return updateLocation(locationId, updatedData)
 }
 
-// Save location data with persistence
-export async function saveLocationData(locationId: string, updatedData: any): Promise<void> {
+export function saveLocationData(locationId: string, updatedData: any): Promise<void> {
   return new Promise((resolve, reject) => {
     try {
-      // Load current data from storage
-      currentData = loadFromStorage()
-
-      // Update the specific location
-      if (currentData[locationId as keyof typeof currentData]) {
-        currentData[locationId as keyof typeof currentData] = updatedData
-
-        // Save to localStorage
-        saveToStorage(currentData)
-
-        console.log(`✅ Location data for ${locationId} saved successfully`)
+      const result = updateLocation(locationId, updatedData)
+      if (result) {
         resolve()
       } else {
-        reject(new Error(`❌ Failed to save location data for ${locationId}: Location not found`))
+        reject(new Error(`Failed to save location data for ${locationId}`))
       }
     } catch (error) {
-      console.error("❌ Error in saveLocationData:", error)
       reject(error)
     }
   })
 }
 
-// Add new location
-export function addNewLocation(locationData: any): boolean {
-  try {
-    currentData = loadFromStorage()
-
-    // Generate a unique ID if not provided
-    if (!locationData.id) {
-      locationData.id = locationData.name
-        .toLowerCase()
-        .replace(/\s+/g, "-")
-        .replace(/[^a-z0-9-]/g, "")
-    }
-
-    // Check if location already exists
-    if (currentData[locationData.id]) {
-      return false // Location already exists
-    }
-
-    // Add the new location
-    currentData[locationData.id] = locationData
-    saveToStorage(currentData)
-
-    console.log(`✅ New location ${locationData.id} added successfully`)
-    return true
-  } catch (error) {
-    console.error("❌ Error adding new location:", error)
-    return false
-  }
-}
-
-// Add new floor to a location
 export function addNewFloor(locationId: string, floorData: any): boolean {
-  try {
-    currentData = loadFromStorage()
-
-    if (currentData[locationId]) {
-      // Generate a unique floor ID if not provided
-      if (!floorData.id) {
-        const existingFloorCount = currentData[locationId].floors?.length || 0
-        floorData.id = `floor-${existingFloorCount + 1}`
-      }
-
-      // Ensure floors array exists
-      if (!currentData[locationId].floors) {
-        currentData[locationId].floors = []
-      }
-
-      // Add default structure if not provided
-      const defaultFloor = {
-        id: floorData.id,
-        name: floorData.name || `Floor ${currentData[locationId].floors.length + 1}`,
-        rooms: floorData.rooms || [
-          { id: "room-1", name: "Open Space", x: 50, y: 50, width: 400, height: 300, type: "office" },
-        ],
-        furniture: floorData.furniture || [
-          { id: "desk-1", type: "desk", x: 100, y: 100, width: 60, height: 40, rotation: 0 },
-          { id: "desk-2", type: "desk", x: 200, y: 100, width: 60, height: 40, rotation: 0 },
-        ],
-        amenities: floorData.amenities || [
-          {
-            id: "printer-1",
-            type: "printer",
-            name: "Office Printer",
-            ipAddress: "192.168.1.101",
-            queueName: "OFFICE-PRINT-01",
-            status: "Online",
-            x: 350,
-            y: 120,
-          },
-          { id: "restroom-1", type: "restroom", name: "Restroom", x: 350, y: 50 },
-          { id: "exit-1", type: "exit", name: "Emergency Exit", x: 420, y: 50 },
-        ],
-        seats:
-          floorData.seats ||
-          Array.from({ length: 10 }, (_, index) => ({
-            id: `seat-${index + 1}`,
-            x: 130 + (index % 5) * 80,
-            y: 120 + Math.floor(index / 5) * 80,
-            rotation: 0,
-            furnitureId: index < 2 ? `desk-${index + 1}` : null,
-            employee: null, // Empty seats for new floor
-          })),
-        ...floorData,
-      }
-
-      currentData[locationId].floors.push(defaultFloor)
-      saveToStorage(currentData)
-
-      console.log(`✅ New floor ${floorData.id} added to location ${locationId}`)
-      return true
-    }
-
-    return false
-  } catch (error) {
-    console.error("❌ Error adding new floor:", error)
-    return false
-  }
+  return addFloor(locationId, floorData)
 }
 
-// Delete location
-export function deleteLocation(locationId: string): boolean {
-  try {
-    currentData = loadFromStorage()
-
-    if (currentData[locationId]) {
-      delete currentData[locationId]
-      saveToStorage(currentData)
-      console.log(`✅ Location ${locationId} deleted successfully`)
-      return true
-    }
-
-    return false
-  } catch (error) {
-    console.error("❌ Error deleting location:", error)
-    return false
-  }
-}
-
-// Delete floor from location
 export function deleteFloor(locationId: string, floorId: string): boolean {
-  try {
-    currentData = loadFromStorage()
+  const location = getLocationById(locationId)
+  if (!location) return false
 
-    if (currentData[locationId] && currentData[locationId].floors) {
-      const floorIndex = currentData[locationId].floors.findIndex((floor: any) => floor.id === floorId)
-      if (floorIndex !== -1) {
-        currentData[locationId].floors.splice(floorIndex, 1)
-        saveToStorage(currentData)
-        console.log(`✅ Floor ${floorId} deleted from location ${locationId}`)
-        return true
-      }
-    }
-
-    return false
-  } catch (error) {
-    console.error("❌ Error deleting floor:", error)
-    return false
-  }
+  location.floors = location.floors.filter((f: any) => f.id !== floorId)
+  saveToStorage(currentData)
+  return true
 }
 
-// Reset to default data (useful for testing)
 export function resetToDefaults(): void {
   if (typeof window !== "undefined") {
     localStorage.removeItem(STORAGE_KEY)
@@ -1080,22 +850,202 @@ export function resetToDefaults(): void {
   }
 }
 
-// Export data for backup
-export function exportData(): string {
+// Helper functions
+export function getAllLocations() {
+  currentData = loadFromStorage()
+  return Object.values(currentData)
+}
+
+export function getLocationById(id: string) {
+  currentData = loadFromStorage()
+  return currentData[id as keyof typeof currentData] || null
+}
+
+export function updateLocation(id: string, updates: any) {
+  currentData = loadFromStorage()
+
+  if (currentData[id as keyof typeof currentData]) {
+    currentData[id as keyof typeof currentData] = { ...currentData[id as keyof typeof currentData], ...updates }
+    saveToStorage(currentData)
+    return currentData[id as keyof typeof currentData]
+  }
+  return null
+}
+
+export function addLocation(location: any) {
+  currentData = loadFromStorage()
+
+  // Generate a unique ID if not provided
+  if (!location.id) {
+    location.id = location.name
+      .toLowerCase()
+      .replace(/\s+/g, "-")
+      .replace(/[^a-z0-9-]/g, "")
+  }
+
+  currentData[location.id] = location
+  saveToStorage(currentData)
+  return location
+}
+
+export function deleteLocation(id: string) {
+  currentData = loadFromStorage()
+  delete currentData[id as keyof typeof currentData]
+  saveToStorage(currentData)
+}
+
+export function updateEmployee(locationId: string, floorId: string, employee: any) {
+  const location = getLocationById(locationId)
+  if (!location) return null
+
+  const floor = location.floors.find((f: any) => f.id === floorId)
+  if (!floor) return null
+
+  // Find the seat with this employee and update it
+  const seat = floor.seats.find((s: any) => s.employee?.id === employee.id)
+  if (seat) {
+    seat.employee = employee
+    updateLocation(locationId, location)
+    return employee
+  }
+  return null
+}
+
+export function moveEmployee(employeeId: string, fromLocationId: string, toLocationId: string, toFloorId?: string) {
+  // Find and remove employee from current location
+  let employee = null
+  const fromLocation = getLocationById(fromLocationId)
+  if (fromLocation) {
+    for (const floor of fromLocation.floors) {
+      const seatIndex = floor.seats.findIndex((s: any) => s.employee?.id === employeeId)
+      if (seatIndex !== -1) {
+        employee = floor.seats[seatIndex].employee
+        floor.seats[seatIndex].employee = null
+        break
+      }
+    }
+  }
+
+  if (!employee) return false
+
+  // Add employee to target location
+  const toLocation = getLocationById(toLocationId)
+  if (toLocation) {
+    const targetFloor = toFloorId ? toLocation.floors.find((f: any) => f.id === toFloorId) : toLocation.floors[0]
+
+    if (targetFloor) {
+      // Find an empty seat
+      const emptySeat = targetFloor.seats.find((s: any) => !s.employee)
+      if (emptySeat) {
+        emptySeat.employee = employee
+        updateLocation(fromLocationId, fromLocation)
+        updateLocation(toLocationId, toLocation)
+        return true
+      }
+    }
+  }
+
+  return false
+}
+
+export function deleteEmployee(locationId: string, employeeId: string) {
+  const location = getLocationById(locationId)
+  if (!location) return false
+
+  for (const floor of location.floors) {
+    const seat = floor.seats.find((s: any) => s.employee?.id === employeeId)
+    if (seat) {
+      seat.employee = null
+      updateLocation(locationId, location)
+      return true
+    }
+  }
+  return false
+}
+
+export function addEmployee(locationId: string, floorId: string, employee: any) {
+  const location = getLocationById(locationId)
+  if (!location) return false
+
+  const floor = location.floors.find((f: any) => f.id === floorId)
+  if (!floor) return false
+
+  // Find an empty seat
+  const emptySeat = floor.seats.find((s: any) => !s.employee)
+  if (emptySeat) {
+    emptySeat.employee = employee
+    updateLocation(locationId, location)
+    return true
+  }
+  return false
+}
+
+export function addSeat(locationId: string, floorId: string, seat: any) {
+  const location = getLocationById(locationId)
+  if (!location) return false
+
+  const floor = location.floors.find((f: any) => f.id === floorId)
+  if (!floor) return false
+
+  floor.seats.push(seat)
+  updateLocation(locationId, location)
+  return true
+}
+
+export function addFurniture(locationId: string, floorId: string, furniture: any) {
+  const location = getLocationById(locationId)
+  if (!location) return false
+
+  const floor = location.floors.find((f: any) => f.id === floorId)
+  if (!floor) return false
+
+  if (!floor.furniture) {
+    floor.furniture = []
+  }
+  floor.furniture.push(furniture)
+  updateLocation(locationId, location)
+  return true
+}
+
+export function deleteFurniture(locationId: string, floorId: string, furnitureId: string) {
+  const location = getLocationById(locationId)
+  if (!location) return false
+
+  const floor = location.floors.find((f: any) => f.id === floorId)
+  if (!floor || !floor.furniture) return false
+
+  floor.furniture = floor.furniture.filter((f: any) => f.id !== furnitureId)
+  updateLocation(locationId, location)
+  return true
+}
+
+export function addFloor(locationId: string, floor: any) {
+  const location = getLocationById(locationId)
+  if (!location) return false
+
+  location.floors.push(floor)
+  updateLocation(locationId, location)
+  return true
+}
+
+export function exportData() {
   currentData = loadFromStorage()
   return JSON.stringify(currentData, null, 2)
 }
 
-// Import data from backup
-export function importData(jsonData: string): boolean {
+export function importData(jsonData: string) {
   try {
-    const parsed = JSON.parse(jsonData)
-    saveToStorage(parsed)
-    currentData = parsed
-    console.log("📥 Data imported successfully")
+    const newData = JSON.parse(jsonData)
+    currentData = newData
+    saveToStorage(currentData)
     return true
   } catch (error) {
-    console.error("❌ Error importing data:", error)
+    console.error("Error importing data:", error)
     return false
   }
+}
+
+// Initialize data from localStorage on module load
+if (typeof window !== "undefined") {
+  currentData = loadFromStorage()
 }

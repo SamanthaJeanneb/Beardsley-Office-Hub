@@ -57,27 +57,24 @@ const config: Config = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        // Updated Beardsley brand colors - red, green, orange only
-        office: {
-          maroon: "#8B1538", // Primary red/maroon
-          "maroon-light": "#A0476F", // Light maroon
-          "maroon-dark": "#6B1028", // Dark maroon
-          orange: "#F59E0B", // Primary orange
-          "orange-light": "#FCD34D", // Light orange
-          "orange-muted": "#FEF3C7", // Very light orange
-          green: "#10B981", // Primary green
-          "green-light": "#34D399", // Light green
-          "green-muted": "#D1FAE5", // Very light green
-          red: "#DC2626", // Bright red for alerts/errors
-          "red-light": "#F87171", // Light red
-          "red-muted": "#FEE2E2", // Very light red
+        // Original Beardsley brand colors
+        beardsley: {
+          red: "#6d0020", // Primary Red
+          orange: "#ed8b00", // Accent Orange
+          green: "#999b30", // Accent Green
+          "red-light": "#8d1030",
+          "red-dark": "#4d0010",
+          "orange-light": "#ffa020",
+          "orange-dark": "#cd7b00",
+          "green-light": "#b9bb50",
+          "green-dark": "#797b10",
         },
-        // Room type colors updated with red/green/orange palette
+        // Room type colors updated with brand palette
         room: {
-          conference: "#D1FAE5", // Light green
-          kitchen: "#FED7AA", // Light orange
+          conference: "#e6e7c0", // Light green
+          kitchen: "#ffecd0", // Light orange
           office: "#F8FAFC", // Light gray (neutral)
-          reception: "#FEE2E2", // Light red
+          reception: "#f8d0d0", // Light red
           print: "#FCE7F3", // Light pink
           restroom: "#F3F4F6", // Very light gray
         },

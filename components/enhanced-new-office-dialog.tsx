@@ -20,9 +20,10 @@ import { addNewLocation } from "@/lib/data"
 
 interface EnhancedNewOfficeDialogProps {
   onOfficeAdded: () => void
+  buttonProps?: any
 }
 
-export function EnhancedNewOfficeDialog({ onOfficeAdded }: EnhancedNewOfficeDialogProps) {
+export function EnhancedNewOfficeDialog({ onOfficeAdded, buttonProps = {} }: EnhancedNewOfficeDialogProps) {
   const [isOpen, setIsOpen] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [imagePreview, setImagePreview] = useState<string | null>(null)
@@ -169,14 +170,18 @@ export function EnhancedNewOfficeDialog({ onOfficeAdded }: EnhancedNewOfficeDial
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <Button size="lg" className="bg-office-maroon hover:bg-office-maroon-light text-white shadow-lg">
+        <Button
+          size="lg"
+          className="bg-beardsley-orange hover:bg-beardsley-orange-dark text-white text-lg px-8 py-6 h-auto font-whitney shadow-lg"
+          {...buttonProps}
+        >
           <Plus className="mr-2 h-5 w-5" />
           Create New Office
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-lg max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle className="flex items-center gap-2 text-office-maroon text-xl">
+          <DialogTitle className="flex items-center gap-2 text-beardsley-red text-xl">
             <Building className="h-6 w-6" />
             Create New Office
           </DialogTitle>
@@ -189,10 +194,10 @@ export function EnhancedNewOfficeDialog({ onOfficeAdded }: EnhancedNewOfficeDial
           {/* Office Image Upload */}
           <div className="space-y-3">
             <Label className="flex items-center gap-2 text-base font-medium">
-              <ImageIcon className="h-4 w-4 text-office-maroon" />
+              <ImageIcon className="h-4 w-4 text-beardsley-red" />
               Office Image
             </Label>
-            <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-office-maroon transition-colors">
+            <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-beardsley-red transition-colors">
               {imagePreview ? (
                 <div className="space-y-3">
                   <img
@@ -242,7 +247,7 @@ export function EnhancedNewOfficeDialog({ onOfficeAdded }: EnhancedNewOfficeDial
 
           <div className="space-y-3">
             <Label htmlFor="office-name" className="flex items-center gap-2 text-base font-medium">
-              <Building className="h-4 w-4 text-office-maroon" />
+              <Building className="h-4 w-4 text-beardsley-red" />
               Office Name *
             </Label>
             <Input
@@ -258,7 +263,7 @@ export function EnhancedNewOfficeDialog({ onOfficeAdded }: EnhancedNewOfficeDial
 
           <div className="space-y-3">
             <Label htmlFor="office-address" className="flex items-center gap-2 text-base font-medium">
-              <MapPin className="h-4 w-4 text-office-maroon" />
+              <MapPin className="h-4 w-4 text-beardsley-red" />
               Address *
             </Label>
             <Textarea
@@ -276,7 +281,7 @@ export function EnhancedNewOfficeDialog({ onOfficeAdded }: EnhancedNewOfficeDial
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-3">
               <Label htmlFor="office-phone" className="flex items-center gap-2 text-base font-medium">
-                <Phone className="h-4 w-4 text-office-maroon" />
+                <Phone className="h-4 w-4 text-beardsley-red" />
                 Phone Number
               </Label>
               <Input
@@ -291,7 +296,7 @@ export function EnhancedNewOfficeDialog({ onOfficeAdded }: EnhancedNewOfficeDial
 
             <div className="space-y-3">
               <Label htmlFor="office-wifi" className="flex items-center gap-2 text-base font-medium">
-                <Wifi className="h-4 w-4 text-office-maroon" />
+                <Wifi className="h-4 w-4 text-beardsley-red" />
                 Wi-Fi Network
               </Label>
               <Input
@@ -307,7 +312,7 @@ export function EnhancedNewOfficeDialog({ onOfficeAdded }: EnhancedNewOfficeDial
 
           <div className="space-y-3">
             <Label htmlFor="office-hours" className="flex items-center gap-2 text-base font-medium">
-              <Clock className="h-4 w-4 text-office-maroon" />
+              <Clock className="h-4 w-4 text-beardsley-red" />
               Business Hours
             </Label>
             <Input
@@ -333,7 +338,7 @@ export function EnhancedNewOfficeDialog({ onOfficeAdded }: EnhancedNewOfficeDial
             <Button
               type="submit"
               disabled={isLoading || !formData.name.trim() || !formData.address.trim()}
-              className="flex-1 bg-office-maroon hover:bg-office-maroon-light"
+              className="flex-1 bg-beardsley-red hover:bg-beardsley-red-dark"
             >
               {isLoading ? "Creating..." : "Create Office"}
             </Button>

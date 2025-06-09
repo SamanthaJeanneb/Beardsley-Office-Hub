@@ -48,6 +48,9 @@ interface EnhancedSeatingChartProps {
   onAddAmenity?: (amenity: any) => void
   onUpdateAmenity?: (amenityId: string, updates: any) => void
   onDeleteAmenity?: (amenityId: string) => void
+  onUpdateFurniture?: (furnitureId: string, updates: any) => void
+  onDeleteFurniture?: (furnitureId: string) => void
+  onAddFurniture?: (furniture: any) => void
 }
 
 export function EnhancedSeatingChart({
@@ -65,6 +68,8 @@ export function EnhancedSeatingChart({
   onAddAmenity,
   onUpdateAmenity,
   onDeleteAmenity,
+  onUpdateFurniture,
+  onDeleteFurniture,
 }: EnhancedSeatingChartProps) {
   const containerRef = useRef<HTMLDivElement>(null)
   const chartRef = useRef<HTMLDivElement>(null)
@@ -115,6 +120,12 @@ export function EnhancedSeatingChart({
   const [isDraggingAmenity, setIsDraggingAmenity] = useState(false)
   const [draggedAmenity, setDraggedAmenity] = useState<any>(null)
 
+  // Furniture editing states
+  const [selectedFurniture, setSelectedFurniture] = useState<any>(null)
+  const [isDraggingFurniture, setIsDraggingFurniture] = useState(false)
+  const [draggedFurniture, setDraggedFurniture] = useState<any>(null)
+  const [furnitureDragOffset, setFurnitureDragOffset] = useState({ x: 0, y: 0 })
+
   // Reset view to default
   const resetView = () => {
     setScale(0.8)
@@ -152,7 +163,16 @@ export function EnhancedSeatingChart({
 
   // Handle mouse drag for panning
   const handleMouseDown = (e: React.MouseEvent) => {
-    if (e.button !== 0 || isEditMode || isDraggingSeat || isDraggingRoom || isDraggingAmenity || isResizingRoom) return
+    if (
+      e.button !== 0 ||
+      isEditMode ||
+      isDraggingSeat ||
+      isDraggingRoom ||
+      isDraggingAmenity ||
+      isResizingRoom ||
+      isDraggingFurniture
+    )
+      return
     setIsDragging(true)
     setDragStart({ x: e.clientX - position.x, y: e.clientY - position.y })
   }
@@ -174,6 +194,10 @@ export function EnhancedSeatingChart({
       handleAmenityDrag(e)
       return
     }
+    if (isDraggingFurniture) {
+      handleFurnitureDrag(e)
+      return
+    }
     if (!isDragging || isEditMode) return
     setPosition({
       x: e.clientX - dragStart.x,
@@ -192,6 +216,10 @@ export function EnhancedSeatingChart({
     }
     if (isDraggingAmenity) {
       handleAmenityDrop()
+      return
+    }
+    if (isDraggingFurniture) {
+      handleFurnitureDrop()
       return
     }
     setIsDragging(false)
@@ -351,6 +379,53 @@ export function EnhancedSeatingChart({
     setDraggedAmenity(null)
   }
 
+  // Furniture drag and drop handlers
+  const handleFurnitureMouseDown = (furniture: any, e: React.MouseEvent) => {
+    if (!isEditMode) return
+    e.stopPropagation()
+
+    setIsDraggingFurniture(true)
+    setDraggedFurniture({ ...furniture })
+    setSelectedFurniture(furniture)
+
+    const containerRect = containerRef.current?.getBoundingClientRect() || { left: 0, top: 0 }
+    const svgX = (e.clientX - containerRect.left - position.x) / scale
+    const svgY = (e.clientY - containerRect.top - position.y) / scale
+
+    setFurnitureDragOffset({
+      x: svgX - furniture.x,
+      y: svgY - furniture.y,
+    })
+  }
+
+  const handleFurnitureDrag = (e: React.MouseEvent) => {
+    if (!isDraggingFurniture || !draggedFurniture) return
+
+    e.preventDefault()
+
+    const containerRect = containerRef.current?.getBoundingClientRect() || { left: 0, top: 0 }
+    const svgX = (e.clientX - containerRect.left - position.x) / scale
+    const svgY = (e.clientY - containerRect.top - position.y) / scale
+
+    setDraggedFurniture({
+      ...draggedFurniture,
+      x: Math.max(0, svgX - furnitureDragOffset.x),
+      y: Math.max(0, svgY - furnitureDragOffset.y),
+    })
+  }
+
+  const handleFurnitureDrop = () => {
+    if (!isDraggingFurniture || !draggedFurniture || !onUpdateFurniture) return
+
+    onUpdateFurniture(draggedFurniture.id, {
+      x: draggedFurniture.x,
+      y: draggedFurniture.y,
+    })
+
+    setIsDraggingFurniture(false)
+    setDraggedFurniture(null)
+  }
+
   // Seat drag and drop handlers (existing functionality)
   const handleSeatMouseDown = (seat: any, e: React.MouseEvent) => {
     if (!isEditMode || !seat.employee) return
@@ -465,6 +540,16 @@ export function EnhancedSeatingChart({
     if (confirm(`Are you sure you want to delete "${selectedAmenity.name}"?`)) {
       onDeleteAmenity(selectedAmenity.id)
       setSelectedAmenity(null)
+    }
+  }
+
+  // Delete selected furniture
+  const handleDeleteFurniture = () => {
+    if (!selectedFurniture || !onDeleteFurniture) return
+
+    if (confirm(`Are you sure you want to delete this ${selectedFurniture.type}?`)) {
+      onDeleteFurniture(selectedFurniture.id)
+      setSelectedFurniture(null)
     }
   }
 
@@ -856,6 +941,12 @@ export function EnhancedSeatingChart({
                   Delete Amenity
                 </Button>
               )}
+              {selectedFurniture && (
+                <Button variant="destructive" size="sm" onClick={handleDeleteFurniture}>
+                  <Trash2 className="h-3 w-3 mr-1" />
+                  Delete Furniture
+                </Button>
+              )}
             </>
           )}
           <Button
@@ -926,7 +1017,12 @@ export function EnhancedSeatingChart({
             transform: `scale(${scale}) translate(${position.x / scale}px, ${position.y / scale}px)`,
             transformOrigin: "0 0",
             transition:
-              isDragging || isDraggingSeat || isDraggingRoom || isDraggingAmenity || isResizingRoom
+              isDragging ||
+              isDraggingSeat ||
+              isDraggingRoom ||
+              isDraggingAmenity ||
+              isResizingRoom ||
+              isDraggingFurniture
                 ? "none"
                 : "transform 100ms",
           }}
@@ -1048,22 +1144,36 @@ export function EnhancedSeatingChart({
                 const furnitureType = furnitureTypes[furniture.type as keyof typeof furnitureTypes]
                 if (!furnitureType) return null
 
+                const isDraggedFurniture =
+                  isDraggingFurniture && draggedFurniture && draggedFurniture.id === furniture.id
+                const displayFurniture = isDraggedFurniture ? draggedFurniture : furniture
+
                 return (
                   <g key={furniture.id}>
                     <rect
-                      x={furniture.x}
-                      y={furniture.y}
-                      width={furniture.width || furnitureType.width}
-                      height={furniture.height || furnitureType.height}
+                      x={displayFurniture.x}
+                      y={displayFurniture.y}
+                      width={displayFurniture.width || furnitureType.width}
+                      height={displayFurniture.height || furnitureType.height}
                       fill={furnitureType.color}
                       stroke={furnitureType.strokeColor}
-                      strokeWidth="2"
+                      strokeWidth={selectedFurniture?.id === furniture.id ? "4" : "2"}
                       rx="2"
-                      className="drop-shadow-sm"
+                      className={cn(
+                        "drop-shadow-sm",
+                        isEditMode && "cursor-move hover:stroke-office-maroon",
+                        selectedFurniture?.id === furniture.id && "stroke-office-maroon",
+                        isDraggedFurniture && "opacity-70",
+                      )}
+                      onMouseDown={isEditMode ? (e) => handleFurnitureMouseDown(furniture, e as any) : undefined}
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        if (isEditMode) setSelectedFurniture(furniture)
+                      }}
                     />
                     <text
-                      x={furniture.x + (furniture.width || furnitureType.width) / 2}
-                      y={furniture.y + (furniture.height || furnitureType.height) / 2}
+                      x={displayFurniture.x + (displayFurniture.width || furnitureType.width) / 2}
+                      y={displayFurniture.y + (displayFurniture.height || furnitureType.height) / 2}
                       textAnchor="middle"
                       dominantBaseline="central"
                       className="text-xs font-medium pointer-events-none select-none fill-white"

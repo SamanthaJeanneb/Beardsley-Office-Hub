@@ -13,7 +13,7 @@ import { OfficeInfo } from "@/components/office-info"
 import { EnhancedEditModePanel } from "@/components/enhanced-edit-mode-panel"
 import { AdminAccessDialog } from "@/components/admin-access-dialog"
 import { AddFloorDialog } from "@/components/add-floor-dialog"
-import { getLocationData, getAllLocations, saveLocationData, deleteFloor } from "@/lib/data"
+import { getLocationData, getAllLocations, saveLocationData, deleteFloor, addSeat } from "@/lib/data"
 
 export default function LocationPage({ params }: { params: { id: string } }) {
   const [location, setLocation] = useState<any>(null)
@@ -60,6 +60,40 @@ export default function LocationPage({ params }: { params: { id: string } }) {
             return amenity
           })
         }
+
+        // Add furniture array if it doesn't exist
+        if (!floor.furniture) {
+          floor.furniture = [
+            {
+              id: `desk-1-${floor.id}`,
+              type: "desk",
+              name: "Office Desk",
+              x: 100,
+              y: 100,
+              width: 120,
+              height: 60,
+            },
+            {
+              id: `chair-1-${floor.id}`,
+              type: "chair",
+              name: "Office Chair",
+              x: 150,
+              y: 130,
+              width: 40,
+              height: 40,
+            },
+            {
+              id: `table-1-${floor.id}`,
+              type: "table",
+              name: "Conference Table",
+              x: 300,
+              y: 200,
+              width: 200,
+              height: 100,
+            },
+          ]
+        }
+
         return floor
       })
 
@@ -315,6 +349,60 @@ export default function LocationPage({ params }: { params: { id: string } }) {
     saveChanges(updatedLocation)
   }
 
+  // New furniture management handlers
+  const handleUpdateFurniture = (furnitureId: string, updates: any) => {
+    if (!location) return
+
+    const updatedLocation = { ...location }
+    updatedLocation.floors = updatedLocation.floors.map((floor: any) => {
+      if (floor.id === selectedFloor) {
+        return {
+          ...floor,
+          furniture: floor.furniture?.map((furniture: any) =>
+            furniture.id === furnitureId ? { ...furniture, ...updates } : furniture,
+          ),
+        }
+      }
+      return floor
+    })
+
+    saveChanges(updatedLocation)
+  }
+
+  const handleDeleteFurniture = (furnitureId: string) => {
+    if (!location) return
+
+    const updatedLocation = { ...location }
+    updatedLocation.floors = updatedLocation.floors.map((floor: any) => {
+      if (floor.id === selectedFloor) {
+        return {
+          ...floor,
+          furniture: floor.furniture?.filter((furniture: any) => furniture.id !== furnitureId),
+        }
+      }
+      return floor
+    })
+
+    saveChanges(updatedLocation)
+  }
+
+  const handleAddFurniture = (furniture: any) => {
+    if (!location) return
+
+    const updatedLocation = { ...location }
+    updatedLocation.floors = updatedLocation.floors.map((floor: any) => {
+      if (floor.id === selectedFloor) {
+        return {
+          ...floor,
+          furniture: [...(floor.furniture || []), furniture],
+        }
+      }
+      return floor
+    })
+
+    saveChanges(updatedLocation)
+  }
+
   const handleUpdateEmployee = (updatedEmployee: any) => {
     if (!location) return
 
@@ -485,6 +573,11 @@ export default function LocationPage({ params }: { params: { id: string } }) {
     console.log(`Deleting printer ${printerId}`)
   }
 
+  const handleAddSeat = (seat: any, floorId: string) => {
+    addSeat(params.id, floorId, seat)
+    loadLocationData()
+  }
+
   if (!location) {
     return (
       <div className="container flex h-[50vh] items-center justify-center">
@@ -537,7 +630,7 @@ export default function LocationPage({ params }: { params: { id: string } }) {
                       <TabsTrigger
                         key={floor.id}
                         value={floor.id}
-                        className="data-[state=active]:bg-blue-600 data-[state=active]:text-white font-whitney"
+                        className="data-[state=active]:bg-red-600 data-[state=active]:text-white font-whitney"
                       >
                         {floor.name}
                       </TabsTrigger>
@@ -582,6 +675,9 @@ export default function LocationPage({ params }: { params: { id: string } }) {
                         onAddAmenity={handleAddAmenity}
                         onUpdateAmenity={handleUpdateAmenity}
                         onDeleteAmenity={handleDeleteAmenity}
+                        onUpdateFurniture={handleUpdateFurniture}
+                        onDeleteFurniture={handleDeleteFurniture}
+                        onAddFurniture={handleAddFurniture}
                       />
                     </div>
                   </TabsContent>
@@ -605,6 +701,9 @@ export default function LocationPage({ params }: { params: { id: string } }) {
                 onUpdatePrinter={handleUpdatePrinter}
                 onMovePrinter={handleMovePrinter}
                 onDeletePrinter={handleDeletePrinter}
+                onAddSeat={handleAddSeat}
+                onAddFurniture={handleAddFurniture}
+                onDeleteFurniture={handleDeleteFurniture}
                 allLocations={allLocations}
                 isEditMode={isAdminMode}
                 onToggleEditMode={() => setIsAdminMode(!isAdminMode)}

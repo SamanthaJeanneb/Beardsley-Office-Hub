@@ -12,12 +12,12 @@ import {
   Printer,
   Plus,
   Award,
-  Zap,
   Globe,
   Star,
   ArrowRight,
   CheckCircle,
   Phone,
+  Car,
 } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
@@ -27,6 +27,8 @@ import { getAllLocations } from "@/lib/data"
 import { getTotalEmployeeCount } from "@/lib/employee-data"
 import { EnhancedNewOfficeDialog } from "@/components/enhanced-new-office-dialog"
 import { EmployeeSearchDialog } from "@/components/employee-search-dialog"
+import { GitHubPushButton } from "@/components/github-push-button"
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 
 export default function HomePage() {
   const [locations, setLocations] = useState<any[]>([])
@@ -66,9 +68,19 @@ export default function HomePage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-orange-50">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-amber-50">
+      {/* GitHub Push Button in Top-Right Corner */}
+      <div className="fixed top-4 right-4 z-50">
+        <GitHubPushButton
+          variant="outline"
+          size="icon"
+          className="bg-white/80 backdrop-blur-sm hover:bg-white border-gray-200"
+          showText={false}
+        />
+      </div>
+
       {/* Enhanced Hero Section */}
-      <div className="relative overflow-hidden bg-gradient-to-r from-slate-800 via-office-maroon to-office-maroon-dark">
+      <div className="relative overflow-hidden bg-gradient-to-r from-beardsley-red-dark via-beardsley-red to-beardsley-red-light">
         <div className="absolute inset-0 bg-black/10"></div>
         <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-10"></div>
         <div className="relative container px-4 py-20 md:py-32">
@@ -90,7 +102,7 @@ export default function HomePage() {
               <Button
                 size="lg"
                 variant="secondary"
-                className="bg-white text-slate-800 hover:bg-gray-100 shadow-lg text-lg px-8 py-6 h-auto font-whitney"
+                className="bg-white text-beardsley-red hover:bg-gray-100 shadow-lg text-lg px-8 py-6 h-auto font-whitney w-48"
                 asChild
               >
                 <Link href="#locations">
@@ -100,16 +112,20 @@ export default function HomePage() {
               </Button>
 
               <div className="h-auto">
-                <EmployeeSearchDialog allLocations={locations} />
-              </div>
-
-              <div className="h-auto">
-                <EnhancedNewOfficeDialog onOfficeAdded={handleOfficeAdded} />
+                <EmployeeSearchDialog
+                  allLocations={locations}
+                  buttonProps={{
+                    size: "lg",
+                    variant: "outline",
+                    className:
+                      "border-white text-white hover:bg-white hover:text-beardsley-red text-lg px-8 py-6 h-auto font-whitney w-48",
+                  }}
+                />
               </div>
             </div>
 
             {/* Quick Stats */}
-            <div className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+            <div className="mt-16 grid grid-cols-2 md:grid-cols-3 gap-8 text-center">
               <div>
                 <div className="text-3xl md:text-4xl font-bold text-white font-interface">{locations.length}</div>
                 <div className="text-white/80 text-sm md:text-base font-whitney">Office Locations</div>
@@ -122,10 +138,6 @@ export default function HomePage() {
                 <div className="text-3xl md:text-4xl font-bold text-white font-interface">125+</div>
                 <div className="text-white/80 text-sm md:text-base font-whitney">Years of Service</div>
               </div>
-              <div>
-                <div className="text-3xl md:text-4xl font-bold text-white font-interface">24/7</div>
-                <div className="text-white/80 text-sm md:text-base font-whitney">System Uptime</div>
-              </div>
             </div>
           </div>
         </div>
@@ -133,11 +145,11 @@ export default function HomePage() {
 
       {/* Enhanced Company Stats */}
       <div className="container px-4 py-16">
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           <Card className="border-slate-200 hover:shadow-lg transition-shadow">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium text-slate-800 font-interface">Total Employees</CardTitle>
-              <Users className="h-4 w-4 text-office-green" />
+              <Users className="h-4 w-4 text-beardsley-green" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-slate-800 font-interface">{totalEmployees}</div>
@@ -148,7 +160,7 @@ export default function HomePage() {
           <Card className="border-slate-200 hover:shadow-lg transition-shadow">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium text-slate-800 font-interface">Office Locations</CardTitle>
-              <Building2 className="h-4 w-4 text-office-orange" />
+              <Building2 className="h-4 w-4 text-beardsley-orange" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-slate-800 font-interface">{locations.length}</div>
@@ -159,22 +171,11 @@ export default function HomePage() {
           <Card className="border-slate-200 hover:shadow-lg transition-shadow">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium text-slate-800 font-interface">Years of Service</CardTitle>
-              <Award className="h-4 w-4 text-office-maroon" />
+              <Award className="h-4 w-4 text-beardsley-red" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-slate-800 font-interface">125+</div>
               <p className="text-xs text-muted-foreground font-whitney">Engineering excellence</p>
-            </CardContent>
-          </Card>
-
-          <Card className="border-slate-200 hover:shadow-lg transition-shadow">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium text-slate-800 font-interface">System Uptime</CardTitle>
-              <Zap className="h-4 w-4 text-office-orange" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-slate-800 font-interface">99.9%</div>
-              <p className="text-xs text-muted-foreground font-whitney">Reliable performance</p>
             </CardContent>
           </Card>
         </div>
@@ -198,7 +199,7 @@ export default function HomePage() {
               return (
                 <Card
                   key={location.id}
-                  className="group overflow-hidden border-slate-200 transition-all duration-300 hover:border-office-maroon hover:shadow-xl hover:-translate-y-1"
+                  className="group overflow-hidden border-slate-200 transition-all duration-300 hover:border-beardsley-red hover:shadow-xl hover:-translate-y-1"
                 >
                   <div className="aspect-video overflow-hidden relative">
                     <img
@@ -212,7 +213,7 @@ export default function HomePage() {
                   <CardHeader className="pb-4">
                     <div className="flex items-start justify-between">
                       <div className="flex-1">
-                        <CardTitle className="text-2xl text-slate-800 group-hover:text-office-maroon transition-colors font-interface">
+                        <CardTitle className="text-2xl text-slate-800 group-hover:text-beardsley-red transition-colors font-interface">
                           {location.name}
                         </CardTitle>
                         <CardDescription className="mt-3 flex items-center text-muted-foreground text-base font-whitney">
@@ -229,11 +230,11 @@ export default function HomePage() {
                   <CardContent className="space-y-6">
                     <div className="grid grid-cols-2 gap-4 text-sm">
                       <div className="flex items-center text-muted-foreground">
-                        <Users className="mr-2 h-4 w-4 text-office-green" />
+                        <Users className="mr-2 h-4 w-4 text-beardsley-green" />
                         <span className="font-medium font-whitney">{employeeCount} employees</span>
                       </div>
                       <div className="flex items-center text-muted-foreground">
-                        <Building2 className="mr-2 h-4 w-4 text-office-orange" />
+                        <Building2 className="mr-2 h-4 w-4 text-beardsley-orange" />
                         <span className="font-medium font-whitney">{location.floors?.length || 0} floors</span>
                       </div>
                     </div>
@@ -249,25 +250,88 @@ export default function HomePage() {
                       </div>
                     </div>
 
-                    <Button
-                      asChild
-                      className="w-full bg-office-maroon hover:bg-office-maroon-dark text-lg py-6 group font-whitney"
-                    >
-                      <Link href={`/location/${location.id}`}>
-                        View Office Layout
-                        <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-                      </Link>
-                    </Button>
+                    <div className="flex gap-2">
+                      <Button
+                        asChild
+                        className="flex-1 bg-beardsley-red hover:bg-beardsley-red-dark text-lg py-6 group font-whitney"
+                      >
+                        <Link href={`/location/${location.id}`}>
+                          View Office Layout
+                          <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                        </Link>
+                      </Button>
+
+                      <Dialog>
+                        <DialogTrigger asChild>
+                          <Button
+                            variant="outline"
+                            className="flex-none bg-white text-beardsley-red border-beardsley-red hover:bg-beardsley-red hover:text-white"
+                          >
+                            <Car className="h-4 w-4" />
+                          </Button>
+                        </DialogTrigger>
+                        <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
+                          <DialogHeader>
+                            <DialogTitle>{location.name} Parking Map</DialogTitle>
+                          </DialogHeader>
+                          <div className="mt-4">
+                            <img
+                              src={`/placeholder.svg?height=600&width=800&query=Parking map for ${location.name} office building`}
+                              alt={`${location.name} Parking Map`}
+                              className="w-full rounded-md"
+                            />
+                            <div className="mt-4 p-4 bg-gray-50 rounded-md">
+                              <h3 className="font-semibold text-lg mb-2">Parking Information</h3>
+                              <ul className="space-y-2 text-sm">
+                                <li className="flex items-center">
+                                  <div className="w-4 h-4 bg-beardsley-red rounded-full mr-2"></div>
+                                  <span>Reserved for executives</span>
+                                </li>
+                                <li className="flex items-center">
+                                  <div className="w-4 h-4 bg-beardsley-green rounded-full mr-2"></div>
+                                  <span>Employee parking</span>
+                                </li>
+                                <li className="flex items-center">
+                                  <div className="w-4 h-4 bg-beardsley-orange rounded-full mr-2"></div>
+                                  <span>Visitor parking</span>
+                                </li>
+                                <li className="flex items-center">
+                                  <div className="w-4 h-4 bg-blue-500 rounded-full mr-2"></div>
+                                  <span>Accessible parking</span>
+                                </li>
+                              </ul>
+                              <p className="mt-4 text-sm text-gray-600">
+                                Parking hours: Monday-Friday, 7:00 AM - 7:00 PM
+                              </p>
+                            </div>
+                          </div>
+                        </DialogContent>
+                      </Dialog>
+                    </div>
                   </CardContent>
                 </Card>
               )
             })}
           </div>
+
+          {/* Create Office Button moved below the office list */}
+          <div className="mt-8 flex justify-center">
+            <div className="h-auto">
+              <EnhancedNewOfficeDialog
+                onOfficeAdded={handleOfficeAdded}
+                buttonProps={{
+                  size: "lg",
+                  className:
+                    "bg-beardsley-red hover:bg-beardsley-red-dark text-white text-lg px-8 py-6 h-auto font-whitney",
+                }}
+              />
+            </div>
+          </div>
         </div>
       </div>
 
       {/* Enhanced Features Section */}
-      <div className="bg-gradient-to-br from-slate-50 to-orange-50 py-20">
+      <div className="bg-gradient-to-br from-slate-50 to-amber-50 py-20">
         <div className="container px-4">
           <div className="mx-auto max-w-6xl">
             <div className="mb-16 text-center">
@@ -279,8 +343,8 @@ export default function HomePage() {
 
             <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
               <div className="text-center group">
-                <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-gradient-to-br from-office-green-muted to-office-green-light group-hover:from-office-green-light group-hover:to-office-green transition-all duration-300">
-                  <Search className="h-10 w-10 text-office-green" />
+                <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-gradient-to-br from-beardsley-green-light to-beardsley-green group-hover:from-beardsley-green group-hover:to-beardsley-green-dark transition-all duration-300">
+                  <Search className="h-10 w-10 text-white" />
                 </div>
                 <h3 className="mb-4 text-2xl font-semibold text-slate-800 font-interface">Smart Employee Search</h3>
                 <p className="text-muted-foreground text-lg leading-relaxed font-whitney">
@@ -290,8 +354,8 @@ export default function HomePage() {
               </div>
 
               <div className="text-center group">
-                <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-gradient-to-br from-office-orange-muted to-office-orange-light group-hover:from-office-orange-light group-hover:to-office-orange transition-all duration-300">
-                  <MapPin className="h-10 w-10 text-office-orange" />
+                <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-gradient-to-br from-beardsley-orange-light to-beardsley-orange group-hover:from-beardsley-orange group-hover:to-beardsley-orange-dark transition-all duration-300">
+                  <MapPin className="h-10 w-10 text-white" />
                 </div>
                 <h3 className="mb-4 text-2xl font-semibold text-slate-800 font-interface">Interactive Floor Plans</h3>
                 <p className="text-muted-foreground text-lg leading-relaxed font-whitney">
@@ -301,8 +365,8 @@ export default function HomePage() {
               </div>
 
               <div className="text-center group">
-                <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-gradient-to-br from-red-100 to-red-200 group-hover:from-red-200 group-hover:to-red-300 transition-all duration-300">
-                  <Shield className="h-10 w-10 text-office-maroon" />
+                <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-gradient-to-br from-beardsley-red-light to-beardsley-red group-hover:from-beardsley-red group-hover:to-beardsley-red-dark transition-all duration-300">
+                  <Shield className="h-10 w-10 text-white" />
                 </div>
                 <h3 className="mb-4 text-2xl font-semibold text-slate-800 font-interface">Admin Management</h3>
                 <p className="text-muted-foreground text-lg leading-relaxed font-whitney">
@@ -323,8 +387,8 @@ export default function HomePage() {
               </div>
 
               <div className="text-center group">
-                <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-gradient-to-br from-office-green-muted to-office-green-light group-hover:from-office-green-light group-hover:to-office-green transition-all duration-300">
-                  <Users className="h-10 w-10 text-office-green" />
+                <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-gradient-to-br from-beardsley-green-light to-beardsley-green group-hover:from-beardsley-green group-hover:to-beardsley-green-dark transition-all duration-300">
+                  <Users className="h-10 w-10 text-white" />
                 </div>
                 <h3 className="mb-4 text-2xl font-semibold text-slate-800 font-interface">Employee Profiles</h3>
                 <p className="text-muted-foreground text-lg leading-relaxed font-whitney">
@@ -334,8 +398,8 @@ export default function HomePage() {
               </div>
 
               <div className="text-center group">
-                <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-gradient-to-br from-office-orange-muted to-office-orange-light group-hover:from-office-orange-light group-hover:to-office-orange transition-all duration-300">
-                  <Plus className="h-10 w-10 text-office-orange" />
+                <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-gradient-to-br from-beardsley-orange-light to-beardsley-orange group-hover:from-beardsley-orange group-hover:to-beardsley-orange-dark transition-all duration-300">
+                  <Plus className="h-10 w-10 text-white" />
                 </div>
                 <h3 className="mb-4 text-2xl font-semibold text-slate-800 font-interface">Office Creation</h3>
                 <p className="text-muted-foreground text-lg leading-relaxed font-whitney">
@@ -349,7 +413,7 @@ export default function HomePage() {
       </div>
 
       {/* New CTA Section */}
-      <div className="bg-office-maroon py-20">
+      <div className="bg-beardsley-red py-20">
         <div className="container px-4">
           <div className="mx-auto max-w-4xl text-center">
             <h2 className="text-4xl font-bold text-white md:text-5xl font-interface">Ready to Get Started?</h2>
@@ -364,7 +428,7 @@ export default function HomePage() {
               <Button
                 size="lg"
                 variant="outline"
-                className="border-white text-white hover:bg-white hover:text-office-maroon text-lg px-8 py-6 h-auto font-whitney"
+                className="border-white text-white hover:bg-white hover:text-beardsley-red text-lg px-8 py-6 h-auto font-whitney"
                 asChild
               >
                 <Link href="#locations">
@@ -389,11 +453,11 @@ export default function HomePage() {
                 </p>
                 <div className="mt-6 flex items-center gap-4">
                   <div className="flex items-center gap-2">
-                    <CheckCircle className="h-5 w-5 text-office-green" />
+                    <CheckCircle className="h-5 w-5 text-beardsley-green" />
                     <span className="text-slate-300 font-whitney">ISO Certified</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <Award className="h-5 w-5 text-office-orange" />
+                    <Award className="h-5 w-5 text-beardsley-orange" />
                     <span className="text-slate-300 font-whitney">Award Winning</span>
                   </div>
                 </div>

@@ -25,6 +25,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { exportData, importData, resetToDefaults } from "@/lib/data"
+import { GitHubPushButton } from "@/components/github-push-button"
 
 interface AdminAccessDialogProps {
   onAdminAccess: (isAdmin: boolean) => void
@@ -216,6 +217,10 @@ export function AdminAccessDialog({ onAdminAccess, isAdminMode }: AdminAccessDia
               <Lock className="mr-2 h-4 w-4" />
               Exit Admin Mode
             </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <div className="px-2 py-1">
+              <GitHubPushButton variant="ghost" size="sm" className="w-full justify-start text-left h-8 px-2 py-1.5" />
+            </div>
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={handleExportData}>
               <Download className="mr-2 h-4 w-4" />
