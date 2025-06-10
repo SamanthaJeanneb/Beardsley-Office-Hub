@@ -276,17 +276,7 @@ const defaultLocations = {
             "y": 220,
             "rotation": 0,
             "furnitureId": "desk-2",
-            "employee": {
-              "id": "emp-1",
-              "name": "Jared Heinl",
-              "title": "Principal",
-              "email": "jheinl@beardsley.com",
-              "phone": "518-483-1585 4231",
-              "employeeNumber": "00001",
-              "profileUrl": "#",
-              "avatar": "/placeholder.svg?height=40&width=40",
-              "notes": "Works at the Syracuse office."
-            }
+            "employee": null
           },
           {
             "id": "seat-2",
@@ -294,17 +284,7 @@ const defaultLocations = {
             "y": 220,
             "rotation": 0,
             "furnitureId": "desk-3",
-            "employee": {
-              "id": "emp-2",
-              "name": "Barry Halperin",
-              "title": "Principal",
-              "email": "bhalperin@beardsley.com",
-              "phone": "315-472-6980 3311",
-              "employeeNumber": "00002",
-              "profileUrl": "#",
-              "avatar": "/placeholder.svg?height=40&width=40",
-              "notes": "Works at the Syracuse office."
-            }
+            "employee": null
           },
           {
             "id": "seat-3",
@@ -312,17 +292,7 @@ const defaultLocations = {
             "y": 220,
             "rotation": 0,
             "furnitureId": "desk-4",
-            "employee": {
-              "id": "emp-3",
-              "name": "Thomas Ascienzo",
-              "title": "Electrical Senior Designer",
-              "email": "tascienzo@beardsley.com",
-              "phone": "315-472-6980 3323",
-              "employeeNumber": "00003",
-              "profileUrl": "#",
-              "avatar": "/placeholder.svg?height=40&width=40",
-              "notes": "Works at the Syracuse office."
-            }
+            "employee": null
           },
           {
             "id": "seat-4",
@@ -330,17 +300,7 @@ const defaultLocations = {
             "y": 220,
             "rotation": 0,
             "furnitureId": "desk-5",
-            "employee": {
-              "id": "emp-4",
-              "name": "Seth Livermore",
-              "title": "Civil Engineer V",
-              "email": "slivermore@beardsley.com",
-              "phone": "315-472-6980 3315",
-              "employeeNumber": "00004",
-              "profileUrl": "#",
-              "avatar": "/placeholder.svg?height=40&width=40",
-              "notes": "Works at the Syracuse office."
-            }
+            "employee": null
           },
           {
             "id": "seat-5",
@@ -348,17 +308,7 @@ const defaultLocations = {
             "y": 220,
             "rotation": 0,
             "furnitureId": "desk-6",
-            "employee": {
-              "id": "emp-5",
-              "name": "Lillian Marshall",
-              "title": "Administrative Assistant",
-              "email": "lmarshall@beardsley.com",
-              "phone": "315-472-6980 3327",
-              "employeeNumber": "00005",
-              "profileUrl": "#",
-              "avatar": "/placeholder.svg?height=40&width=40",
-              "notes": "Works at the Syracuse office."
-            }
+            "employee": null
           },
           {
             "id": "seat-6",
@@ -366,17 +316,7 @@ const defaultLocations = {
             "y": 300,
             "rotation": 0,
             "furnitureId": "desk-7",
-            "employee": {
-              "id": "emp-6",
-              "name": "Allie Henderson",
-              "title": "Landscape Designer",
-              "email": "ahenderson@beardsley.com",
-              "phone": "315-472-6980 3328",
-              "employeeNumber": "00006",
-              "profileUrl": "#",
-              "avatar": "/placeholder.svg?height=40&width=40",
-              "notes": "Works at the Syracuse office."
-            }
+            "employee": null
           },
           {
             "id": "seat-7",
@@ -384,17 +324,7 @@ const defaultLocations = {
             "y": 300,
             "rotation": 0,
             "furnitureId": "desk-8",
-            "employee": {
-              "id": "emp-7",
-              "name": "Scott Folts",
-              "title": "Civil Engineer",
-              "email": "sfolts@beardsley.com",
-              "phone": "315-472-6980 3329",
-              "employeeNumber": "00007",
-              "profileUrl": "#",
-              "avatar": "/placeholder.svg?height=40&width=40",
-              "notes": "Works at the Syracuse office."
-            }
+            "employee": null
           },
           {
             "id": "seat-8",
@@ -402,17 +332,7 @@ const defaultLocations = {
             "y": 300,
             "rotation": 0,
             "furnitureId": "desk-9",
-            "employee": {
-              "id": "emp-8",
-              "name": "Jacob Perez Gangi",
-              "title": "Architectural Designer",
-              "email": "jperezgangi@beardsley.com",
-              "phone": "315-472-6980 3330",
-              "employeeNumber": "00008",
-              "profileUrl": "#",
-              "avatar": "/placeholder.svg?height=40&width=40",
-              "notes": "Works at the Syracuse office."
-            }
+            "employee": null
           },
           {
             "id": "seat-9",
@@ -420,17 +340,7 @@ const defaultLocations = {
             "y": 300,
             "rotation": 0,
             "furnitureId": "desk-10",
-            "employee": {
-              "id": "emp-9",
-              "name": "Alex Clement",
-              "title": "Civil Engineer",
-              "email": "aclement@beardsley.com",
-              "phone": "315-472-6980 3331",
-              "employeeNumber": "00009",
-              "profileUrl": "#",
-              "avatar": "/placeholder.svg?height=40&width=40",
-              "notes": "Works at the Syracuse office."
-            }
+            "employee": null
           },
           {
             "id": "seat-10",
@@ -438,17 +348,7 @@ const defaultLocations = {
             "y": 300,
             "rotation": 0,
             "furnitureId": "desk-11",
-            "employee": {
-              "id": "emp-10",
-              "name": "Nicholas Hartung",
-              "title": "Electrical Designer",
-              "email": "nhartung@beardsley.com",
-              "phone": "315-472-6980 3332",
-              "employeeNumber": "00010",
-              "profileUrl": "#",
-              "avatar": "/placeholder.svg?height=40&width=40",
-              "notes": "Works at the Syracuse office."
-            }
+            "employee": null
           },
           {
             "id": "seat-11",
@@ -456,17 +356,7 @@ const defaultLocations = {
             "y": 380,
             "rotation": 0,
             "furnitureId": "desk-12",
-            "employee": {
-              "id": "emp-11",
-              "name": "Chelsea Bush",
-              "title": "Administrative Assistant",
-              "email": "cbush@beardsley.com",
-              "phone": "315-472-6980 3333",
-              "employeeNumber": "00011",
-              "profileUrl": "#",
-              "avatar": "/placeholder.svg?height=40&width=40",
-              "notes": "Works at the Syracuse office."
-            }
+            "employee": null
           },
           {
             "id": "seat-12",
@@ -474,17 +364,7 @@ const defaultLocations = {
             "y": 380,
             "rotation": 0,
             "furnitureId": "desk-13",
-            "employee": {
-              "id": "emp-12",
-              "name": "Michelle Thompson",
-              "title": "Project Manager",
-              "email": "mthompson@beardsley.com",
-              "phone": "315-472-6980 3334",
-              "employeeNumber": "00013",
-              "profileUrl": "#",
-              "avatar": "/placeholder.svg?height=40&width=40",
-              "notes": "Works at the Syracuse office."
-            }
+            "employee": null
           },
           {
             "id": "seat-13",
@@ -492,17 +372,7 @@ const defaultLocations = {
             "y": 380,
             "rotation": 0,
             "furnitureId": "desk-14",
-            "employee": {
-              "id": "emp-13",
-              "name": "Brittany Varengo",
-              "title": "Marketing Coordinator",
-              "email": "bvarengo@beardsley.com",
-              "phone": "315-472-6980 3335",
-              "employeeNumber": "00014",
-              "profileUrl": "#",
-              "avatar": "/placeholder.svg?height=40&width=40",
-              "notes": "Works at the Syracuse office."
-            }
+            "employee": null
           },
           {
             "id": "seat-14",
@@ -510,17 +380,7 @@ const defaultLocations = {
             "y": 380,
             "rotation": 0,
             "furnitureId": "desk-15",
-            "employee": {
-              "id": "emp-14",
-              "name": "Caleb Sayers",
-              "title": "Civil Engineer",
-              "email": "csayers@beardsley.com",
-              "phone": "315-472-6980 3336",
-              "employeeNumber": "00015",
-              "profileUrl": "#",
-              "avatar": "/placeholder.svg?height=40&width=40",
-              "notes": "Works at the Syracuse office."
-            }
+            "employee": null
           },
           {
             "id": "seat-15",
@@ -528,17 +388,7 @@ const defaultLocations = {
             "y": 380,
             "rotation": 0,
             "furnitureId": "desk-16",
-            "employee": {
-              "id": "emp-15",
-              "name": "Justin Chiera",
-              "title": "Electrical Engineer",
-              "email": "jchiera@beardsley.com",
-              "phone": "315-472-6980 3337",
-              "employeeNumber": "00016",
-              "profileUrl": "#",
-              "avatar": "/placeholder.svg?height=40&width=40",
-              "notes": "Works at the Syracuse office."
-            }
+            "employee": null
           },
           {
             "id": "seat-16",
@@ -546,17 +396,7 @@ const defaultLocations = {
             "y": 460,
             "rotation": 0,
             "furnitureId": "desk-17",
-            "employee": {
-              "id": "emp-16",
-              "name": "Gabriel Amaya",
-              "title": "Architectural Designer",
-              "email": "gamaya@beardsley.com",
-              "phone": "315-472-6980 3338",
-              "employeeNumber": "00017",
-              "profileUrl": "#",
-              "avatar": "/placeholder.svg?height=40&width=40",
-              "notes": "Works at the Syracuse office."
-            }
+            "employee": null
           },
           {
             "id": "seat-17",
@@ -564,17 +404,7 @@ const defaultLocations = {
             "y": 460,
             "rotation": 0,
             "furnitureId": "desk-18",
-            "employee": {
-              "id": "emp-17",
-              "name": "Adrianna Mondello",
-              "title": "Intern",
-              "email": "amondello@beardsley.com",
-              "phone": "518-940-4554",
-              "employeeNumber": "00374",
-              "profileUrl": "#",
-              "avatar": "/placeholder.svg?height=40&width=40",
-              "notes": "Works at the Syracuse office."
-            }
+            "employee": null
           }
         ]
       }
@@ -769,17 +599,7 @@ const defaultLocations = {
             "y": 220,
             "rotation": 0,
             "furnitureId": "desk-f1-1",
-            "employee": {
-              "id": "emp-auburn-f1-1",
-              "name": "Joanne Butler",
-              "title": "Landscape Senior Designer",
-              "email": "jbutler@beardsley.com",
-              "phone": "315-253-7301 2271",
-              "employeeNumber": "00012",
-              "profileUrl": "#",
-              "avatar": "/placeholder.svg?height=40&width=40",
-              "notes": "Works at the Auburn office, First Floor."
-            }
+            "employee": null
           },
           {
             "id": "auburn-f1-seat-2",
@@ -787,17 +607,7 @@ const defaultLocations = {
             "y": 220,
             "rotation": 0,
             "furnitureId": "desk-f1-2",
-            "employee": {
-              "id": "emp-auburn-f1-2",
-              "name": "Kathy Quigley",
-              "title": "Computer System Administrator",
-              "email": "kquigley@beardsley.com",
-              "phone": "315-253-7301 2242",
-              "employeeNumber": "00018",
-              "profileUrl": "#",
-              "avatar": "/placeholder.svg?height=40&width=40",
-              "notes": "Works at the Auburn office, First Floor."
-            }
+            "employee": null
           },
           {
             "id": "auburn-f1-seat-3",
@@ -805,17 +615,7 @@ const defaultLocations = {
             "y": 220,
             "rotation": 0,
             "furnitureId": "desk-f1-3",
-            "employee": {
-              "id": "emp-auburn-f1-3",
-              "name": "Glenn Hewitt",
-              "title": "Fire Protection Senior Designer",
-              "email": "ghewitt@beardsley.com",
-              "phone": "315-253-7301 2254",
-              "employeeNumber": "00019",
-              "profileUrl": "#",
-              "avatar": "/placeholder.svg?height=40&width=40",
-              "notes": "Works at the Auburn office, First Floor."
-            }
+            "employee": null
           },
           {
             "id": "auburn-f1-seat-4",
@@ -823,17 +623,7 @@ const defaultLocations = {
             "y": 220,
             "rotation": 0,
             "furnitureId": "desk-f1-4",
-            "employee": {
-              "id": "emp-auburn-f1-4",
-              "name": "Dan Whitman",
-              "title": "Plumbing Senior Designer",
-              "email": "dwhitman@beardsley.com",
-              "phone": "315-253-7301 2227",
-              "employeeNumber": "00019",
-              "profileUrl": "#",
-              "avatar": "/placeholder.svg?height=40&width=40",
-              "notes": "Works at the Auburn office, First Floor."
-            }
+            "employee": null
           },
           {
             "id": "auburn-f1-seat-5",
@@ -841,52 +631,21 @@ const defaultLocations = {
             "y": 300,
             "rotation": 0,
             "furnitureId": "desk-f1-5",
-            "employee": {
-              "id": "emp-auburn-f1-5",
-              "name": "Mike Picciano",
-              "title": "Electrical Engineer V",
-              "email": "mpicciano@beardsley.com",
-              "phone": "315-253-7301 2258",
-              "employeeNumber": "00021",
-              "profileUrl": "#",
-              "avatar": "/placeholder.svg?height=40&width=40",
-              "notes": "Works at the Auburn office, First Floor."
-            }
+            "employee": null
           },
           {
             "id": "seat-1749496564425",
             "x": 189.43325805664062,
             "y": 301.48193359375,
             "rotation": 0,
-            "employee": {
-              "id": "emp-auburn-16",
-              "name": "Tom Wight",
-              "title": "Mechanical Engineer",
-              "email": "twight@beardsley.com",
-              "phone": "315-253-7301 2269",
-              "employeeNumber": "00186",
-              "profileUrl": "#",
-              "avatar": "/placeholder.svg?height=40&width=40",
-              "notes": "Works at the Auburn office, Second Floor."
-            }
+            "employee": null
           },
           {
             "id": "seat-1749497309584",
             "x": 673.5943908691406,
             "y": 381.118408203125,
             "rotation": 0,
-            "employee": {
-              "name": "That Guy",
-              "title": "Architect",
-              "email": "savamien2@gmail.com",
-              "phone": "315-725-2868",
-              "notes": "",
-              "employeeNumber": "00400",
-              "photo": null,
-              "id": "emp-1749497385874",
-              "profileUrl": "#",
-              "avatar": "/photos/That-Guy_Resume.jpg"
-            }
+            "employee": null
           },
           {
             "id": "seat-1749501622988",
@@ -1148,17 +907,7 @@ const defaultLocations = {
             "y": 220,
             "rotation": 0,
             "furnitureId": "desk-alb-1",
-            "employee": {
-              "id": "emp-albany-1",
-              "name": "Cameron Beardsley",
-              "title": "Principal",
-              "email": "cbeardsley@beardsley.com",
-              "phone": "518-555-0100",
-              "employeeNumber": "00053",
-              "profileUrl": "#",
-              "avatar": "/placeholder.svg?height=40&width=40",
-              "notes": "Works at the Albany office."
-            }
+            "employee": null
           },
           {
             "id": "albany-seat-2",
@@ -1166,17 +915,7 @@ const defaultLocations = {
             "y": 220,
             "rotation": 0,
             "furnitureId": "desk-alb-2",
-            "employee": {
-              "id": "emp-albany-2",
-              "name": "Caroline Beardsley",
-              "title": "Principal",
-              "email": "cabeardsley@beardsley.com",
-              "phone": "518-555-0101",
-              "employeeNumber": "00054",
-              "profileUrl": "#",
-              "avatar": "/placeholder.svg?height=40&width=40",
-              "notes": "Works at the Albany office."
-            }
+            "employee": null
           }
         ]
       }
@@ -1326,17 +1065,7 @@ const defaultLocations = {
             "y": 120,
             "rotation": 0,
             "furnitureId": "desk-mal-1",
-            "employee": {
-              "id": "emp-malone-1",
-              "name": "Edward Beardsley",
-              "title": "Principal",
-              "email": "ebeardsley@beardsley.com",
-              "phone": "518-555-0200",
-              "employeeNumber": "00063",
-              "profileUrl": "#",
-              "avatar": "/placeholder.svg?height=40&width=40",
-              "notes": "Works at the Malone office."
-            }
+            "employee": null
           },
           {
             "id": "malone-seat-2",
@@ -1344,17 +1073,7 @@ const defaultLocations = {
             "y": 120,
             "rotation": 0,
             "furnitureId": "desk-mal-2",
-            "employee": {
-              "id": "emp-malone-2",
-              "name": "Elizabeth Beardsley",
-              "title": "Principal",
-              "email": "elbeardsley@beardsley.com",
-              "phone": "518-555-0201",
-              "employeeNumber": "00064",
-              "profileUrl": "#",
-              "avatar": "/placeholder.svg?height=40&width=40",
-              "notes": "Works at the Malone office."
-            }
+            "employee": null
           }
         ]
       }
@@ -1642,4 +1361,73 @@ export function importData(jsonData: string) {
 // Initialize data from localStorage on module load
 if (typeof window !== "undefined") {
   currentData = loadFromStorage()
+}
+
+export function clearAllEmployees(): boolean {
+  // Clear from localStorage
+  currentData = loadFromStorage()
+  
+  try {
+    // Iterate through all locations and floors to clear employees
+    for (const locationId in currentData) {
+      const location = currentData[locationId]
+      if (location.floors) {
+        location.floors.forEach((floor: any) => {
+          if (floor.seats) {
+            floor.seats.forEach((seat: any) => {
+              seat.employee = null
+            })
+          }
+        })
+      }
+    }
+    
+    saveToStorage(currentData)
+    
+    // Also clear from defaultLocations to ensure fresh start
+    for (const locationId in defaultLocations) {
+      const location = (defaultLocations as any)[locationId]
+      if (location.floors) {
+        location.floors.forEach((floor: any) => {
+          if (floor.seats) {
+            floor.seats.forEach((seat: any) => {
+              seat.employee = null
+            })
+          }
+        })
+      }
+    }
+    
+    console.log("✅ All employees cleared from all locations")
+    return true
+  } catch (error) {
+    console.error("❌ Error clearing employees:", error)
+    return false
+  }
+}
+
+// Force clear all employees on module load to ensure clean state
+export function forceResetAllEmployees(): void {
+  if (typeof window !== "undefined") {
+    // Clear localStorage completely
+    localStorage.removeItem(STORAGE_KEY)
+    
+    // Clear default data
+    for (const locationId in defaultLocations) {
+      const location = (defaultLocations as any)[locationId]
+      if (location.floors) {
+        location.floors.forEach((floor: any) => {
+          if (floor.seats) {
+            floor.seats.forEach((seat: any) => {
+              seat.employee = null
+            })
+          }
+        })
+      }
+    }
+    
+    currentData = defaultLocations
+    saveToStorage(currentData)
+    console.log("🔄 Force reset: All employees cleared and data reset")
+  }
 }
