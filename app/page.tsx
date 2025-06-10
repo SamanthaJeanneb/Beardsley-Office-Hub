@@ -117,7 +117,7 @@ export default function HomePage() {
               <Button
                 size="default"
                 variant="outline"
-                className="border-white text-white hover:bg-white hover:text-beardsley-red shadow-lg px-6 py-3 font-whitney slide-in-bottom"
+                className="bg-white text-beardsley-red hover:bg-gray-100 shadow-lg px-6 py-3 font-whitney slide-in-bottom"
                 asChild
               >
                 <Link href="/directory">
@@ -276,16 +276,19 @@ export default function HomePage() {
                           </DialogHeader>
                           <div className="mt-4">
                             <img
-                              src={`/placeholder.svg?height=600&width=800&query=Parking map for ${location.name} office building`}
+                              src={location.parkingMap || `/placeholder.svg?height=600&width=800&query=Parking map for ${location.name} office building`}
                               alt={`${location.name} Parking Map`}
                               className="w-full rounded-md"
+                              onError={(e) => {
+                                (e.target as HTMLImageElement).src = `/placeholder.svg?height=600&width=800&query=Parking map for ${location.name} office building`
+                              }}
                             />
                             <div className="mt-4 p-4 bg-gray-50 rounded-md">
                               <h3 className="font-semibold text-lg mb-2">Parking Information</h3>
                               <ul className="space-y-2 text-sm">
                                 <li className="flex items-center">
                                   <div className="w-4 h-4 bg-beardsley-red rounded-full mr-2"></div>
-                                  <span>Reserved for executives</span>
+                                  <span>Reserved</span>
                                 </li>
                                 <li className="flex items-center">
                                   <div className="w-4 h-4 bg-beardsley-green rounded-full mr-2"></div>
@@ -337,7 +340,7 @@ export default function HomePage() {
             <div className="mb-16 text-center">
               <h2 className="text-4xl font-bold text-slate-800 md:text-5xl font-interface">Platform Features</h2>
               <p className="mt-6 text-xl text-muted-foreground max-w-3xl mx-auto font-whitney">
-                Everything you need to manage your office spaces efficiently with cutting-edge technology
+                Everything you need to manage your office spaces efficiently
               </p>
             </div>
 
@@ -348,8 +351,7 @@ export default function HomePage() {
                 </div>
                 <h3 className="mb-4 text-2xl font-semibold text-slate-800 font-interface">Smart Employee Search</h3>
                 <p className="text-muted-foreground text-lg leading-relaxed font-whitney">
-                  Instantly find any employee across all office locations with our AI-powered search functionality and
-                  real-time results.
+                  Find employees across all office locations with instant search results.
                 </p>
               </div>
 
@@ -359,8 +361,7 @@ export default function HomePage() {
                 </div>
                 <h3 className="mb-4 text-2xl font-semibold text-slate-800 font-interface">Interactive Floor Plans</h3>
                 <p className="text-muted-foreground text-lg leading-relaxed font-whitney">
-                  Navigate detailed floor plans with real-time seating arrangements, furniture layouts, and office
-                  amenities.
+                  Navigate detailed floor plans with seating arrangements and office layouts.
                 </p>
               </div>
 
@@ -370,8 +371,7 @@ export default function HomePage() {
                 </div>
                 <h3 className="mb-4 text-2xl font-semibold text-slate-800 font-interface">Admin Management</h3>
                 <p className="text-muted-foreground text-lg leading-relaxed font-whitney">
-                  Secure admin panel for managing employees, office layouts, and equipment with intuitive drag-and-drop
-                  editing.
+                  Manage employees and office layouts with intuitive editing tools.
                 </p>
               </div>
 
@@ -381,8 +381,7 @@ export default function HomePage() {
                 </div>
                 <h3 className="mb-4 text-2xl font-semibold text-slate-800 font-interface">Equipment Tracking</h3>
                 <p className="text-muted-foreground text-lg leading-relaxed font-whitney">
-                  Monitor and manage office equipment including printers, with direct access to driver downloads and
-                  status monitoring.
+                  Monitor office equipment including printers with driver access.
                 </p>
               </div>
 
@@ -392,8 +391,7 @@ export default function HomePage() {
                 </div>
                 <h3 className="mb-4 text-2xl font-semibold text-slate-800 font-interface">Employee Profiles</h3>
                 <p className="text-muted-foreground text-lg leading-relaxed font-whitney">
-                  Comprehensive employee profiles with photos, contact information, and seamless VantagePoint
-                  integration.
+                  Comprehensive employee profiles with photos and contact information.
                 </p>
               </div>
 
@@ -403,8 +401,7 @@ export default function HomePage() {
                 </div>
                 <h3 className="mb-4 text-2xl font-semibold text-slate-800 font-interface">Office Creation</h3>
                 <p className="text-muted-foreground text-lg leading-relaxed font-whitney">
-                  Easily create new office locations with customizable layouts, furniture placement, and employee
-                  management tools.
+                  Create new office locations with customizable layouts and furniture placement.
                 </p>
               </div>
             </div>
@@ -426,9 +423,9 @@ export default function HomePage() {
                 <EmployeeSearchDialog allLocations={locations} />
               </div>
               <Button
-                size="lg"
-                variant="outline"
-                className="border-white text-white hover:bg-white hover:text-beardsley-red text-lg px-8 py-6 h-auto font-whitney"
+                size="default"
+                variant="secondary"
+                className="bg-white text-beardsley-red hover:bg-gray-100 shadow-lg px-6 py-3 font-whitney slide-in-bottom"
                 asChild
               >
                 <Link href="#locations">
@@ -528,9 +525,9 @@ export default function HomePage() {
             </div>
 
             <div className="mt-12 border-t border-slate-200 pt-8 text-center text-slate-500">
-              <p className="font-whitney">
-                &copy; 2024 Beardsley. All rights reserved. | Office Hub v2.0 | Powered by Next.js
-              </p>
+                <p className="font-whitney">
+                &copy; {new Date().getFullYear()} Beardsley. All rights reserved. | Office Hub v2.0 | Powered by Next.js
+                </p>
             </div>
           </div>
         </div>

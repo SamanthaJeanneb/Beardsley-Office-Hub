@@ -204,6 +204,33 @@ export function resetToDefaults(): void {
   }
 }
 
+export function clearAllEmployees(): boolean {
+  currentData = loadFromStorage()
+  
+  try {
+    // Iterate through all locations and floors to clear employees
+    for (const locationId in currentData) {
+      const location = currentData[locationId]
+      if (location.floors) {
+        location.floors.forEach((floor: any) => {
+          if (floor.seats) {
+            floor.seats.forEach((seat: any) => {
+              seat.employee = null
+            })
+          }
+        })
+      }
+    }
+    
+    saveToStorage(currentData)
+    console.log("✅ All employees cleared from all locations")
+    return true
+  } catch (error) {
+    console.error("❌ Error clearing employees:", error)
+    return false
+  }
+}
+
 // Helper functions
 export function getAllLocations() {
   currentData = loadFromStorage()

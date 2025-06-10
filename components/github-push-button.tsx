@@ -168,7 +168,7 @@ export function GitHubPushButton({
                   id="owner"
                   value={githubConfig.owner}
                   onChange={(e) => setGithubConfig((prev) => ({ ...prev, owner: e.target.value }))}
-                  placeholder="SamanthaJeanneb"
+                  placeholder="BeardsleyAE"
                 />
               </div>
               <div>

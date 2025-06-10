@@ -27,7 +27,9 @@ import { Separator } from "@/components/ui/separator"
 import { Badge } from "@/components/ui/badge"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { PhotoUpload } from "@/components/photo-upload"
-import { getPhotoUrl, openPrinterDriverLocation, getVantagePointUrl } from "@/lib/employee-data"
+import { ParkingMapUpload } from "@/components/parking-map-upload"
+import { getPhotoUrl, openPrinterDriverLocation, getVantagePointUrl, addEmployeeToMapping } from "@/lib/employee-data"
+import { clearAllEmployees, forceResetAllEmployees } from "@/lib/data"
 
 interface EnhancedEditModePanelProps {
   location: any
@@ -104,6 +106,11 @@ export function EnhancedEditModePanel({
 
   const handleSaveEmployee = () => {
     if (editingEmployee) {
+      // Add to employee mapping if employee number is provided
+      if (editingEmployee.employeeNumber && editingEmployee.name) {
+        addEmployeeToMapping(editingEmployee.name, editingEmployee.employeeNumber)
+      }
+      
       // Update the employee's profileUrl with the new employee number
       editingEmployee.profileUrl = getVantagePointUrl(editingEmployee.name)
       onUpdateEmployee(editingEmployee)
@@ -121,12 +128,22 @@ export function EnhancedEditModePanel({
   const handleAddNewEmployee = () => {
     if (newEmployee.name && newEmployee.email) {
       const photoUrl = newEmployee.photo || getPhotoUrl(newEmployee.name)
+      
+      // Add to employee mapping if employee number is provided
+      if (newEmployee.employeeNumber && newEmployee.name) {
+        addEmployeeToMapping(newEmployee.name, newEmployee.employeeNumber)
+      }
+      
+      // Generate VantagePoint URL based on employee number or name
+      const profileUrl = newEmployee.employeeNumber 
+        ? getVantagePointUrl(newEmployee.name) 
+        : "#"
 
       onAddEmployee(
         {
           ...newEmployee,
           id: `emp-${Date.now()}`,
-          profileUrl: "#",
+          profileUrl: profileUrl,
           avatar: photoUrl,
         },
         currentFloorId,
@@ -194,19 +211,24 @@ export function EnhancedEditModePanel({
         }
 
         if (employeeData) {
+          const employeeName = employeeData.name || employeeData.fullname || employeeData["full name"] || "Unknown Employee"
+          
+          // Add to employee mapping
+          addEmployeeToMapping(employeeName, targetNumber)
+          
           // Create employee object with proper mapping
           const newEmp = {
             id: `emp-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
-            name: employeeData.name || employeeData.fullname || employeeData["full name"] || "Unknown Employee",
+            name: employeeName,
             title: employeeData.title || employeeData.position || employeeData.role || "Employee",
             email:
               employeeData.email ||
               employeeData["email address"] ||
-              `${(employeeData.name || "employee").toLowerCase().replace(/\s+/g, ".")}@beardsley.com`,
+              `${(employeeName || "employee").toLowerCase().replace(/\s+/g, ".")}@beardsley.com`,
             phone: employeeData.phone || employeeData["phone number"] || employeeData.telephone || "",
             employeeNumber: targetNumber,
-            profileUrl: "#",
-            avatar: getPhotoUrl(employeeData.name || "Unknown Employee"),
+            profileUrl: getVantagePointUrl(employeeName), // This should now work with the mapping
+            avatar: getPhotoUrl(employeeName),
             notes:
               employeeData.notes ||
               employeeData.description ||
@@ -293,6 +315,21 @@ export function EnhancedEditModePanel({
       height: 40,
       rotation: 0,
     })
+  }
+
+  const handleClearAllEmployees = () => {
+    if (confirm("Are you sure you want to remove ALL employees from ALL locations? This action cannot be undone.")) {
+      try {
+        // Use force reset to completely clear everything
+        forceResetAllEmployees()
+        alert("All employees have been cleared from all locations. The page will refresh to show the changes.")
+        // Force page refresh to reload clean data
+        window.location.reload()
+      } catch (error) {
+        console.error("Error clearing employees:", error)
+        alert("Failed to clear employees. Please try again.")
+      }
+    }
   }
 
   // Get available floors for the selected target office
@@ -424,8 +461,7 @@ export function EnhancedEditModePanel({
                   {/* Photo Upload */}
                   {newEmployee.name && (
                     <PhotoUpload
-                      firstName={getNameParts(newEmployee.name).firstName}
-                      lastName={getNameParts(newEmployee.name).lastName}
+                      employeeName={newEmployee.name}
                       onPhotoChange={(photoUrl) => setNewEmployee({ ...newEmployee, photo: photoUrl })}
                       currentPhoto={newEmployee.photo}
                     />
@@ -572,8 +608,7 @@ export function EnhancedEditModePanel({
                     {/* Photo Upload for editing */}
                     {editingEmployee.name && (
                       <PhotoUpload
-                        firstName={getNameParts(editingEmployee.name).firstName}
-                        lastName={getNameParts(editingEmployee.name).lastName}
+                        employeeName={editingEmployee.name}
                         onPhotoChange={(photoUrl) => setEditingEmployee({ ...editingEmployee, avatar: photoUrl })}
                         currentPhoto={editingEmployee.avatar}
                       />
@@ -896,6 +931,38 @@ export function EnhancedEditModePanel({
                   />
                 </div>
                 <div>
+                  <Label htmlFor="office-parking-map">Parking Map Image</Label>
+                  <Input
+                    id="office-parking-map"
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => {
+                      const file = e.target.files?.[0]
+                      if (file) {
+                        // Create a URL for the uploaded file to display immediately
+                        const fileUrl = URL.createObjectURL(file)
+                        setEditingLocation({ ...editingLocation, parkingMap: fileUrl })
+                      }
+                    }}
+                  />
+                  <p className="text-xs text-muted-foreground mt-1">
+                    Upload a custom parking map image for this office location.
+                  </p>
+                  {editingLocation?.parkingMap && (
+                    <div className="mt-2">
+                      <p className="text-xs text-muted-foreground mb-1">Current parking map:</p>
+                      <img
+                        src={editingLocation.parkingMap}
+                        alt="Parking map preview"
+                        className="w-32 h-20 object-cover rounded border"
+                        onError={(e) => {
+                          (e.target as HTMLImageElement).src = "/placeholder.svg?height=80&width=128"
+                        }}
+                      />
+                    </div>
+                  )}
+                </div>
+                <div>
                   <Label htmlFor="office-address">Address</Label>
                   <Textarea
                     id="office-address"
@@ -964,35 +1031,32 @@ export function EnhancedEditModePanel({
                         <div className="flex-1 min-w-0">
                           <p className="font-medium text-beardsley-red truncate">{printer.name}</p>
                           <p className="text-sm text-muted-foreground truncate">{printer.ipAddress}</p>
-                          <p className="text-xs text-beardsley-green">{printer.status}</p>
                         </div>
-                        <div className="flex flex-wrap gap-2">
-                          <Button
-                            onClick={() => handlePrinterDriverAccess(printer.name)}
-                            variant="outline"
-                            size="sm"
-                            className="border-beardsley-orange text-beardsley-orange hover:bg-beardsley-orange hover:text-white flex-1 min-w-0"
-                          >
-                            Drivers
-                          </Button>
-                          <Select onValueChange={(value) => onMovePrinter(printer.id, value)}>
-                            <SelectTrigger className="flex-1 min-w-0">
-                              <SelectValue placeholder="Move" />
-                            </SelectTrigger>
-                            <SelectContent>
-                              {allLocations
-                                .filter((loc) => loc.id !== location.id)
-                                .map((loc) => (
-                                  <SelectItem key={loc.id} value={loc.id}>
-                                    {loc.name}
-                                  </SelectItem>
-                                ))}
-                            </SelectContent>
-                          </Select>
-                          <Button onClick={() => onDeletePrinter(printer.id)} variant="destructive" size="sm">
-                            <Trash2 className="h-3 w-3" />
-                          </Button>
-                        </div>
+                        <Button
+                          onClick={() => handlePrinterDriverAccess(printer.name)}
+                          variant="outline"
+                          size="sm"
+                          className="border-beardsley-orange text-beardsley-orange hover:bg-beardsley-orange hover:text-white flex-1 min-w-0"
+                        >
+                          Drivers
+                        </Button>
+                        <Select onValueChange={(value) => onMovePrinter(printer.id, value)}>
+                          <SelectTrigger className="flex-1 min-w-0">
+                            <SelectValue placeholder="Move" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {allLocations
+                              .filter((loc) => loc.id !== location.id)
+                              .map((loc) => (
+                                <SelectItem key={loc.id} value={loc.id}>
+                                  {loc.name}
+                                </SelectItem>
+                              ))}
+                          </SelectContent>
+                        </Select>
+                        <Button onClick={() => onDeletePrinter(printer.id)} variant="destructive" size="sm">
+                          <Trash2 className="h-3 w-3" />
+                        </Button>
                       </div>
                     )),
                 )}
@@ -1000,6 +1064,18 @@ export function EnhancedEditModePanel({
             </div>
           </TabsContent>
         </Tabs>
+
+        {/* Clear All Employees Button */}
+        <div className="mt-4">
+          <Button
+            variant="outline"
+            className="w-full border-red-500 text-red-700 hover:bg-red-50"
+            onClick={handleClearAllEmployees}
+          >
+            <Trash2 className="mr-1 h-3 w-3" />
+            Clear All Employees
+          </Button>
+        </div>
       </CardContent>
     </Card>
   )
